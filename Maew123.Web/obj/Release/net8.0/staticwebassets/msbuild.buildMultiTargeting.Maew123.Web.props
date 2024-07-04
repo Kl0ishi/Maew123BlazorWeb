@@ -1,0 +1,3 @@
+﻿<Project>
+  <Import Project="..\build\Maew123.Web.props" />
+</Project>

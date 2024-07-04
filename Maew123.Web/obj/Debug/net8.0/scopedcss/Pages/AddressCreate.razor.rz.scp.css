@@ -1,0 +1,173 @@
+.box-container[b-f466mfzylg] {
+    display: flex;
+}
+
+.box[b-f466mfzylg] {
+    box-sizing: border-box;
+    padding-top: 20px;
+}
+
+.box-25[b-f466mfzylg] {
+    flex: 0 0 25%;
+}
+
+.box-75[b-f466mfzylg] {
+    flex: 0 0 75%;
+}
+
+.MakeSpace[b-f466mfzylg] {
+    padding-bottom: 30px;
+}
+
+.MenuHead[b-f466mfzylg] {
+    padding-left: 5px;
+    padding-bottom: 50px;
+    color: #000;
+    font-family: Inter;
+    font-size: 32px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+}
+
+.MenuText[b-f466mfzylg] {
+    width: 100%;
+    /*height: 52px;*/
+    color: #000;
+    font-family: Inter;
+    font-size: 24px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+    transition: color 0.5s ease;
+    /*border: 1px solid #ccc;*/ /** Just to Know the space if it lean or miss position*/
+}
+
+    .MenuText:hover[b-f466mfzylg] {
+        color: #00f;
+    }
+
+@media (max-width: 1199px) {
+    .box-container[b-f466mfzylg] {
+        flex-direction: column; /* Stack boxes vertically on smaller screens */
+    }
+
+    .box[b-f466mfzylg] {
+        width: 100%; /* Take up full width on smaller screens */
+    }
+
+    .ArrangeBox[b-f466mfzylg] {
+        display: flex;
+    }
+
+    .imgmenu[b-f466mfzylg] {
+        width: 36px;
+        height: 36px;
+    }
+}
+
+/*<-------------------right side---------------------->*/
+
+.Title[b-f466mfzylg] {
+    padding-left: 30px;
+    padding-bottom: 30px;
+    flex-shrink: 0;
+    color: #000;
+    font-family: Inter;
+    font-size: 28px;
+    font-style: normal;
+    font-weight: 800;
+    line-height: normal;
+    /*        border: 1px solid #ccc;*/
+}
+
+.Content[b-f466mfzylg] {
+    width: 100%;
+    padding: 34px 51px;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    flex-shrink: 0;
+    border-radius: 10px;
+    border: 1px solid rgba(0, 0, 0, 0.30);
+    background: #FFF;
+}
+
+.contenttitle[b-f466mfzylg] {
+    width: 300px;
+    height: 60px;
+    color: #000;
+    font-family: Inter;
+    font-size: 26px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 60px;
+    ;
+}
+
+.address-col[b-f466mfzylg] {
+    display: flex;
+    width: 100%;
+    height: 100%;
+}
+
+.InputCBLong[b-f466mfzylg] {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    padding-bottom: 0px;
+}
+
+.InputCB[b-f466mfzylg] {
+    display: flex;
+    flex-direction: column;
+    width: 50%;
+    padding-bottom: 0px;
+}
+
+.ButtonPosition[b-f466mfzylg] {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.boxtext[b-f466mfzylg] {
+    color: rgba(0, 0, 0, 0.5);
+    font-family: Inter;
+    font-size: 24px;
+    font-style: normal;
+    font-weight: 700px;
+    line-height: normal;
+}
+
+.regbox[b-f466mfzylg] {
+    width: 100%;
+    height: 38px;
+    padding-left: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+.regbox1[b-f466mfzylg] {
+    width: 95%;
+    height: 38px;
+    padding-left: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+.form-signin[b-f466mfzylg] {
+    justify-content: center;
+}
+
+.Save-button[b-f466mfzylg] {
+    height: auto;
+    width: 50%;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    border-radius: 15px;
+    text-align: center;
+}

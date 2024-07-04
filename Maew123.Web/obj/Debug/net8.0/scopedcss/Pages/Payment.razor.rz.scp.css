@@ -1,0 +1,98 @@
+.scb[b-n2b00akni0] {
+    width: 150px;
+    height: 150px;
+}
+
+.saleitem[b-n2b00akni0] {
+    display: flex;
+    flex-direction: column;
+}
+.box-centerside[b-n2b00akni0] {
+    /*background: url("../images/greybox-center-bg1.jpg") repeat-x scroll center top transparent;*/
+    display: inline-block;
+    margin-left: 0%;
+    width: 70%;
+}
+.imgtext[b-n2b00akni0] {
+    font-size: 20px;
+}
+
+.Centering[b-n2b00akni0] {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.Spacing[b-n2b00akni0] {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+.SpacingButton[b-n2b00akni0] {
+    display: flex;
+    justify-content: space-between;
+}
+.OverflowBox[b-n2b00akni0] {
+    padding: 10px 10px 10px 10px;
+    gap: 10px;
+    border-radius: 10px;
+    border: 1px solid rgba(0, 0, 0, 0.30);
+    background-color: #FFF;
+    height: 100px;
+    width: 100%;
+    overflow-y: auto;
+}
+.Title[b-n2b00akni0] {
+    display: flex;
+    padding: 10px 10px 10px 10px;
+    flex-shrink: 0;
+    color: #000;
+    font-family: Inter;
+    font-size: 24px;
+    font-style: normal;
+    font-weight: 800;
+    line-height: normal;
+    /*        border: 1px solid #ccc;*/
+}
+.SaleTitle[b-n2b00akni0] {
+    display: flex;
+    padding: 10px 10px 10px 10px;
+    width:160px;
+    flex-shrink: 0;
+    color: #000;
+    font-family: Inter;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 800;
+    line-height: normal;
+}
+.TitlePosition[b-n2b00akni0] {
+    display: flex;
+    flex-direction: column;
+}
+.ContentInfo[b-n2b00akni0] {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    justify-content: center;
+    align-items: center;
+    padding: 40px 40px;
+    gap: 10px;
+    flex-shrink: 0;
+    border-radius: 10px;
+    border: 1px solid rgba(0, 0, 0, 0.30);
+    background-color: #FFF;
+    margin-top: 20px;
+}
+
+.ContentSmaller[b-n2b00akni0] {
+    display: flex;
+    width: 480px;
+    height: 100%;
+    padding: 10px 10px 10px 10px;
+    gap: 10px;
+    flex-shrink: 0;
+    border-radius: 10px;
+    border: 1px solid rgba(0, 0, 0, 0.30);
+    background-color: #FFF;
+}

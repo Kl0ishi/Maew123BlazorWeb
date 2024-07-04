@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!--
+https://go.microsoft.com/fwlink/?LinkID=208121.
+-->
+<Project>
+  <PropertyGroup>
+    <_PublishTargetUrl>C:\Users\WIN10\source\repos\Maew123\Maew123.Web\bin\Release\net8.0\browser-wasm\publish\</_PublishTargetUrl>
+    <History>True|2024-05-15T11:18:20.8917155Z;True|2024-04-17T12:47:05.4227025+07:00;True|2024-04-17T12:33:12.6251939+07:00;</History>
+    <LastFailureDetails />
+  </PropertyGroup>
+</Project>

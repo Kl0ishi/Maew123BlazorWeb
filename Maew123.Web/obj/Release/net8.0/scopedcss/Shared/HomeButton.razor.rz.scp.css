@@ -1,0 +1,18 @@
+.home-button[b-hftf0ficc2] {
+    white-space: nowrap;
+    margin-right: 10px;
+    transform: rotate(-5deg);
+}
+.Logo[b-hftf0ficc2]{
+    font-size: 36px;
+    font-weight: 700;
+}
+a[b-hftf0ficc2]{
+    color: white;
+}
+
+@media (max-width: 1140px) {
+    .Logo[b-hftf0ficc2] {
+        display: none /* Adjust the size for smaller screens */
+    }
+}

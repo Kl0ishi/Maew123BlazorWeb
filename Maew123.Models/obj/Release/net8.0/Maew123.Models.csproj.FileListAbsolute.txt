@@ -1,0 +1,15 @@
+C:\Users\WIN10\source\repos\Maew123\Maew123.Models\bin\Release\net8.0\Maew123.Models.deps.json
+C:\Users\WIN10\source\repos\Maew123\Maew123.Models\bin\Release\net8.0\Maew123.Models.runtimeconfig.json
+C:\Users\WIN10\source\repos\Maew123\Maew123.Models\bin\Release\net8.0\Maew123.Models.dll
+C:\Users\WIN10\source\repos\Maew123\Maew123.Models\bin\Release\net8.0\Maew123.Models.pdb
+C:\Users\WIN10\source\repos\Maew123\Maew123.Models\obj\Release\net8.0\Maew123.Models.csproj.AssemblyReference.cache
+C:\Users\WIN10\source\repos\Maew123\Maew123.Models\obj\Release\net8.0\Maew123.Models.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\WIN10\source\repos\Maew123\Maew123.Models\obj\Release\net8.0\Maew123.Models.AssemblyInfoInputs.cache
+C:\Users\WIN10\source\repos\Maew123\Maew123.Models\obj\Release\net8.0\Maew123.Models.AssemblyInfo.cs
+C:\Users\WIN10\source\repos\Maew123\Maew123.Models\obj\Release\net8.0\Maew123.Models.csproj.CoreCompileInputs.cache
+C:\Users\WIN10\source\repos\Maew123\Maew123.Models\obj\Release\net8.0\Maew123.Models.sourcelink.json
+C:\Users\WIN10\source\repos\Maew123\Maew123.Models\obj\Release\net8.0\Maew123.Models.dll
+C:\Users\WIN10\source\repos\Maew123\Maew123.Models\obj\Release\net8.0\refint\Maew123.Models.dll
+C:\Users\WIN10\source\repos\Maew123\Maew123.Models\obj\Release\net8.0\Maew123.Models.pdb
+C:\Users\WIN10\source\repos\Maew123\Maew123.Models\obj\Release\net8.0\Maew123.Models.genruntimeconfig.cache
+C:\Users\WIN10\source\repos\Maew123\Maew123.Models\obj\Release\net8.0\ref\Maew123.Models.dll

@@ -1,0 +1,57 @@
+C:\Users\ACER NITRO\source\repos\UPDATE\Maew123.Models\bin\Debug\net8.0\Maew123.Models.deps.json
+C:\Users\ACER NITRO\source\repos\UPDATE\Maew123.Models\bin\Debug\net8.0\Maew123.Models.runtimeconfig.json
+C:\Users\ACER NITRO\source\repos\UPDATE\Maew123.Models\bin\Debug\net8.0\Maew123.Models.dll
+C:\Users\ACER NITRO\source\repos\UPDATE\Maew123.Models\bin\Debug\net8.0\Maew123.Models.pdb
+C:\Users\ACER NITRO\source\repos\UPDATE\Maew123.Models\obj\Debug\net8.0\Maew123.Models.csproj.AssemblyReference.cache
+C:\Users\ACER NITRO\source\repos\UPDATE\Maew123.Models\obj\Debug\net8.0\Maew123.Models.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\ACER NITRO\source\repos\UPDATE\Maew123.Models\obj\Debug\net8.0\Maew123.Models.AssemblyInfoInputs.cache
+C:\Users\ACER NITRO\source\repos\UPDATE\Maew123.Models\obj\Debug\net8.0\Maew123.Models.AssemblyInfo.cs
+C:\Users\ACER NITRO\source\repos\UPDATE\Maew123.Models\obj\Debug\net8.0\Maew123.Models.csproj.CoreCompileInputs.cache
+C:\Users\ACER NITRO\source\repos\UPDATE\Maew123.Models\obj\Debug\net8.0\Maew123.Models.dll
+C:\Users\ACER NITRO\source\repos\UPDATE\Maew123.Models\obj\Debug\net8.0\refint\Maew123.Models.dll
+C:\Users\ACER NITRO\source\repos\UPDATE\Maew123.Models\obj\Debug\net8.0\Maew123.Models.pdb
+C:\Users\ACER NITRO\source\repos\UPDATE\Maew123.Models\obj\Debug\net8.0\Maew123.Models.genruntimeconfig.cache
+C:\Users\ACER NITRO\source\repos\UPDATE\Maew123.Models\obj\Debug\net8.0\ref\Maew123.Models.dll
+C:\Users\ACER NITRO\source\repos\Maew123-NEW\Maew123.Models\bin\Debug\net8.0\Maew123.Models.deps.json
+C:\Users\ACER NITRO\source\repos\Maew123-NEW\Maew123.Models\bin\Debug\net8.0\Maew123.Models.runtimeconfig.json
+C:\Users\ACER NITRO\source\repos\Maew123-NEW\Maew123.Models\bin\Debug\net8.0\Maew123.Models.dll
+C:\Users\ACER NITRO\source\repos\Maew123-NEW\Maew123.Models\bin\Debug\net8.0\Maew123.Models.pdb
+C:\Users\ACER NITRO\source\repos\Maew123-NEW\Maew123.Models\obj\Debug\net8.0\Maew123.Models.csproj.AssemblyReference.cache
+C:\Users\ACER NITRO\source\repos\Maew123-NEW\Maew123.Models\obj\Debug\net8.0\Maew123.Models.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\ACER NITRO\source\repos\Maew123-NEW\Maew123.Models\obj\Debug\net8.0\Maew123.Models.AssemblyInfoInputs.cache
+C:\Users\ACER NITRO\source\repos\Maew123-NEW\Maew123.Models\obj\Debug\net8.0\Maew123.Models.AssemblyInfo.cs
+C:\Users\ACER NITRO\source\repos\Maew123-NEW\Maew123.Models\obj\Debug\net8.0\Maew123.Models.csproj.CoreCompileInputs.cache
+C:\Users\ACER NITRO\source\repos\Maew123-NEW\Maew123.Models\obj\Debug\net8.0\Maew123.Models.dll
+C:\Users\ACER NITRO\source\repos\Maew123-NEW\Maew123.Models\obj\Debug\net8.0\refint\Maew123.Models.dll
+C:\Users\ACER NITRO\source\repos\Maew123-NEW\Maew123.Models\obj\Debug\net8.0\Maew123.Models.pdb
+C:\Users\ACER NITRO\source\repos\Maew123-NEW\Maew123.Models\obj\Debug\net8.0\Maew123.Models.genruntimeconfig.cache
+C:\Users\ACER NITRO\source\repos\Maew123-NEW\Maew123.Models\obj\Debug\net8.0\ref\Maew123.Models.dll
+C:\Users\WIN10\Downloads\Maew123-NEW\Maew123.Models\bin\Debug\net8.0\Maew123.Models.deps.json
+C:\Users\WIN10\Downloads\Maew123-NEW\Maew123.Models\bin\Debug\net8.0\Maew123.Models.runtimeconfig.json
+C:\Users\WIN10\Downloads\Maew123-NEW\Maew123.Models\bin\Debug\net8.0\Maew123.Models.dll
+C:\Users\WIN10\Downloads\Maew123-NEW\Maew123.Models\bin\Debug\net8.0\Maew123.Models.pdb
+C:\Users\WIN10\Downloads\Maew123-NEW\Maew123.Models\obj\Debug\net8.0\Maew123.Models.csproj.AssemblyReference.cache
+C:\Users\WIN10\Downloads\Maew123-NEW\Maew123.Models\obj\Debug\net8.0\Maew123.Models.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\WIN10\Downloads\Maew123-NEW\Maew123.Models\obj\Debug\net8.0\Maew123.Models.AssemblyInfoInputs.cache
+C:\Users\WIN10\Downloads\Maew123-NEW\Maew123.Models\obj\Debug\net8.0\Maew123.Models.AssemblyInfo.cs
+C:\Users\WIN10\Downloads\Maew123-NEW\Maew123.Models\obj\Debug\net8.0\Maew123.Models.csproj.CoreCompileInputs.cache
+C:\Users\WIN10\Downloads\Maew123-NEW\Maew123.Models\obj\Debug\net8.0\Maew123.Models.dll
+C:\Users\WIN10\Downloads\Maew123-NEW\Maew123.Models\obj\Debug\net8.0\refint\Maew123.Models.dll
+C:\Users\WIN10\Downloads\Maew123-NEW\Maew123.Models\obj\Debug\net8.0\Maew123.Models.pdb
+C:\Users\WIN10\Downloads\Maew123-NEW\Maew123.Models\obj\Debug\net8.0\Maew123.Models.genruntimeconfig.cache
+C:\Users\WIN10\Downloads\Maew123-NEW\Maew123.Models\obj\Debug\net8.0\ref\Maew123.Models.dll
+C:\Users\WIN10\source\repos\Maew123\Maew123.Models\bin\Debug\net8.0\Maew123.Models.deps.json
+C:\Users\WIN10\source\repos\Maew123\Maew123.Models\bin\Debug\net8.0\Maew123.Models.runtimeconfig.json
+C:\Users\WIN10\source\repos\Maew123\Maew123.Models\bin\Debug\net8.0\Maew123.Models.dll
+C:\Users\WIN10\source\repos\Maew123\Maew123.Models\bin\Debug\net8.0\Maew123.Models.pdb
+C:\Users\WIN10\source\repos\Maew123\Maew123.Models\obj\Debug\net8.0\Maew123.Models.csproj.AssemblyReference.cache
+C:\Users\WIN10\source\repos\Maew123\Maew123.Models\obj\Debug\net8.0\Maew123.Models.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\WIN10\source\repos\Maew123\Maew123.Models\obj\Debug\net8.0\Maew123.Models.AssemblyInfoInputs.cache
+C:\Users\WIN10\source\repos\Maew123\Maew123.Models\obj\Debug\net8.0\Maew123.Models.AssemblyInfo.cs
+C:\Users\WIN10\source\repos\Maew123\Maew123.Models\obj\Debug\net8.0\Maew123.Models.csproj.CoreCompileInputs.cache
+C:\Users\WIN10\source\repos\Maew123\Maew123.Models\obj\Debug\net8.0\Maew123.Models.sourcelink.json
+C:\Users\WIN10\source\repos\Maew123\Maew123.Models\obj\Debug\net8.0\Maew123.Models.dll
+C:\Users\WIN10\source\repos\Maew123\Maew123.Models\obj\Debug\net8.0\refint\Maew123.Models.dll
+C:\Users\WIN10\source\repos\Maew123\Maew123.Models\obj\Debug\net8.0\Maew123.Models.pdb
+C:\Users\WIN10\source\repos\Maew123\Maew123.Models\obj\Debug\net8.0\Maew123.Models.genruntimeconfig.cache
+C:\Users\WIN10\source\repos\Maew123\Maew123.Models\obj\Debug\net8.0\ref\Maew123.Models.dll

@@ -1,0 +1,32 @@
+.CartMenu[b-o0xy0dilr3] {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-right: 20px;
+    color: white;
+}
+i[b-o0xy0dilr3]::after{
+    font-weight:normal;
+    content: " ตะกร้าสินค้า"
+}
+@media (max-width: 1140px) {
+    .CartMenu[b-o0xy0dilr3] {
+        font-size: 16px;
+    }
+}
+@media (max-width: 851px) {
+    .CartMenu[b-o0xy0dilr3] {
+        font-size: 14px;
+        padding-right: 0;
+    }
+}
+@media (max-width: 798px) {
+    i[b-o0xy0dilr3]::after {
+        content: " ตะกร้า"
+    }
+}
+@media (max-width: 730px) {
+    .CartMenu[b-o0xy0dilr3] {
+        font-size: 12px;
+    }
+}

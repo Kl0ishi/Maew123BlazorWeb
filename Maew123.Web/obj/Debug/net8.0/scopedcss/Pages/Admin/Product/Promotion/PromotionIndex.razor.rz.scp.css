@@ -1,0 +1,114 @@
+
+.BoxInner[b-7mm2krn543] {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+}
+
+.ContainerAll[b-7mm2krn543] {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 800px;
+    margin-bottom: 30px;
+}
+
+.box-centerside[b-7mm2krn543] {
+    /*background: url("../images/greybox-center-bg1.jpg") repeat-x scroll center top transparent;*/
+    display: inline-block;
+    margin-left: 0%;
+    width: 90%;
+}
+.ModalBox[b-7mm2krn543]{
+    display:flex;
+    width: 100%;
+}
+.InnerModal[b-7mm2krn543]{
+    width:70%;
+}
+.InnerBox[b-7mm2krn543] {
+    display: flex;
+}
+
+.InputCB[b-7mm2krn543] {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    padding-bottom: 1px;
+    padding-right: 5px;
+}
+
+.create-col[b-7mm2krn543] {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+    padding-right: 10px;
+}
+
+.half[b-7mm2krn543] {
+    display: flex;
+}
+
+.imgbox[b-7mm2krn543] {
+    width: 350px;
+    height: 350px;
+    background: #000030;
+}
+
+.regbox[b-7mm2krn543] {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+}
+.regboxdisable[b-7mm2krn543] {
+    background-color: rgba(0, 0, 0, 0.1);
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+}
+.regboxhalf[b-7mm2krn543] {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+.regboxdes[b-7mm2krn543] {
+    width: 100%;
+    height: 150px;
+    margin-top: 5px;
+    padding: 10px;
+    box-sizing: border-box;
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+    resize: vertical;
+}
+
+.ButtonSubmit[b-7mm2krn543] {
+    height: auto;
+    width: 300px;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    border-radius: 15px;
+    text-align: center;
+}
+
+.ButtonPosition[b-7mm2krn543] {
+    padding-top: 30px;
+    width: 100%;
+    align-self: center;
+}
+
+.ItemPosition[b-7mm2krn543] {
+    display: flex;
+    height: 100%;
+    justify-content: center;
+}

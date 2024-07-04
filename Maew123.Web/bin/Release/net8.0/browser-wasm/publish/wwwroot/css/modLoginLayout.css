@@ -1,0 +1,76 @@
+﻿/* Example CSS for LoginLayout */
+.login-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height:800px;
+}
+
+.login-box {
+    width:100%;
+    max-width: 800px;
+    height: 550px;
+    flex-shrink: 0;
+    fill: #FFF;
+    stroke-width: 1px;
+    stroke: rgba(0, 0, 0, 0.20);
+}
+
+.box-centerside {
+    /*background: url("../images/greybox-center-bg1.jpg") repeat-x scroll center top transparent;*/
+    display: inline-block;
+    margin-left: 25%;
+    width: 50%;
+}
+
+.login-button {
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    flex-shrink: 0;
+    border-radius: 15px;
+    background: #000030;
+    color: white;
+}
+
+.google-button {
+    border: 1px solid rgba(0, 0, 0, 0.30);
+    background: #FFF;
+}
+
+.htext {
+    font-size: 32px;
+    font-weight: 700;
+}
+
+@media(max-width:992px) {
+    .htext {
+        font-size: 26px;
+    }
+}
+    @media(max-width:768px) {
+/*        .htext{
+            margin-top: 100px;
+        }*/
+        hr {
+            display: none;
+        }
+
+        .fa-user-plus {
+            display: none;
+        }
+    }
+
+    @media(max-width:628px) {
+        .content-header {
+            display: none;
+        }
+    }
+@media(max-width:576px) {
+    .htext {
+        display:none;
+    }
+    .login-container{
+        height:100%;
+    }
+}

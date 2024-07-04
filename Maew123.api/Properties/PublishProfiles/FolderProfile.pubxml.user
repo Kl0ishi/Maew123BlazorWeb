@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!--
+https://go.microsoft.com/fwlink/?LinkID=208121.
+-->
+<Project>
+  <PropertyGroup>
+    <_PublishTargetUrl>C:\Users\WIN10\source\repos\Maew123\Maew123.api\bin\Release\net8.0\publish\</_PublishTargetUrl>
+    <History>True|2024-04-15T12:50:02.0880704Z;True|2024-04-15T19:45:31.8543510+07:00;True|2024-04-15T18:28:43.5578205+07:00;True|2024-04-15T17:36:38.4449165+07:00;True|2024-04-13T21:14:07.9689297+07:00;True|2024-04-13T21:04:36.4379281+07:00;True|2024-04-13T19:48:16.7814429+07:00;</History>
+    <LastFailureDetails />
+  </PropertyGroup>
+</Project>

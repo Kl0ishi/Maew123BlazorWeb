@@ -1,0 +1,46 @@
+@keyframes heartbeat-b-53zskgvcp9 {
+    0% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.2);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}
+
+.cart:hover[b-53zskgvcp9] {
+    transition: transform 0.5s ease;
+    animation: heartbeat-b-53zskgvcp9 1s infinite;
+}
+a[b-53zskgvcp9]{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+}
+i[b-53zskgvcp9] {
+    font-size: 25px;
+}
+@media (max-width: 991px) {
+    i[b-53zskgvcp9] {
+        font-size: 20px; /* Adjust the size for smaller screens */
+    }
+}
+@media (max-width: 850px) {
+    i[b-53zskgvcp9] {
+        font-size: 18px; /* Adjust the size for smaller screens */
+    }
+}
+@media (max-width: 768px) {
+    i[b-53zskgvcp9] {
+        font-size: 16px; /* Adjust the size for smaller screens */
+    }
+}
+@media (max-width: 576px) {
+    i[b-53zskgvcp9] {
+        font-size: 10px; /* Adjust the size for smaller screens */
+    }
+}

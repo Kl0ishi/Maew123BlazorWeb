@@ -1,0 +1,267 @@
+is_global = true
+build_property.EnableAotAnalyzer = 
+build_property.EnableSingleFileAnalyzer = 
+build_property.EnableTrimAnalyzer = false
+build_property.IncludeAllContentForSelfExtract = 
+build_property.TargetFramework = net8.0
+build_property.TargetPlatformMinVersion = 
+build_property.UsingMicrosoftNETSdkWeb = 
+build_property.ProjectTypeGuids = 
+build_property.InvariantGlobalization = false
+build_property.PlatformNeutralAssembly = 
+build_property.EnforceExtendedAnalyzerRules = 
+build_property._SupportedPlatformList = browser
+build_property.RootNamespace = Maew123.Web
+build_property.RootNamespace = Maew123.Web
+build_property.ProjectDir = C:\Users\WIN10\source\repos\Maew123\Maew123.Web\
+build_property.EnableComHosting = 
+build_property.EnableGeneratedComInterfaceComImportInterop = false
+build_property.RazorLangVersion = 8.0
+build_property.SupportLocalizedComponentNames = 
+build_property.GenerateRazorMetadataSourceChecksumAttributes = 
+build_property.MSBuildProjectDirectory = C:\Users\WIN10\source\repos\Maew123\Maew123.Web
+build_property._RazorSourceGeneratorDebug = 
+
+[C:/Users/WIN10/source/repos/Maew123/Maew123.Web/App.razor]
+build_metadata.AdditionalFiles.TargetPath = QXBwLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/WIN10/source/repos/Maew123/Maew123.Web/Components/AddressDropDown.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xBZGRyZXNzRHJvcERvd24ucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/WIN10/source/repos/Maew123/Maew123.Web/Components/PlsLoginFirst.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQbHNMb2dpbkZpcnN0LnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/WIN10/source/repos/Maew123/Maew123.Web/Pages/Admin/User/UserIndex.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQWRtaW5cVXNlclxVc2VySW5kZXgucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/WIN10/source/repos/Maew123/Maew123.Web/Pages/Home.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcSG9tZS5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/WIN10/source/repos/Maew123/Maew123.Web/Pages/Identifying.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcSWRlbnRpZnlpbmcucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/WIN10/source/repos/Maew123/Maew123.Web/Pages/Login.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcTG9naW4ucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/WIN10/source/repos/Maew123/Maew123.Web/Pages/UserProfile.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcVXNlclByb2ZpbGUucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/WIN10/source/repos/Maew123/Maew123.Web/Shared/CartCounter.razor]
+build_metadata.AdditionalFiles.TargetPath = U2hhcmVkXENhcnRDb3VudGVyLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/WIN10/source/repos/Maew123/Maew123.Web/Shared/ControlSidebar.razor]
+build_metadata.AdditionalFiles.TargetPath = U2hhcmVkXENvbnRyb2xTaWRlYmFyLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/WIN10/source/repos/Maew123/Maew123.Web/Shared/Test.razor]
+build_metadata.AdditionalFiles.TargetPath = U2hhcmVkXFRlc3QucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/WIN10/source/repos/Maew123/Maew123.Web/_Imports.razor]
+build_metadata.AdditionalFiles.TargetPath = X0ltcG9ydHMucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/WIN10/source/repos/Maew123/Maew123.Web/Components/CartButton.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xDYXJ0QnV0dG9uLnJhem9y
+build_metadata.AdditionalFiles.CssScope = b-53zskgvcp9
+
+[C:/Users/WIN10/source/repos/Maew123/Maew123.Web/Components/CompareButton.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xDb21wYXJlQnV0dG9uLnJhem9y
+build_metadata.AdditionalFiles.CssScope = b-23bauawe8w
+
+[C:/Users/WIN10/source/repos/Maew123/Maew123.Web/Components/DisplaySpinner.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xEaXNwbGF5U3Bpbm5lci5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = b-0o31txqtbk
+
+[C:/Users/WIN10/source/repos/Maew123/Maew123.Web/Components/SaleDetails.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xTYWxlRGV0YWlscy5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = b-tbswylxgz1
+
+[C:/Users/WIN10/source/repos/Maew123/Maew123.Web/Components/UserProfileLeftTab.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xVc2VyUHJvZmlsZUxlZnRUYWIucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = b-6cru71a9bt
+
+[C:/Users/WIN10/source/repos/Maew123/Maew123.Web/Components/WishlistButton.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xXaXNobGlzdEJ1dHRvbi5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = b-z25e97uv11
+
+[C:/Users/WIN10/source/repos/Maew123/Maew123.Web/Pages/AboutUs.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQWJvdXRVcy5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = b-tkochp7xzd
+
+[C:/Users/WIN10/source/repos/Maew123/Maew123.Web/Pages/Address.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQWRkcmVzcy5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = b-3uad20p5dx
+
+[C:/Users/WIN10/source/repos/Maew123/Maew123.Web/Pages/AddressCreate.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQWRkcmVzc0NyZWF0ZS5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = b-f466mfzylg
+
+[C:/Users/WIN10/source/repos/Maew123/Maew123.Web/Pages/AddressEdit.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQWRkcmVzc0VkaXQucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = b-56yfk84yvm
+
+[C:/Users/WIN10/source/repos/Maew123/Maew123.Web/Pages/Admin/Categories/CatagoriesIndex.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQWRtaW5cQ2F0ZWdvcmllc1xDYXRhZ29yaWVzSW5kZXgucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = b-45ne5orbx8
+
+[C:/Users/WIN10/source/repos/Maew123/Maew123.Web/Pages/Admin/Product/ProductCreate.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQWRtaW5cUHJvZHVjdFxQcm9kdWN0Q3JlYXRlLnJhem9y
+build_metadata.AdditionalFiles.CssScope = b-sum6t86lj9
+
+[C:/Users/WIN10/source/repos/Maew123/Maew123.Web/Pages/Admin/Product/ProductEdit.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQWRtaW5cUHJvZHVjdFxQcm9kdWN0RWRpdC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = b-obq8mklkxm
+
+[C:/Users/WIN10/source/repos/Maew123/Maew123.Web/Pages/Admin/Product/ProductIndex.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQWRtaW5cUHJvZHVjdFxQcm9kdWN0SW5kZXgucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = b-q17x3fvbnn
+
+[C:/Users/WIN10/source/repos/Maew123/Maew123.Web/Pages/Admin/Promotion/PromotionIndex.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQWRtaW5cUHJvbW90aW9uXFByb21vdGlvbkluZGV4LnJhem9y
+build_metadata.AdditionalFiles.CssScope = b-m730y3l04y
+
+[C:/Users/WIN10/source/repos/Maew123/Maew123.Web/Pages/Admin/Sale/ReportIndex.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQWRtaW5cU2FsZVxSZXBvcnRJbmRleC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = b-k1z5gonwuw
+
+[C:/Users/WIN10/source/repos/Maew123/Maew123.Web/Pages/Admin/Sale/SaleIndex.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQWRtaW5cU2FsZVxTYWxlSW5kZXgucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = b-pqzmk7h9hn
+
+[C:/Users/WIN10/source/repos/Maew123/Maew123.Web/Pages/Admin/Types/TypesIndex.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQWRtaW5cVHlwZXNcVHlwZXNJbmRleC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = b-7zqhbark5o
+
+[C:/Users/WIN10/source/repos/Maew123/Maew123.Web/Pages/Admin/User/EmployeeCreate.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQWRtaW5cVXNlclxFbXBsb3llZUNyZWF0ZS5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = b-tz7tyzkm3e
+
+[C:/Users/WIN10/source/repos/Maew123/Maew123.Web/Pages/Admin/User/UserLog.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQWRtaW5cVXNlclxVc2VyTG9nLnJhem9y
+build_metadata.AdditionalFiles.CssScope = b-s0dnhx5tcg
+
+[C:/Users/WIN10/source/repos/Maew123/Maew123.Web/Pages/Cart.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ2FydC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = b-3vkcc2e7r5
+
+[C:/Users/WIN10/source/repos/Maew123/Maew123.Web/Pages/Compare.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ29tcGFyZS5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = b-whf5do2o12
+
+[C:/Users/WIN10/source/repos/Maew123/Maew123.Web/Pages/Contact.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ29udGFjdC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = b-k38g3x8l3q
+
+[C:/Users/WIN10/source/repos/Maew123/Maew123.Web/Pages/DeliveryStatus.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRGVsaXZlcnlTdGF0dXMucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = b-wbotgp8qg9
+
+[C:/Users/WIN10/source/repos/Maew123/Maew123.Web/Pages/ForgotPassword.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRm9yZ290UGFzc3dvcmQucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = b-v1wk1fp32i
+
+[C:/Users/WIN10/source/repos/Maew123/Maew123.Web/Pages/HowToChangePassword.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcSG93VG9DaGFuZ2VQYXNzd29yZC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = b-549ut9z34e
+
+[C:/Users/WIN10/source/repos/Maew123/Maew123.Web/Pages/HowToRegister.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcSG93VG9SZWdpc3Rlci5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = b-lheitep9uw
+
+[C:/Users/WIN10/source/repos/Maew123/Maew123.Web/Pages/HowToShopping.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcSG93VG9TaG9wcGluZy5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = b-g5oaia4xio
+
+[C:/Users/WIN10/source/repos/Maew123/Maew123.Web/Pages/Payment.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUGF5bWVudC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = b-n2b00akni0
+
+[C:/Users/WIN10/source/repos/Maew123/Maew123.Web/Pages/PrivacyTerm.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUHJpdmFjeVRlcm0ucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = b-q9clkqdyjk
+
+[C:/Users/WIN10/source/repos/Maew123/Maew123.Web/Pages/Product-Catagory.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUHJvZHVjdC1DYXRhZ29yeS5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = b-ttu3nc1i69
+
+[C:/Users/WIN10/source/repos/Maew123/Maew123.Web/Pages/ProductDetails.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUHJvZHVjdERldGFpbHMucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = b-b0vnt2z4bl
+
+[C:/Users/WIN10/source/repos/Maew123/Maew123.Web/Pages/ProfileInfo.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUHJvZmlsZUluZm8ucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = b-59t3scr15s
+
+[C:/Users/WIN10/source/repos/Maew123/Maew123.Web/Pages/Receipt.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUmVjZWlwdC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = b-dnlohjrfjm
+
+[C:/Users/WIN10/source/repos/Maew123/Maew123.Web/Pages/Register.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUmVnaXN0ZXIucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = b-y2hfly3f91
+
+[C:/Users/WIN10/source/repos/Maew123/Maew123.Web/Pages/TermAndCondition.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcVGVybUFuZENvbmRpdGlvbi5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = b-zxv1srxapm
+
+[C:/Users/WIN10/source/repos/Maew123/Maew123.Web/Pages/Transfer.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcVHJhbnNmZXIucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = b-6d2p0gan6x
+
+[C:/Users/WIN10/source/repos/Maew123/Maew123.Web/Pages/WishList.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcV2lzaExpc3QucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = b-17lj17ux1h
+
+[C:/Users/WIN10/source/repos/Maew123/Maew123.Web/Shared/AdminMenu.razor]
+build_metadata.AdditionalFiles.TargetPath = U2hhcmVkXEFkbWluTWVudS5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = b-ytqs7r74jf
+
+[C:/Users/WIN10/source/repos/Maew123/Maew123.Web/Shared/CartMenu.razor]
+build_metadata.AdditionalFiles.TargetPath = U2hhcmVkXENhcnRNZW51LnJhem9y
+build_metadata.AdditionalFiles.CssScope = b-o0xy0dilr3
+
+[C:/Users/WIN10/source/repos/Maew123/Maew123.Web/Shared/CompareMenu.razor]
+build_metadata.AdditionalFiles.TargetPath = U2hhcmVkXENvbXBhcmVNZW51LnJhem9y
+build_metadata.AdditionalFiles.CssScope = b-9s5a7fm6hr
+
+[C:/Users/WIN10/source/repos/Maew123/Maew123.Web/Shared/FeaturedProducts.razor]
+build_metadata.AdditionalFiles.TargetPath = U2hhcmVkXEZlYXR1cmVkUHJvZHVjdHMucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = b-cbhibxs19e
+
+[C:/Users/WIN10/source/repos/Maew123/Maew123.Web/Shared/Footer.razor]
+build_metadata.AdditionalFiles.TargetPath = U2hhcmVkXEZvb3Rlci5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = b-sp6a7y6py1
+
+[C:/Users/WIN10/source/repos/Maew123/Maew123.Web/Shared/HomeButton.razor]
+build_metadata.AdditionalFiles.TargetPath = U2hhcmVkXEhvbWVCdXR0b24ucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = b-hftf0ficc2
+
+[C:/Users/WIN10/source/repos/Maew123/Maew123.Web/Shared/MainLayout.razor]
+build_metadata.AdditionalFiles.TargetPath = U2hhcmVkXE1haW5MYXlvdXQucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = b-hfqg8lygon
+
+[C:/Users/WIN10/source/repos/Maew123/Maew123.Web/Shared/NavMenu.razor]
+build_metadata.AdditionalFiles.TargetPath = U2hhcmVkXE5hdk1lbnUucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = b-2pxu43tyxs
+
+[C:/Users/WIN10/source/repos/Maew123/Maew123.Web/Shared/ProductList.razor]
+build_metadata.AdditionalFiles.TargetPath = U2hhcmVkXFByb2R1Y3RMaXN0LnJhem9y
+build_metadata.AdditionalFiles.CssScope = b-rm9tk0w2h2
+
+[C:/Users/WIN10/source/repos/Maew123/Maew123.Web/Shared/Search.razor]
+build_metadata.AdditionalFiles.TargetPath = U2hhcmVkXFNlYXJjaC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = b-m1594rel17
+
+[C:/Users/WIN10/source/repos/Maew123/Maew123.Web/Shared/Sidebar.razor]
+build_metadata.AdditionalFiles.TargetPath = U2hhcmVkXFNpZGViYXIucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = b-05tcdqry9f

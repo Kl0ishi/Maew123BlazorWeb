@@ -1,0 +1,228 @@
+.box-container[b-tbswylxgz1] {
+    display: flex;
+}
+
+.box[b-tbswylxgz1] {
+    box-sizing: border-box;
+    padding-top: 20px;
+}
+
+.box-25[b-tbswylxgz1] {
+    flex: 0 0 25%;
+}
+
+.box-75[b-tbswylxgz1] {
+    flex: 0 0 75%;
+}
+
+.MakeSpace[b-tbswylxgz1] {
+    padding-bottom: 30px;
+}
+
+.MenuHead[b-tbswylxgz1] {
+    padding-left: 5px;
+    padding-bottom: 50px;
+    color: #000;
+    font-family: Inter;
+    font-size: 32px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+}
+
+.MenuText[b-tbswylxgz1] {
+    width: 100%;
+    /*height: 52px;*/
+    color: #000;
+    font-family: Inter;
+    font-size: 24px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+    transition: color 0.5s ease;
+    /*border: 1px solid #ccc;*/ /** Just to Know the space if it lean or miss position*/
+}
+
+    .MenuText:hover[b-tbswylxgz1] {
+        color: #00f;
+    }
+
+
+/* Style the tab buttons */
+.tab[b-tbswylxgz1] {
+    overflow: hidden;
+    border-bottom: 1px solid #ccc;
+    padding: 10px 0;
+}
+
+    .tab button[b-tbswylxgz1] {
+        background-color: #f2f2f2;
+        border: none;
+        outline: none;
+        cursor: pointer;
+        padding: 10px 20px;
+        transition: 0.3s;
+    }
+
+        .tab button:hover[b-tbswylxgz1] {
+            background-color: #ddd;
+        }
+
+
+/* Style the tab content */
+.tabcontent[b-tbswylxgz1] {
+    display: none;
+    padding: 20px;
+}
+
+/* Show the active tab */
+.tablinks[b-tbswylxgz1] {
+    background-color: #ccc;
+}
+
+/* Show the tab content */
+.tabcontent.show[b-tbswylxgz1] {
+    display: block;
+}
+
+
+@media (max-width: 1199px) {
+    .box-container[b-tbswylxgz1] {
+        flex-direction: column; /* Stack boxes vertically on smaller screens */
+    }
+
+    .box[b-tbswylxgz1] {
+        width: 100%; /* Take up full width on smaller screens */
+    }
+
+    .ArrangeBox[b-tbswylxgz1] {
+        display: flex;
+    }
+
+    .imgmenu[b-tbswylxgz1] {
+        width: 36px;
+        height: 36px;
+    }
+}
+
+/*<-------------------right side---------------------->*/
+
+.Title[b-tbswylxgz1] {
+    padding-left: 30px;
+    padding-bottom: 30px;
+    flex-shrink: 0;
+    color: #000;
+    font-family: Inter;
+    font-size: 28px;
+    font-style: normal;
+    font-weight: 800;
+    line-height: normal;
+    /*        border: 1px solid #ccc;*/
+}
+
+.Content[b-tbswylxgz1] {
+    display: flex;
+    flex-direction: column;
+    width: 1100px;
+    height: 250px;
+    padding: 34px 51px;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    flex-shrink: 0;
+    border-radius: 10px;
+    border: 1px solid rgba(0, 0, 0, 0.30);
+    background-color: rgba(0, 0, 0, 0.1);
+    margin-top: 20px;
+}
+
+.saleitembox[b-tbswylxgz1] {
+    display: flex;
+    flex-direction: column;
+}
+
+.image-wrapper[b-tbswylxgz1] {
+    margin: 0 20px 0 40px;
+}
+
+.ImgCart[b-tbswylxgz1] {
+    border: 1px solid rgba(0, 0, 0, 0.30);
+    width: 100px;
+    height: 100px;
+}
+
+.saletext[b-tbswylxgz1] {
+    display: flex;
+    align-items: center;
+    padding-left: 10px;
+    margin-right: 5px;
+}
+
+.saleprice[b-tbswylxgz1] {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items:center;
+    padding-left: 10px;
+    margin-right: 5px;
+    width: 180px;
+}
+
+.redbox[b-tbswylxgz1] {
+    margin-top: 5px;
+    padding: 2px 5px 2px 5px;
+    text-align: center;
+    color: white;
+    max-width: 180px;
+    border-radius: 10px;
+    background: #FF0000;
+}
+
+.TotalPrice[b-tbswylxgz1] {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.summaryrow[b-tbswylxgz1] {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.Centering[b-tbswylxgz1] {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.Spacing[b-tbswylxgz1] {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.ContentInfo[b-tbswylxgz1] {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+    justify-content: center;
+    font-size: 18px;
+    font-weight: normal;
+    padding: 40px 40px;
+    flex-shrink: 0;
+    border-radius: 10px;
+    border: 1px solid rgba(0, 0, 0, 0.30);
+    background-color: #FFF;
+    margin-top: 20px;
+}
+
+.custom-modal-dialog[b-tbswylxgz1] {
+    max-width: 600px;
+}
+.delivertext[b-tbswylxgz1] {
+    display: flex;
+    flex-direction: column;
+    font-size: 24px;
+    justify-content: center;
+}

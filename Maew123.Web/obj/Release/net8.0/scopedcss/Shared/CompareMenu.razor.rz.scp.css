@@ -1,0 +1,29 @@
+.CompareButton[b-9s5a7fm6hr] {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+i[b-9s5a7fm6hr]::after {
+    font-weight: normal;
+    content: " เปรียบเทียบสินค้า"
+}
+@media (max-width: 1140px) {
+    .CompareButton[b-9s5a7fm6hr]{
+        font-size: 16px;
+    }
+}
+@media (max-width: 851px) {
+    .CompareButton[b-9s5a7fm6hr] {
+        font-size: 14px;
+    }
+}
+@media (max-width: 798px) {
+    i[b-9s5a7fm6hr]::after {
+        content: " เปรียบเทียบ"
+    }
+}
+@media (max-width: 730px) {
+    .CompareButton[b-9s5a7fm6hr] {
+        font-size: 12px;
+    }
+}

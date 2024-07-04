@@ -1,0 +1,8 @@
+.custom-modal-dialog[b-s0dnhx5tcg] {
+    max-width: 600px; /* Adjust width as needed */
+}
+
+.leftside[b-s0dnhx5tcg]{
+    display:flex;
+    flex-direction:column;
+}

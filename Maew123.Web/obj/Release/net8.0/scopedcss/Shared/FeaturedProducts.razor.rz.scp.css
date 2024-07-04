@@ -1,0 +1,172 @@
+img[b-cbhibxs19e] {
+    transition: transform .2s;
+}
+
+.card-img-top[b-cbhibxs19e] {
+    height: 100% !important; /* Adjust the height as needed */
+}
+
+.card-container[b-cbhibxs19e] {
+    display: grid;
+    width: 20%;
+    padding-left:0;
+}
+
+.card-title[b-cbhibxs19e] {
+    font-size: 16px;
+    padding-bottom: 10px !important;
+}
+.cart-text[b-cbhibxs19e]{
+    font-size:16px;
+}
+.card-text[b-cbhibxs19e]::after {
+    content: " บาท";
+}
+.card-body[b-cbhibxs19e] {
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+}
+
+.bottompart[b-cbhibxs19e] {
+    margin-top: auto;
+}
+
+.redbox[b-cbhibxs19e] {
+    display:flex;
+    height: 30px;
+    justify-content:center;
+    align-items:center;
+    padding: 2px 2px 2px 2px;
+    text-align: center;
+    color: white;
+    font-size: 16px;
+    border-radius: 10px;
+    background: #FF0000;
+}
+
+a[b-cbhibxs19e] {
+    font-weight: 700;
+    color: black !important;
+}
+
+.morebar[b-cbhibxs19e] {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+}
+
+.bartext[b-cbhibxs19e] {
+    height: 100%;
+    font-weight: 700;
+    font-family: Inter;
+    font-size: 28px;
+    color: black;
+    justify-content: center;
+    display: flex;
+    flex-direction: column;
+}
+
+.Spacing[b-cbhibxs19e] {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.simplebar[b-cbhibxs19e] {
+    display: flex;
+    height: 50px;
+    align-items: center;
+}
+
+.rightbar[b-cbhibxs19e] {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.baricon[b-cbhibxs19e] {
+    width: 35px;
+    height: 35px;
+}
+.flexgrow[b-cbhibxs19e]{
+    flex-grow: 1;
+}
+.card-img-top[b-cbhibxs19e] {
+    width: 100%;
+    height: 30vh;
+    object-fit: cover;
+}
+.BottomPosition[b-cbhibxs19e] {
+    margin-bottom: 10px;
+}
+.ButtonPosition[b-cbhibxs19e] {
+    display: flex;
+    align-items: center;
+}
+@media(max-width: 1199px) {
+    .card-text[b-cbhibxs19e], .card-title[b-cbhibxs19e] {
+        font-size: 1.25vw;
+    }
+    .redbox[b-cbhibxs19e] {
+        font-size: 1.25vw;
+    }
+    .bartext[b-cbhibxs19e] {
+        font-size: 22px;
+    }
+}
+
+@media(max-width: 991px) {
+    .card-text[b-cbhibxs19e], .card-title[b-cbhibxs19e] {
+        font-size: 1.25vw;
+    }
+        .card-text[b-cbhibxs19e]::before {
+            content: "฿ ";
+        }
+        .card-text[b-cbhibxs19e]::after{
+            content: "";
+        }
+    .redbox[b-cbhibxs19e] {
+        font-size: 1.25vw;
+    }
+    .simplebar[b-cbhibxs19e] {
+        width: 30%;
+    }
+    .baricon[b-cbhibxs19e] {
+        width: 35px;
+        height: 35px;
+    }
+    .BottomPosition[b-cbhibxs19e] {
+        margin-bottom: 5px;
+    }
+}
+@media(max-width: 768px) {
+    .card-text[b-cbhibxs19e], .card-title[b-cbhibxs19e] {
+        font-size: 1.25vw;
+    }
+    .redbox[b-cbhibxs19e] {
+        font-size: 1.25vw;
+    }
+    .baricon[b-cbhibxs19e] {
+        width: 25px;
+        height: 25px;
+    }
+    .bartext[b-cbhibxs19e] {
+        font-size: 20px;
+    }
+    .simplebar[b-cbhibxs19e] {
+        height: 2vh;
+    }
+    .BottomPosition[b-cbhibxs19e] {
+        margin-bottom: 0;
+    }
+}
+
+@media(max-width: 576px) {
+    .bartext[b-cbhibxs19e] {
+        font-size: 16px;
+    }
+}
+

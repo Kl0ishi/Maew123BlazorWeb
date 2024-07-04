@@ -1,0 +1,140 @@
+.media-img[b-rm9tk0w2h2] {
+    transition: transform .2s;
+}
+
+    .media-img:hover[b-rm9tk0w2h2] {
+        transform: scale(1.1);
+    }
+
+.card-img-top[b-rm9tk0w2h2] {
+    height: 100% !important; /* Adjust the height as needed */
+}
+
+.card-container[b-rm9tk0w2h2] {
+    display: grid;
+    width: 25%;
+}
+
+a[b-rm9tk0w2h2] {
+    color: black !important;
+}
+
+.card-body[b-rm9tk0w2h2] {
+    display: flex;
+    flex-direction: column;
+}
+
+.card-title[b-rm9tk0w2h2] {
+    font-weight: 700;
+}
+
+.card-text[b-rm9tk0w2h2] {
+    font-size: 16px;
+}
+
+.Spacing[b-rm9tk0w2h2] {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.redbox[b-rm9tk0w2h2] {
+    display: flex;
+    height: 30px;
+    justify-content: center;
+    align-items: center;
+    padding: 2px 2px 2px 2px;
+    text-align: center;
+    color: white;
+    font-size: 16px;
+    border-radius: 10px;
+    background: #FF0000;
+}
+
+.card-img-top[b-rm9tk0w2h2] {
+    width: 100%;
+    height: 30vh;
+    object-fit: cover;
+}
+.flexgrow[b-rm9tk0w2h2] {
+    flex-grow: 1;
+}
+.BottomPosition[b-rm9tk0w2h2] {
+    margin-bottom: 10px;
+}
+
+.ButtonPosition[b-rm9tk0w2h2] {
+    display: flex;
+    align-items: center;
+}
+@media(max-width: 1199px) {
+    .card-text[b-rm9tk0w2h2], .card-title[b-rm9tk0w2h2] {
+        font-size: 1.25vw;
+    }
+
+    .redbox[b-rm9tk0w2h2] {
+        font-size: 1.25vw;
+    }
+
+    .bartext[b-rm9tk0w2h2] {
+        font-size: 22px;
+    }
+}
+
+@media(max-width: 991px) {
+    .card-text[b-rm9tk0w2h2], .card-title[b-rm9tk0w2h2] {
+        font-size: 1.25vw;
+    }
+
+        .card-text[b-rm9tk0w2h2]::before {
+            content: "฿ ";
+        }
+
+        .card-text[b-rm9tk0w2h2]::after {
+            content: "";
+        }
+
+    .redbox[b-rm9tk0w2h2] {
+        font-size: 1.25vw;
+    }
+
+    .simplebar[b-rm9tk0w2h2] {
+        width: 30%;
+    }
+
+    .baricon[b-rm9tk0w2h2] {
+        width: 35px;
+        height: 35px;
+    }
+
+    .BottomPosition[b-rm9tk0w2h2] {
+        margin-bottom: 5px;
+    }
+}
+
+@media(max-width: 768px) {
+    .card-text[b-rm9tk0w2h2], .card-title[b-rm9tk0w2h2] {
+        font-size: 1.25vw;
+    }
+
+    .redbox[b-rm9tk0w2h2] {
+        font-size: 1.25vw;
+    }
+
+    .baricon[b-rm9tk0w2h2] {
+        width: 25px;
+        height: 25px;
+    }
+
+    .bartext[b-rm9tk0w2h2] {
+        font-size: 20px;
+    }
+
+    .simplebar[b-rm9tk0w2h2] {
+        height: 2vh;
+    }
+
+    .BottomPosition[b-rm9tk0w2h2] {
+        margin-bottom: 0;
+    }
+}
