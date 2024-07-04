@@ -1,0 +1,204 @@
+﻿.box-container {
+    display: flex;
+}
+
+.box {
+    box-sizing: border-box;
+    padding-top: 20px;
+}
+
+.box-25 {
+    flex: 0 0 25%;
+}
+
+.box-75 {
+    flex: 0 0 75%;
+}
+
+@media (max-width: 1199px) {
+    .box-container {
+        flex-direction: column; /* Stack boxes vertically on smaller screens */
+    }
+
+    .box {
+        width: 100%; /* Take up full width on smaller screens */
+    }
+
+    .ArrangeBox {
+        display: flex;
+    }
+}
+
+/* Add media queries for responsiveness */
+/*@media (max-width: 768px) {
+    .box-container {
+        flex-direction: column;*/ /* Stack boxes vertically on smaller screens */
+/*}
+
+    .box {
+        width: 100%;*/ /* Take up full width on smaller screens */
+/*}
+}*/
+
+
+
+
+.MenuContainer {
+    position: absolute;
+    top: 80px;
+    width: 100%;
+    height: 705px;
+    gap: 115px;
+    flex-shrink: 0;
+    /*    border: 1px solid #ccc;*/
+}
+
+.MenuHead {
+    padding-left: 5px;
+    color: #000;
+    font-family: Inter;
+    font-size: 24px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+}
+
+.MenuSubHead {
+    padding-bottom: 20px;
+    color: #000;
+    font-family: Inter;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+}
+
+.MenuTC {
+    width: 100%;
+    display: flex;
+    align-items: center; /* Center items vertically */
+}
+
+.MenuText {
+    width: 80%;
+    padding-bottom: 20px;
+    /*height: 52px;*/
+    color: #000;
+    font-family: Inter;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+    transition: color 0.5s ease;
+    /*border: 1px solid #ccc;*/ /** Just to Know the space if it lean or miss position*/
+}
+
+    .MenuText:hover {
+        color: #00f;
+    }
+
+.MenuTR {
+    padding-bottom: 20px;
+    width: 10%;
+    justify-content: end;
+}
+
+.MenuIcon {
+    margin-top: -1px;
+    width: 11px;
+    height: 20px;
+    flex-shrink: 0;
+    stroke-width: 6.901px;
+    stroke: #292D32;
+}
+
+/*<-------------------right side---------------------->*/
+
+
+.ContentTitle {
+    padding-left: 30px;
+    padding-bottom: 30px;
+    flex-shrink: 0;
+    color: #000;
+    font-family: Inter;
+    font-size: 30px;
+    font-style: normal;
+    font-weight: 800;
+    line-height: normal;
+}
+.CImage {
+    width: 540px;
+    height: 360px;
+    border-radius: 20px;
+    background: url(<path-to-image>), lightgray 50% / cover no-repeat;
+}
+.CImageSecond {
+    width: 540px;
+    height: 380px;
+    border-radius: 20px;
+    background: url(<path-to-image>), lightgray 50% / cover no-repeat;
+}
+
+.CImageThird {
+    width: 540px;
+    height: 450px;
+    border-radius: 20px;
+    background: url(<path-to-image>), lightgray 50% / cover no-repeat;
+}
+
+.TP {
+    padding-top: 10px;
+    color: #060051;
+    width: 550px;
+    height: 100px;
+}
+
+.PositionArrow{
+    width:100%;
+    align-self:center;
+}
+.ItemPosition{
+    display:flex;
+    justify-content:center;
+}
+
+.GORIGHT {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+}
+
+.CT1 {
+    width: 200px;
+    height: 700px;
+    color: #EBFF00;
+    font-size: 24px;
+    font-family: Inter;
+    font-weight: 800;
+    word-wrap: break-word;
+}
+.CT2 {
+    color: #000AFF;
+    font-size: 24px;
+    font-family: Inter;
+    font-weight: 800;
+    word-wrap: break-word;
+}
+.LeftPosition{
+    display:flex;
+    /*RandomCode i don't know what am i doin*/
+}
+
+@media(max-width:1199px){
+    .PositionArrow{
+        display:none;
+    }
+    .GORIGHT{
+        align-items:center;
+    }
+    .LeftPosition{
+        display:flex;
+        align-items:center;
+        justify-content:center;
+    }
+}

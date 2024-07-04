@@ -1,0 +1,292 @@
+﻿@page "/UserInfo"
+@inject HttpClient Http
+@inject NavigationManager navigationManager
+@inject IAccountService AccountService
+@inject IAuthenticationService authenService
+@inject SweetAlertService Swal
+@attribute [Authorize]
+
+<section class="content">
+    <div class="container-fluid">
+        <div class="box-container">
+            <UserProfileLeftTab />
+
+            <div class="box box-75 pb-4">
+                <div class="Title">
+                    <img width="48" height="48" src="https://img.icons8.com/material-rounded/48/name.png" alt="name" />ข้อมูลส่วนตัว
+                </div>
+                <div class="Content col-12">
+                    <EditForm class="InnerBox" OnValidSubmit="UpdateUserInfo" Model="@AccountService.userInfo">
+                        <DataAnnotationsValidator />
+                        <div class="profile-col">
+                            <div class="contenttitle">ข้อมูลส่วนตัว</div>
+                        </div>
+
+                        <div class="input-group profile-col">
+                            <div class="InputCB pr-4 pr-sm-4 pr-md-4">
+                                <label for="FirstName" class="text-left ml-2 mt-2 boxtext">ชื่อ</label>
+                                <InputText type="text" class="regbox" @bind-Value="AccountService.userInfo.FirstName" id="FirstName" name="FirstName" placeholder="FirstName" />
+                            </div>
+                            <div class="InputCB pr-5 pr-sm-5 pr-md-5">
+                                <label for="LastName" class="text-left ml-2 mt-2 boxtext">นามสกุล</label>
+                                <InputText type="text" class="regbox" @bind-Value="AccountService.userInfo.LastName" id="LastName" name="LastName" placeholder="LastName" />
+                            </div>
+                        </div>
+                        <div><ValidationMessage For="@(() => AccountService.userInfo.FirstName)" /></div>
+                        <div><ValidationMessage For="@(() => AccountService.userInfo.LastName)" /></div>
+
+                        <div class="input-group profile-col">
+                            <div class="InputCB pr-4 pr-sm-4 pr-md-4">
+                                <label for="Username" class="text-left ml-2 mt-2 boxtext">Username</label>
+                                <InputText type="text" class="regbox" @bind-Value="AccountService.userInfo.Username" id="Username" name="Username" placeholder="Username" disabled />
+                            </div>
+                            <div class="InputCB pr-5 pr-sm-5 pr-md-5">
+                                <label for="Email" class="text-left ml-2 mt-2 boxtext">อีเมล</label>
+                                <InputText type="Email" class="regbox" @bind-Value="AccountService.userInfo.Email" id="Email" name="Email" placeholder="Email" />
+                            </div>
+                        </div>
+                        <div><ValidationMessage For="@(() => AccountService.userInfo.Username)" /></div>
+                        <div><ValidationMessage For="@(() => AccountService.userInfo.Email)" /></div>
+
+                        <div class="input-group profile-col">
+                            <div class="InputCB pr-4 pr-sm-4 pr-md-4">
+                                <label for="UserTel" class="text-left ml-2 mt-2 boxtext">เบอร์โทร</label>
+                                <InputText type="number" class="regbox" @bind-Value="AccountService.userInfo.UserTel" id="UserTel" name="UserTel" placeholder="UserTel" />
+                            </div>
+                            <div class="InputCB">
+                                <label for="Gender" class="text-left ml-2 mt-2 boxtext">Gender</label>
+                                <select id="Gender" name="Gender" class="regbox1" @bind="AccountService.userInfo.Gender">
+                                    <option value="">-- เพศ --</option>
+                                    @foreach (var gender in DropdownForAccount.Genders)
+                                    {
+                                        <option value="@gender" selected="@IsGenderSelected(gender)">@gender</option>
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                        <div><ValidationMessage For="@(() => AccountService.userInfo.UserTel)" /></div>
+
+                        <div class="profile-col">
+                            <div class="InputCB">
+                                <button type="button" class="btn Profile-button" data-toggle="modal" data-target="#exampleModal" style="background: white;color: #000030;border: 1px solid #000030;float: right">
+                                    เปลี่ยนรหัสผ่าน
+                                </button>
+                            </div>
+                            <div class="InputCB">
+                                <input type="submit" value="บันทึกรายระเอียด" class="btn Profile-button" style="background: #000030;color: white;float: right" />
+                            </div>
+                        </div>
+                    </EditForm>
+                </div>
+            </div>
+        </div>
+    </div><!-- /.container-fluid -->
+</section>
+
+
+
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Change Password</h5>
+                <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <EditForm Context="cPass" id="myForm" class="form-signin justify-content-center" OnValidSubmit="@SubmitForm" Model="@cPassword">
+                    <DataAnnotationsValidator />
+                    <div class="mb-3 input-group flex-column">
+                        <div class="flex-column">
+                            <label for="oldPassword" class="col-form-label">Old Password:</label>
+                            <div class="d-flex">
+                                <InputText type="@OldPasswordInputType" class="form-control" @bind-Value="cPassword.oldPassword" id="oldPassword" />
+                                <div class="input-group-append">
+                                    <button class="btn btn-outline-secondary" type="button" @onclick="ToggleOldPasswordVisibility">
+                                        <span class="fas fa-eye" style="color: @ToggleOldPasswordIconColor"></span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div><ValidationMessage For="@(() => cPassword.oldPassword)" /></div>
+                    </div>
+
+                    <div class="mb-3 input-group flex-column">
+                        <div class="flex-column">
+                            <label for="newPassword" class="col-form-label">New Password:</label>
+                            <div class="d-flex">
+                                <InputText type="@NewPasswordInputType" class="form-control" @bind-Value="cPassword.newPassword" id="newPassword" />
+                                <div class="input-group-append">
+                                    <button class="btn btn-outline-secondary" type="button" @onclick="ToggleNewPasswordVisibility">
+                                        <span class="fas fa-eye" style="color: @ToggleNewPasswordIconColor"></span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div><ValidationMessage For="@(() => cPassword.newPassword)" /></div>
+                    </div>
+
+                    <div class="mb-3 input-group flex-column">
+                        <div class="flex-column">
+                            <label for="confirmNewPassword" class="col-form-label">Confirm New Password:</label>
+                            <div class="d-flex">
+                                <InputText type="@ConfirmNewPasswordInputType" class="form-control" @bind-Value="cPassword.confirmNewPassword" id="confirmNewPassword" />
+                                <div class="input-group-append">
+                                    <button class="btn btn-outline-secondary" type="button" @onclick="ToggleConfirmNewPasswordVisibility">
+                                        <span class="fas fa-eye" style="color: @ToggleConfirmNewPasswordIconColor"></span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div><ValidationMessage For="@(() => cPassword.confirmNewPassword)" /></div>
+                    </div>
+                </EditForm>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" style="width:150px;" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    private string OldPasswordInputType { get; set; } = "password";
+    private string NewPasswordInputType { get; set; } = "password";
+    private string ConfirmNewPasswordInputType { get; set; } = "password";
+    private bool ShowOldPassword { get; set; } = false;
+    private bool ShowNewPassword { get; set; } = false;
+    private bool ShowConfirmNewPassword { get; set; } = false;
+    private string ToggleOldPasswordIconColor => ShowOldPassword ? "green" : "gray";
+    private string ToggleNewPasswordIconColor => ShowNewPassword ? "green" : "gray";
+    private string ToggleConfirmNewPasswordIconColor => ShowConfirmNewPassword ? "green" : "gray";
+
+    private void ToggleOldPasswordVisibility()
+    {
+        ShowOldPassword = !ShowOldPassword;
+        OldPasswordInputType = ShowOldPassword ? "text" : "password";
+    }
+
+    private void ToggleNewPasswordVisibility()
+    {
+        ShowNewPassword = !ShowNewPassword;
+        NewPasswordInputType = ShowNewPassword ? "text" : "password";
+    }
+
+    private void ToggleConfirmNewPasswordVisibility()
+    {
+        ShowConfirmNewPassword = !ShowConfirmNewPassword;
+        ConfirmNewPasswordInputType = ShowConfirmNewPassword ? "text" : "password";
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await AccountService.GetUserInfo();
+    }
+
+    private bool IsGenderSelected(string gender)
+    {
+        return gender == AccountService.userInfo.Gender;
+    }
+
+    private ChangePasswordRequest cPassword = new ChangePasswordRequest();
+
+    public async Task SubmitForm()
+    {
+        var response = await authenService.ChangePassword(cPassword);
+        if (response.Success)
+        {
+            cPassword = new ChangePasswordRequest();
+            await Swal.FireAsync(new SweetAlertOptions
+                {
+                    Icon = "success",
+                    Title = "เปลี่ยนรหัสผ่านสำเร็จแล้ว",
+                    ShowConfirmButton = false,
+                    Timer = 3000
+                }
+            );
+        }
+        else
+        {
+            await Swal.FireAsync(new SweetAlertOptions
+                {
+                    Icon = "error",
+                    Title = "รหัสเดิมไม่ถูกต้อง",
+                    ShowConfirmButton = false,
+                    Timer = 3000
+            });
+        }
+    }
+
+    protected async Task UpdateUserInfo()
+    {
+        try
+        {
+            if (await AccountService.UpdateUserInfo(AccountService.userInfo))
+            {
+                await Swal.FireAsync(new SweetAlertOptions
+                    {
+                        Icon = "success",
+                        Title = "อัปเดตข้อมูลสำเร็จ",
+                        ShowConfirmButton = false,
+                        Timer = 3000
+                    }
+                );
+            }
+        }
+        catch (Exception ex)
+        {
+            throw;
+        }
+
+    }
+}
+
+@* <form class="form-signin text-center" Model="@model">
+    <div class="d-flex justify-content-center">
+        <div class="input-group mb-3">
+            <div class="d-flex flex-column">
+                <label for="FirstName" class="text-left ml-2 mt-2 boxtext">ชื่อ</label>
+                <input type="text" class="regbox" @bind="model.FirstName" id="FirstName" name="FirstName" placeholder="FirstName" required />
+            </div>
+            <div class="d-flex flex-column ml-4">
+                <label for="LastName" class="text-left mt-2 boxtext">นามสกุล</label>
+                <input type="text" class="regbox1" @bind="model.LastName" id="LastName" name="LastName" placeholder="LastName" required />
+            </div>
+        </div>
+    </div>
+    <div class="justify-content-center">
+        <div class="input-group mb-3">
+            <div class="d-flex flex-column">
+                <label for="Email" class="text-left ml-2 mt-2 boxtext">Email</label>
+                <input type="email" class="regbox" @bind="model.Email" id="Email" name="Email" placeholder="Email" required />
+            </div>
+            <div class="d-flex flex-column ml-4">
+                <label for="LastName" class="text-left mt-2 boxtext">เบอร์โทรศัพท์</label>
+                <input type="number" class="regbox1" @bind="model.UserTel" id="UserTel" name="UserTel" placeholder="UserTel" required />
+            </div>
+        </div>
+    </div>
+    <div class="justify-content-center">
+        <div class="input-group mb-4">
+            <div class="d-flex flex-column">
+                <label for="Email" class="text-left ml-2 mt-2 boxtext">วันเกิด</label>
+                <input type="date" class="regbox" id="BirthDate" name="BirthDate" placeholder="BirthDate" required />
+            </div>
+            <div class="d-flex flex-column ml-4">
+                <label for="gender" class="text-left ml-2 mt-2 boxtext">เพศ</label>
+                <select class="regbox" id="gender" name="gender" @bind="model.Gender">
+                    <option value="male">Male</option>
+                    <option value="female">Female</option>
+                    <option value="others">Others</option>
+                </select>
+            </div>
+        </div>
+    </div>
+</form>
+<div class="social-auth-links text-center d-flex justify-content-center">
+    <a href="#" class="btn Profile-button mr-5" style="background: white;color: #000030;border: 1px solid #000030;">
+        เปลี่ยนรหัสผ่าน
+    </a>
+    <a href="#" class="btn Profile-button ml-5" style="background: #000030;color: white;">
+        บันทึกรายระเอียด
+    </a>
+</div> *@

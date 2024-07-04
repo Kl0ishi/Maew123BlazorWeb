@@ -1,0 +1,21 @@
+﻿@inject ICartService CartService
+@inject ISyncLocalStorageService LocalStorage
+@implements IDisposable
+
+<a href="compare" class="nav-link CompareButton" style="color: white;">
+    <i class="fa-solid fa-arrows-left-right-to-line" style="margin-right:5px"></i>
+</a>
+
+@code {
+    protected override void OnInitialized()
+    {
+        // subscribes the ShoppingCartChanged method to the OnShoppingCartChanged event
+        CartService.OnChange += StateHasChanged;//คำสั่ง rerender component
+    }
+
+    //interface to unsubscribe for ลดความจำ
+    public void Dispose()
+    {
+        CartService.OnChange -= StateHasChanged;
+    }
+}

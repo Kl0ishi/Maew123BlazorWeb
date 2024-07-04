@@ -1,0 +1,114 @@
+﻿
+.BoxInner {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+}
+
+.ContainerAll {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 800px;
+    margin-bottom: 30px;
+}
+
+.box-centerside {
+    /*background: url("../images/greybox-center-bg1.jpg") repeat-x scroll center top transparent;*/
+    display: inline-block;
+    margin-left: 0%;
+    width: 90%;
+}
+.ModalBox{
+    display:flex;
+    width: 100%;
+}
+.InnerModal{
+    width:70%;
+}
+.InnerBox {
+    display: flex;
+}
+
+.InputCB {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    padding-bottom: 1px;
+    padding-right: 5px;
+}
+
+.create-col {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+    padding-right: 10px;
+}
+
+.half {
+    display: flex;
+}
+
+.imgbox {
+    width: 350px;
+    height: 350px;
+    background: #000030;
+}
+
+.regbox {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+}
+.regboxdisable {
+    background-color: rgba(0, 0, 0, 0.1);
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+}
+.regboxhalf {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+.regboxdes {
+    width: 100%;
+    height: 150px;
+    margin-top: 5px;
+    padding: 10px;
+    box-sizing: border-box;
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+    resize: vertical;
+}
+
+.ButtonSubmit {
+    height: auto;
+    width: 300px;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    border-radius: 15px;
+    text-align: center;
+}
+
+.ButtonPosition {
+    padding-top: 30px;
+    width: 100%;
+    align-self: center;
+}
+
+.ItemPosition {
+    display: flex;
+    height: 100%;
+    justify-content: center;
+}

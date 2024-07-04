@@ -1,0 +1,76 @@
+﻿@page "/Identifying"
+@inject IAuthenticationService AuthService
+@inject SweetAlertService Swal
+@inject NavigationManager navigationManager
+
+@if (!HasOTP)
+{
+
+}
+else
+{
+    <form @onsubmit="() => VerifyOtp(otpCode)">
+        <div class="Centering" style="height:60vh;">
+            <div class="box-centerside">
+                <div class="ContentInfo">
+                    <h3>ยืนยันตัวตน</h3>
+
+                    <div class="d-flex justify-content-center align-items-center" style="width:100%">
+                        <input type="text" @bind="otpCode" style="width: 75%" class="form-control mr-2" placeholder="โปรดกรอกรหัสยืนยันตัวตน 6 หลัก" required>
+                        <button class="btn btn-success" style="width:20%" type="submit">Verify OTP</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+}
+
+
+
+@code {
+
+    private string otpCode = string.Empty;
+    private bool HasOTP { get; set; }
+    private bool Isloading = false;
+
+    protected override async Task OnInitializedAsync()
+    {
+        // Check if OTP exists in session storage
+        HasOTP = await AuthService.HasOTPIdentity();
+        if (!HasOTP)
+        {
+            navigationManager.NavigateTo("Login");
+        }
+    }
+
+    protected override async Task OnParametersSetAsync()
+    {
+        HasOTP = await AuthService.HasOTPIdentity();
+    }
+
+    private async Task VerifyOtp(string otpCode)
+    {
+        var result = await AuthService.VerifyOtpIdentity(otpCode);
+        if (result.Success)
+        {
+            await Swal.FireAsync(new SweetAlertOptions
+                {
+                    Icon = "info",
+                    Title = $"{result.Message}",
+                    ShowConfirmButton = false,
+                });
+            navigationManager.NavigateTo("Login");
+        }
+        else
+        {
+            await Swal.FireAsync(new SweetAlertOptions
+                {
+                    Icon = "warning",
+                    Title = $"{result.Message}",
+                    ShowConfirmButton = false,
+                    Timer = 5000
+            });
+        }
+
+    }
+}

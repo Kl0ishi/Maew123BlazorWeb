@@ -1,0 +1,719 @@
+﻿@inject IProductService ProductService
+@implements IDisposable
+
+<div class="col-12">
+    <div class="morebar">
+        <div class="simplebar">
+            <a href="Product-Catagory">
+                <img class="baricon mr-2" src="https://img.icons8.com/external-prettycons-flat-prettycons/47/external-fire-ecology-prettycons-flat-prettycons.png" alt="external-fire-ecology-prettycons-flat-prettycons" />
+            </a>
+            <a href="Product-Catagory">
+                <div class="bartext">Best Seller Product</div>
+            </a>
+        </div>
+        <div class="rightbar">
+            <a class="bartext" href="Product-Catagory">เพิ่มเติม</a>
+            <a href="Product-Catagory">
+                <img class="baricon ml-2" src="https://img.icons8.com/ios-filled/50/more-than.png" alt="more-than" />
+            </a>
+        </div>
+    </div>
+    <div class="container-fluid">
+        @if (ProductService.Products == null || ProductService.Products.Count == 0)
+        {
+            <span>@ProductService.Message</span>
+        }
+        else
+        {
+            <div class="row">
+                @{
+                    // Sort products by price in descending order
+                    var expensiveProducts = ProductService.BestSellerProducts
+                    // .Where(p => p.Featured) // Filter for featured products
+                    // .OrderByDescending(p => p.Price) // Sort by price descending
+                    .Take(5); // Take the top 5 most expensive products
+
+                    foreach (var product in expensiveProducts)
+                    {
+                        <div class="card-container">
+                            <div class="card">
+                                <a href="product/@product.ProductId">
+                                    @if (!string.IsNullOrEmpty(product.ImgPath))
+                                    {
+                                        <img src="@($"https://localhost:7266/api/images/Products/{product.ImgPath}")"
+                                             class="card-img-top img-fluid">
+                                    }
+                                    else
+                                    {
+                                        <img src="/Picture/No_images.png" class="card-img-top">
+                                    }
+                                </a>
+                                <div class="card-body d-flex flex-column">
+                                    <div class="card-title"><a href="product/@product.ProductId">@product.ProductName</a></div>
+                                    <div class="flexgrow"></div>
+                                    <div class="BottomPosition">
+                                        <div class="">
+                                            @if (product.PromotionId == null)
+                                            {
+                                                @if (product.ProductStatus == "Available")
+                                                {
+                                                    <div class="Spacing">
+                                                        <div class="card-text">@product.Price.ToString("N2")</div>
+                                                        <div class="ButtonPosition">
+                                                            <CartButton ProductId="@product.ProductId" />
+                                                            <WishlistButton ProductId="@product.ProductId" />
+                                                        </div>
+                                                    </div>
+                                                }
+                                                else
+                                                {
+                                                    <div class="">
+                                                        <div class="ButtonPosition">
+                                                            <div class="redbox" style="width: 100%; height: 50px;font-weight:700;font-size:20px;">OUT OF STOCK</div>
+                                                            <WishlistButton ProductId="@product.ProductId" />
+                                                        </div>
+                                                    </div>
+                                                }
+                                            }
+                                            else
+                                            {
+                                                @if (product.ProductStatus == "Available")
+                                                {
+                                                    <div class="Spacing d-flex mb-2">
+                                                        <div class="card-text">@((product.Price - product.Discount).Value.ToString("N2"))</div>
+                                                        <div class="ButtonPosition">
+                                                            @if (product.ProductStatus == "Available")
+                                                            {
+                                                                <CartButton ProductId="@product.ProductId" />
+                                                            }
+                                                            <WishlistButton ProductId="@product.ProductId" />
+                                                        </div>
+                                                    </div>
+                                                    <div class="redbox">ลดราคาจาก @product.Price.ToString("N2")</div>
+                                                }
+                                                else
+                                                {
+                                                    <div class="">
+                                                        <div class="ButtonPosition">
+                                                            <div class="redbox" style="width: 100%; height: 50px;font-weight:700;font-size:20px;">OUT OF STOCK</div>
+                                                            <WishlistButton ProductId="@product.ProductId" />
+                                                        </div>
+                                                    </div>
+                                                }
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                }
+            </div>
+        }
+    </div>
+</div>
+
+
+<div class="col-12">
+    <div class="morebar">
+        <div class="simplebar">
+            <a href="Product-Catagory">
+                <img class="baricon mr-2" src="https://img.icons8.com/dusk/64/new-product.png" alt="new-product" />
+            </a>
+            <a href="Product-Catagory">
+                <div class="bartext">New Product</div>
+            </a>
+        </div>
+        <div class="rightbar">
+            <a class="bartext" href="Product-Catagory">เพิ่มเติม</a>
+            <a href="Product-Catagory">
+                <img class="baricon ml-2" src="https://img.icons8.com/ios-filled/50/more-than.png" alt="more-than" />
+            </a>
+        </div>
+    </div>
+    <div class="container-fluid">
+        @if (ProductService.Products == null || ProductService.Products.Count == 0)
+        {
+            <span>@ProductService.Message</span>
+        }
+        else
+        {
+            <div class="row">
+                @{
+                    // Sort products by InsertDate in descending order
+                    var newestProducts = ProductService.Products
+                    .Where(p => p.Featured) // Filter for featured products
+                    .OrderByDescending(p => p.InsertDate) // Sort by InsertDate descending
+                    .Take(5); // Take the top 5 most recent products
+
+                    foreach (var product in newestProducts)
+                    {
+                        <div class="card-container">
+                            <div class="card">
+                                <a href="product/@product.ProductId">
+                                    @if (!string.IsNullOrEmpty(product.ImgPath))
+                                    {
+                                        <img src="@($"https://localhost:7266/api/images/Products/{product.ImgPath}")"
+                                             class="card-img-top img-fluid">
+                                    }
+                                    else
+                                    {
+                                        <img src="/Picture/No_images.png" class="card-img-top">
+                                    }
+                                </a>
+                                <div class="card-body d-flex flex-column">
+                                    <div class="card-title"><a href="product/@product.ProductId">@product.ProductName</a></div>
+                                    <div class="flexgrow"></div>
+                                    <div class="BottomPosition">
+                                        <div class="">
+                                            @if (product.PromotionId == null)
+                                            {
+                                                @if (product.ProductStatus == "Available")
+                                                {
+                                                    <div class="Spacing">
+                                                        <div class="card-text">@product.Price.ToString("N2")</div>
+                                                        <div class="ButtonPosition">
+                                                            <CartButton ProductId="@product.ProductId" />
+                                                            <WishlistButton ProductId="@product.ProductId" />
+                                                        </div>
+                                                    </div>
+                                                }
+                                                else
+                                                {
+                                                    <div class="">
+                                                        <div class="ButtonPosition">
+                                                            <div class="redbox" style="width: 100%; height: 50px;font-weight:700;font-size:20px;">OUT OF STOCK</div>
+                                                            <WishlistButton ProductId="@product.ProductId" />
+                                                        </div>
+                                                    </div>
+                                                }
+                                            }
+                                            else
+                                            {
+                                                @if (product.ProductStatus == "Available")
+                                                {
+                                                    <div class="Spacing d-flex mb-2">
+                                                        <div class="card-text">@((product.Price - product.Discount).Value.ToString("N2"))</div>
+                                                        <div class="ButtonPosition">
+                                                            @if (product.ProductStatus == "Available")
+                                                            {
+                                                                <CartButton ProductId="@product.ProductId" />
+                                                            }
+                                                            <WishlistButton ProductId="@product.ProductId" />
+                                                        </div>
+                                                    </div>
+                                                    <div class="redbox">ลดราคาจาก @product.Price.ToString("N2")</div>
+                                                }
+                                                else
+                                                {
+                                                    <div class="">
+                                                        <div class="ButtonPosition">
+                                                            <div class="redbox" style="width: 100%; height: 50px;font-weight:700;font-size:20px;">OUT OF STOCK</div>
+                                                            <WishlistButton ProductId="@product.ProductId" />
+                                                        </div>
+                                                    </div>
+                                                }
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                }
+            </div>
+        }
+    </div>
+</div>
+
+
+
+<div class="col-12">
+    <div class="morebar">
+        <div class="simplebar">
+            <a href="Product-Catagory">
+                <img class="baricon mr-2" src="https://img.icons8.com/plasticine/100/monitor.png" alt="monitor" />
+            </a>
+            <a href="Product-Catagory">
+                <div class="bartext">Monitor</div>
+            </a>
+        </div>
+        <div class="rightbar">
+            <a class="bartext" href="Product-Catagory">เพิ่มเติม</a>
+            <a href="Product-Catagory">
+                <img class="baricon ml-2" src="https://img.icons8.com/ios-filled/50/more-than.png" alt="more-than" />
+            </a>
+        </div>
+    </div>
+    <div class="container-fluid">
+        @if (ProductService.Products == null || ProductService.Products.Count == 0)
+        {
+            <span>@ProductService.Message</span>
+        }
+        else
+        {
+            <div class="row">
+                @{
+                    // Filter products by ProductCategoryId = 12
+                    var categoryProducts = ProductService.Products
+                    .Where(p => p.ProductCatagoryId == 12)
+                    .ToList();
+
+                    // Shuffle the list of category products randomly
+                    var rand = new Random();
+                    var shuffledProducts = categoryProducts.OrderBy(x => rand.Next()).ToList();
+
+                    // Take the first 5 randomly shuffled products
+                    var randomProducts = shuffledProducts.Take(5);
+
+                    foreach (var product in randomProducts)
+                    {
+                        <div class="card-container">
+                            <div class="card">
+                                <a href="product/@product.ProductId">
+                                    @if (!string.IsNullOrEmpty(product.ImgPath))
+                                    {
+                                        <img src="@($"https://localhost:7266/api/images/Products/{product.ImgPath}")"
+                                             class="card-img-top img-fluid">
+                                    }
+                                    else
+                                    {
+                                        <img src="/Picture/No_images.png" class="card-img-top">
+                                    }
+                                </a>
+                                <div class="card-body d-flex flex-column">
+                                    <div class="card-title"><a href="product/@product.ProductId">@product.ProductName</a></div>
+                                    <div class="flexgrow"></div>
+                                    <div class="BottomPosition">
+                                        <div class="">
+                                            @if (product.PromotionId == null)
+                                            {
+                                                @if (product.ProductStatus == "Available")
+                                                {
+                                                    <div class="Spacing">
+                                                        <div class="card-text">@product.Price.ToString("N2")</div>
+                                                        <div class="ButtonPosition">
+                                                            <CartButton ProductId="@product.ProductId" />
+                                                            <WishlistButton ProductId="@product.ProductId" />
+                                                        </div>
+                                                    </div>
+                                                }
+                                                else
+                                                {
+                                                    <div class="">
+                                                        <div class="ButtonPosition">
+                                                            <div class="redbox" style="width: 100%; height: 50px;font-weight:700;font-size:20px;">OUT OF STOCK</div>
+                                                            <WishlistButton ProductId="@product.ProductId" />
+                                                        </div>
+                                                    </div>
+                                                }
+                                            }
+                                            else
+                                            {
+                                                @if (product.ProductStatus == "Available")
+                                                {
+                                                    <div class="Spacing d-flex mb-2">
+                                                        <div class="card-text">@((product.Price - product.Discount).Value.ToString("N2"))</div>
+                                                        <div class="ButtonPosition">
+                                                            @if (product.ProductStatus == "Available")
+                                                            {
+                                                                <CartButton ProductId="@product.ProductId" />
+                                                            }
+                                                            <WishlistButton ProductId="@product.ProductId" />
+                                                        </div>
+                                                    </div>
+                                                    <div class="redbox">ลดราคาจาก @product.Price.ToString("N2")</div>
+                                                }
+                                                else
+                                                {
+                                                    <div class="">
+                                                        <div class="ButtonPosition">
+                                                            <div class="redbox" style="width: 100%; height: 50px;font-weight:700;font-size:20px;">OUT OF STOCK</div>
+                                                            <WishlistButton ProductId="@product.ProductId" />
+                                                        </div>
+                                                    </div>
+                                                }
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                }
+            </div>
+        }
+    </div>
+</div>
+
+
+
+<div class="col-12">
+    <div class="morebar">
+        <div class="simplebar">
+            <a href="Product-Catagory">
+                <img class="baricon mr-2" src="https://img.icons8.com/color/48/electronics.png" alt="electronics" />
+            </a>
+            <a href="Product-Catagory">
+                <div class="bartext">Computer Hardware</div>
+            </a>
+        </div>
+        <div class="rightbar">
+            <a class="bartext" href="Product-Catagory">เพิ่มเติม</a>
+            <a href="Product-Catagory">
+                <img class="baricon ml-2" src="https://img.icons8.com/ios-filled/50/more-than.png" alt="more-than" />
+            </a>
+        </div>
+    </div>
+    <div class="container-fluid">
+        @if (ProductService.Products == null || ProductService.Products.Count == 0)
+        {
+            <span>@ProductService.Message</span>
+        }
+        else
+        {
+            <div class="row">
+                @{
+                    // Filter products by ProductCategoryId = 11
+                    var categoryProducts = ProductService.Products
+                    .Where(p => p.ProductCatagoryId == 11)
+                    .ToList();
+
+                    // Shuffle the list of category products randomly
+                    var rand = new Random();
+                    var shuffledProducts = categoryProducts.OrderBy(x => rand.Next()).ToList();
+
+                    // Take the first 5 randomly shuffled products
+                    var randomProducts = shuffledProducts.Take(5);
+
+                    foreach (var product in randomProducts)
+                    {
+                        <div class="card-container">
+                            <div class="card">
+                                <a href="product/@product.ProductId">
+                                    @if (!string.IsNullOrEmpty(product.ImgPath))
+                                    {
+                                        <img src="@($"https://localhost:7266/api/images/Products/{product.ImgPath}")"
+                                             class="card-img-top img-fluid">
+                                    }
+                                    else
+                                    {
+                                        <img src="/Picture/No_images.png" class="card-img-top">
+                                    }
+                                </a>
+                                <div class="card-body d-flex flex-column">
+                                    <div class="card-title"><a href="product/@product.ProductId">@product.ProductName</a></div>
+                                    <div class="flexgrow"></div>
+                                    <div class="BottomPosition">
+                                        <div class="">
+                                            @if (product.PromotionId == null)
+                                            {
+                                                @if (product.ProductStatus == "Available")
+                                                {
+                                                    <div class="Spacing">
+                                                        <div class="card-text">@product.Price.ToString("N2")</div>
+                                                        <div class="ButtonPosition">
+                                                            <CartButton ProductId="@product.ProductId" />
+                                                            <WishlistButton ProductId="@product.ProductId" />
+                                                        </div>
+                                                    </div>
+                                                }
+                                                else
+                                                {
+                                                    <div class="">
+                                                        <div class="ButtonPosition">
+                                                            <div class="redbox" style="width: 100%; height: 50px;font-weight:700;font-size:20px;">OUT OF STOCK</div>
+                                                            <WishlistButton ProductId="@product.ProductId" />
+                                                        </div>
+                                                    </div>
+                                                }
+                                            }
+                                            else
+                                            {
+                                                @if (product.ProductStatus == "Available")
+                                                {
+                                                    <div class="Spacing d-flex mb-2">
+                                                        <div class="card-text">@((product.Price - product.Discount).Value.ToString("N2"))</div>
+                                                        <div class="ButtonPosition">
+                                                            @if (product.ProductStatus == "Available")
+                                                            {
+                                                                <CartButton ProductId="@product.ProductId" />
+                                                            }
+                                                            <WishlistButton ProductId="@product.ProductId" />
+                                                        </div>
+                                                    </div>
+                                                    <div class="redbox">ลดราคาจาก @product.Price.ToString("N2")</div>
+                                                }
+                                                else
+                                                {
+                                                    <div class="">
+                                                        <div class="ButtonPosition">
+                                                            <div class="redbox" style="width: 100%; height: 50px;font-weight:700;font-size:20px;">OUT OF STOCK</div>
+                                                            <WishlistButton ProductId="@product.ProductId" />
+                                                        </div>
+                                                    </div>
+                                                }
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                }
+            </div>
+        }
+    </div>
+</div>
+
+
+
+<div class="col-12">
+    <!-- First category: CPU / GPU -->
+    <div class="morebar">
+        <div class="simplebar">
+            <a href="Product-Catagory">
+                <img class="baricon ml-2" src="https://img.icons8.com/fluency/48/mouse-left-click.png" alt="mouse-left-click" />
+            </a>
+            <a href="Product-Catagory">
+                <div class="bartext">Mouse / keyboard</div>
+            </a>
+        </div>
+        <div class="rightbar">
+            <a class="bartext" href="Product-Catagory">เพิ่มเติม</a>
+            <a href="Product-Catagory">
+                <img class="baricon ml-2" src="https://img.icons8.com/ios-filled/50/more-than.png" alt="more-than" />
+            </a>
+        </div>
+    </div>
+    <div class="container-fluid">
+        @if (ProductService.Products == null || ProductService.Products.Count == 0)
+        {
+            <span>@ProductService.Message</span>
+        }
+        else
+        {
+            <div class="row">
+                @{
+                    // Filter products for ProductCategoryIDs 1 and 4
+                    var categoryProducts = ProductService.Products
+                    .Where(p => p.ProductCatagoryId == 1 || p.ProductCatagoryId == 4)
+                    .ToList();
+
+                    // Shuffle the list of category products randomly
+                    var rand = new Random();
+                    var shuffledCategoryProducts = categoryProducts.OrderBy(x => rand.Next()).ToList();
+
+                    // Take the first 5 randomly shuffled products
+                    var randomProducts = shuffledCategoryProducts.Take(5);
+
+                    foreach (var product in randomProducts)
+                    {
+                        <div class="card-container">
+                            <div class="card">
+                                <a href="product/@product.ProductId">
+                                    @if (!string.IsNullOrEmpty(product.ImgPath))
+                                    {
+                                        <img src="@($"https://localhost:7266/api/images/Products/{product.ImgPath}")"
+                                             class="card-img-top img-fluid">
+                                    }
+                                    else
+                                    {
+                                        <img src="/Picture/No_images.png" class="card-img-top">
+                                    }
+                                </a>
+                                <div class="card-body d-flex flex-column">
+                                    <div class="card-title"><a href="product/@product.ProductId">@product.ProductName</a></div>
+                                    <div class="flexgrow"></div>
+                                    <div class="BottomPosition">
+                                        <div class="">
+                                            @if (product.PromotionId == null)
+                                            {
+                                                @if (product.ProductStatus == "Available")
+                                                {
+                                                    <div class="Spacing">
+                                                        <div class="card-text">@product.Price.ToString("N2")</div>
+                                                        <div class="ButtonPosition">
+                                                            <CartButton ProductId="@product.ProductId" />
+                                                            <WishlistButton ProductId="@product.ProductId" />
+                                                        </div>
+                                                    </div>
+                                                }
+                                                else
+                                                {
+                                                    <div class="">
+                                                        <div class="ButtonPosition">
+                                                            <div class="redbox" style="width: 100%; height: 50px;font-weight:700;font-size:20px;">OUT OF STOCK</div>
+                                                            <WishlistButton ProductId="@product.ProductId" />
+                                                        </div>
+                                                    </div>
+                                                }
+                                            }
+                                            else
+                                            {
+                                                @if (product.ProductStatus == "Available")
+                                                {
+                                                    <div class="Spacing d-flex mb-2">
+                                                        <div class="card-text">@((product.Price - product.Discount).Value.ToString("N2"))</div>
+                                                        <div class="ButtonPosition">
+                                                            @if (product.ProductStatus == "Available")
+                                                            {
+                                                                <CartButton ProductId="@product.ProductId" />
+                                                            }
+                                                            <WishlistButton ProductId="@product.ProductId" />
+                                                        </div>
+                                                    </div>
+                                                    <div class="redbox">ลดราคาจาก @product.Price.ToString("N2")</div>
+                                                }
+                                                else
+                                                {
+                                                    <div class="">
+                                                        <div class="ButtonPosition">
+                                                            <div class="redbox" style="width: 100%; height: 50px;font-weight:700;font-size:20px;">OUT OF STOCK</div>
+                                                            <WishlistButton ProductId="@product.ProductId" />
+                                                        </div>
+                                                    </div>
+                                                }
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                }
+            </div>
+        }
+    </div>
+</div>
+
+
+
+<div class="col-12">
+    <div class="morebar">
+        <div class="simplebar">
+            <a href="Product-Catagory">
+                <img class="baricon mr-2" src="https://img.icons8.com/external-flatart-icons-flat-flatarticons/64/external-plug-hardware-flatart-icons-flat-flatarticons-1.png" alt="external-plug-hardware-flatart-icons-flat-flatarticons-1" />
+            </a>
+            <a href="Product-Catagory">
+                <div class="bartext">อุปกรณ์เสริม</div>
+            </a>
+        </div>
+        <div class="rightbar">
+            <a class="bartext" href="Product-Catagory">เพิ่มเติม</a>
+            <a href="Product-Catagory">
+                <img class="baricon ml-2" src="https://img.icons8.com/ios-filled/50/more-than.png" alt="more-than" />
+            </a>
+        </div>
+    </div>
+    <div class="container-fluid">
+        @if (ProductService.Products == null || ProductService.Products.Count == 0)
+        {
+            <span>@ProductService.Message</span>
+        }
+        else
+        {
+            <div class="row">
+                @{
+                    var categoryProducts = ProductService.Products
+                    .Where(p => p.ProductCatagoryId == 10)
+                    .ToList();
+
+                    // Shuffle the list of category products randomly
+                    var rand = new Random();
+                    var shuffledCategoryProducts = categoryProducts.OrderBy(x => rand.Next()).ToList();
+
+                    // Take the first 5 randomly shuffled products
+                    var randomProducts = shuffledCategoryProducts.Take(5);
+                }
+
+                @foreach (var product in randomProducts)
+                {
+                    <div class="card-container">
+                        <div class="card">
+                            <a href="product/@product.ProductId">
+                                @if (!string.IsNullOrEmpty(product.ImgPath))
+                                {
+                                    <img src="@($"https://localhost:7266/api/images/Products/{product.ImgPath}")"
+                                         class="card-img-top img-fluid">
+                                }
+                                else
+                                {
+                                    <img src="/Picture/No_images.png" class="card-img-top">
+                                }
+                            </a>
+                            <div class="card-body d-flex flex-column">
+                                <div class="card-title"><a href="product/@product.ProductId">@product.ProductName</a></div>
+                                <div class="flexgrow"></div>
+                                <div class="BottomPosition">
+                                    <div class="">
+                                        @if (product.PromotionId == null)
+                                        {
+                                            @if (product.ProductStatus == "Available")
+                                            {
+                                                <div class="Spacing">
+                                                    <div class="card-text">@product.Price.ToString("N2")</div>
+                                                    <div class="ButtonPosition">
+                                                        <CartButton ProductId="@product.ProductId" />
+                                                        <WishlistButton ProductId="@product.ProductId" />
+                                                    </div>
+                                                </div>
+                                            }
+                                            else
+                                            {
+                                                <div class="">
+                                                    <div class="ButtonPosition">
+                                                        <div class="redbox" style="width: 100%; height: 50px;font-weight:700;font-size:20px;">OUT OF STOCK</div>
+                                                        <WishlistButton ProductId="@product.ProductId" />
+                                                    </div>
+                                                </div>
+                                            }
+                                        }
+                                        else
+                                        {
+                                            @if (product.ProductStatus == "Available")
+                                            {
+                                                <div class="Spacing d-flex mb-2">
+                                                    <div class="card-text">@((product.Price - product.Discount).Value.ToString("N2"))</div>
+                                                    <div class="ButtonPosition">
+                                                        @if (product.ProductStatus == "Available")
+                                                        {
+                                                            <CartButton ProductId="@product.ProductId" />
+                                                        }
+                                                        <WishlistButton ProductId="@product.ProductId" />
+                                                    </div>
+                                                </div>
+                                                <div class="redbox">ลดราคาจาก @product.Price.ToString("N2")</div>
+                                            }
+                                            else
+                                            {
+                                                <div class="">
+                                                    <div class="ButtonPosition">
+                                                        <div class="redbox" style="width: 100%; height: 50px;font-weight:700;font-size:20px;">OUT OF STOCK</div>
+                                                        <WishlistButton ProductId="@product.ProductId" />
+                                                    </div>
+                                                </div>
+                                            }
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        }
+    </div>
+
+</div>
+@code {
+    protected override void OnInitialized()
+    {
+        ProductService.ProductsChanged += StateHasChanged;
+    }
+
+    public void Dispose()
+    {
+        ProductService.ProductsChanged -= StateHasChanged;
+    }
+}

@@ -1,0 +1,507 @@
+﻿@page "/admin/ProductIndex"
+@attribute [Authorize(Roles = "Admin,Employee")]
+@inject AuthenticationStateProvider AuthStateProvider
+@using System.Security.Claims
+
+@inherits ProductBase
+@inject HttpClient Http
+@inject NavigationManager navigationManager
+@inject IProductService _productService
+@inject IPromotionService _promotionService
+@inject ITypeService _typeService
+@inject ICatagoryService _catagoryService
+@inject SweetAlertService Swal
+
+<div class="search-filter-bar">
+    <form @onsubmit="Search" class="search-form mb-4" Model="@productSearchParam">
+        <div class="form-group search-input">
+            <label for="searchText" class="sr-only">Search</label>
+            <input type="text" class="form-control form-control-sm" @bind="productSearchParam.searchText" placeholder="ค้นหาด้วยชื่อสินค้า" />
+        </div>
+        <div class="form-group filter-box">
+            <div class="InputCB">
+                <label for="ProductCatagoryName" class="text-left ml-2 mt-2 boxtext">หมวดหมู่สินค้า</label>
+                <select class="regboxhalf" @onchange="TriggerType">
+                    <option value="">-- Select Category --</option>
+                    @foreach (var category in _catagoryService.Catagories)
+                    {
+                        <option value="@category.ProductCatagoryId">@category.ProductCatagoryName</option>
+                    }
+                </select>
+            </div>
+            <div class="InputCB">
+                <label for="ProductTypeName" class="text-left ml-2 mt-2 boxtext">ชนิดของสินค้า</label>
+                <select class="regboxhalf" @bind="@productSearchParam.filterType" disabled="@(!IsTypeAllowed)">
+                    <option value="">-- Select ProductType --</option>
+                    @foreach (var type in _typeService.ProductTypes.Where(pt => pt.ProductCategoryId == productSearchParam.filterCata))
+                    {
+                        <option value="@type.ProductTypeId">@type.ProductTypeName</option>
+                    }
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="minPrice" class="sr-only">Min Price</label>
+                <input type="number" class="form-control form-control-sm" @bind="productSearchParam.minPrice" placeholder="ราคาขั้นต่ำ" />
+            </div>
+            <div class="form-group">
+                <label for="maxPrice" class="sr-only">Max Price</label>
+                <input type="number" class="form-control form-control-sm" @bind="productSearchParam.maxPrice" placeholder="ราคาสูงสุด" />
+            </div>
+        </div>
+        <div>
+            <button type="submit" class="btn btn-primary btn-sm mr-3">Search & Filter</button>
+            <a class="btn btn-success" href="/admin/ProductCreate">สร้างสินค้า!</a>
+        </div>
+    </form>
+    <button type="button" class="btn btn-warning btn-sm mr-3" @onclick="@(() => calldecreasedProduct())" data-toggle="modal" data-target="#staticBackdrop">สินค้าที่ถูกยกเลิก</button>
+</div>
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th>
+                รูปภาพ
+            </th>
+            <th>
+                ชื่อสินค้า (id)
+            </th>
+            <th>
+                สถานะสินค้า
+            </th>
+            <th>
+                หมวดหมู่สินค้า(ID)
+            </th>
+            <th>
+                ชนิดของสินค้า(ID)
+            </th>
+            <th>
+                โปรโมชั่นสินค้า(ID)
+            </th>
+            <th>
+                จำนวนสต๊อกสินค้า(ID)
+            </th>
+            <th>
+                ราคา
+            </th>
+            <th>
+                สภาพสินค้า
+            </th>
+            <th>
+                เห็นด้านหน้า
+            </th>
+            <th>
+                สถานะลบ
+            </th>
+            <th>
+                สามารถเห็น
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model.Products != null)
+        {
+
+
+            @foreach (var item in Model.Products!)
+            {
+                <tr>
+                    <td>
+                        @if (!string.IsNullOrEmpty(item.ImgPath))
+                        {
+                            <img src="@($"https://localhost:7266/api/images/Products/{item.ImgPath}")" height="100px;" width="100px;" />
+                        }
+                        else
+                        {
+                            <img style="width: 100px; height: 100px" class="card-img-top" src="/Picture/No_images.png">
+                        }
+                    </td>
+                    <td>
+                        @item.ProductName (@item.ProductId)
+                    </td>
+                    <td>
+                        @item.ProductStatus
+                    </td>
+                    <td>
+                        @item.ProductCatagoryName (@item.ProductCatagoryId)
+                    </td>
+                    <td>
+                        @item.ProductTypeName (@item.ProductTypeId)
+                    </td>
+                    <td>
+                        @item.PromotionName (@item.PromotionId)
+                    </td>
+                    <td>
+                        @item.numStock (@item.stockId)
+                    </td>
+                    <td>
+                        @item.Price.ToString("N2")
+                    </td>
+                    <td>
+                        @item.Condition
+                    </td>
+                    <td>
+                        @if (item.Featured == true)
+                        {
+                            <text>Featured</text>
+                        }
+                        else
+                        {
+                            <text>NOT Featured</text>
+                        }
+                    </td>
+                    <td>
+                        @if (item.Deleted == true)
+                        {
+                            <text>DELETED</text>
+                        }
+                        else
+                        {
+                            <text>NOT Deleted</text>
+                        }
+                    </td>
+                    <td>
+                        @if (item.Visible == true)
+                        {
+                            <text>CAN SEE</text>
+                        }
+                        else
+                        {
+                            <text>CAN NOT SEE</text>
+                        }
+                    </td>
+                    <td>
+                        <button type="button" @onclick="@(() => SendStock(@item.ProductId))" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+                            ปรับปรุงรายการสินค้า
+                        </button>
+                        <div class="button-group">
+                            <a class="btn btn-warning my-2" style="width: 100%;" href=@($"admin/ProductEdit/{item.ProductId}")>แก้ไขสินค้า</a>
+                        </div>
+                        @if (authorized)
+                        {
+                            <div class="button-group">
+                                <a class="btn btn-danger" style="width: 100%;" @onclick="() => HandleDeleteButtonClick(item.ProductId)">ลบสินค้า</a>
+                            </div>
+                        }
+                    </td>
+                </tr>
+            }
+        }
+        else
+        {
+            <DisplaySpinner />
+            <p>Loading Products...</p>
+        }
+    </tbody>
+</table>
+
+<div class="paging-buttons">
+    @if (Model.TotalPages > 0)
+    {
+        <ul class="pagination justify-content-end">
+            @if (Model.CurrentPage > 1)
+            {
+                <li class="page-item">
+                    <button class="page-link" @onclick="() => GoToFirstPage()">First</button>
+                </li>
+            }
+
+            @for (int pge = Model.StartPage; pge <= Model.EndPage; pge++)
+            {
+                var pageNumber = pge;
+                <li class="page-item @(pge == Model.CurrentPage ? "active" : "")">
+                    <button class="page-link" @onclick="() => GoToPage(pageNumber)">@pge</button>
+                </li>
+            }
+
+            @if (Model.CurrentPage < Model.TotalPages)
+            {
+                <li class="page-item">
+                    <button class="page-link" @onclick="() => GoToLastPage()">Last</button>
+                </li>
+            }
+        </ul>
+    }
+</div>
+
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">+/- Stock</h5>
+                <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <EditForm id="myForm" class="form-signin justify-content-center" OnValidSubmit="@SubmitForm" Model="@stock">
+                    <DataAnnotationsValidator />
+                    <div class="d-flex mb-2" style="width:100%;">
+                        <div class="pr-2" style="width:30%">
+                            <label class="col-form-label">ID สต๊อกสินค้า:</label>
+                            <input type="number" class="form-control" style="color: rgb(0.0.0.0.2)" @bind="stock.ProductStockId" disabled />
+                        </div>
+                        <div class="InnerModal" style="width:70%">
+                            <label class="col-form-label">จำนวนที่อยู่ในสต๊อกสินค้า (@Newmodel.numStock):</label>
+                            <div class="d-flex">
+                                <input type="number" class="form-control" @bind="stock.NumStock" required min="0" oninput="validateNumStock(this)"></input>
+                                <div class="invalid-feedback">Number of stock cannot be less than 0.</div>
+
+                                @if (Subtract)
+                                {
+                                    <button type="button" @onclick="toggleSubtract" class="subtract Centering btn-danger">
+                                        <h6>-</h6>
+                                    </button>
+                                }
+                                else
+                                {
+                                    <button type="button" @onclick="toggleSubtract" class="subtract Centering">
+                                        <h6>+</h6>
+                                    </button>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                    @if (Subtract)
+                    {
+                        <div class="d-flex mb-2" style="width:100%;">
+                            <label class="col-form-label text-danger">การดำเนินการจะไม่สามารถย้อนกลับได้!!!</label>
+                            <textarea class="form-control" style="width:100%; border-color: red;" @bind="stock.DecreasedReason" placeholder="ระบุสาเหตุเช่นสินค้าเกิดการชำรุด/สูญหาย" required />
+                        </div>
+                    }
+                    <button type="submit" class="btn btn-primary">Update</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </EditForm>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel">สินค้าที่ถูกยกเลิก</h5>
+                <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="table-responsive">
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>รูปภาพ</th>
+                                <th>ชื่อสินค้า</th>
+                                <th>สภาพสินค้า</th>
+                                <th>จำนวน</th>
+                                <th>วันที่สูญเสีย</th>
+                                <th>สาเหตุ</th>
+                                <th>ผู้ยกเลิก</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var decreasedProduct in decreasedProducts)
+                            {
+                                <tr>
+                                    <td>
+                                        <div class="Centering">
+                                            @if (!string.IsNullOrEmpty(decreasedProduct.ImgPath))
+                                            {
+                                                <img src="@($"https://localhost:7266/api/images/Products/{decreasedProduct.ImgPath}")" height="100px" width="100px" />
+                                            }
+                                            else
+                                            {
+                                                <img src="/Picture/No_images.png" style="width: 100px; height: 100px" alt="No Image" />
+                                            }
+                                        </div>
+                                    </td>
+                                    <td>@decreasedProduct.ProductName</td>
+                                    <td>@decreasedProduct.Condition</td>
+                                    <td>@decreasedProduct.DecreaseQuantity</td>
+                                    <td>@decreasedProduct.DecreaseDate</td>
+                                    <td>@decreasedProduct.DecreaseReason</td>
+                                    <td>@decreasedProduct.DecreaseBy</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@code {
+    private ProductSearchResultDto Model = new ProductSearchResultDto();
+    private ProductSearchParam productSearchParam = new ProductSearchParam();
+    private NewProductDto Newmodel = new NewProductDto();
+    private List<DecreasedProductsDto> decreasedProducts = new List<DecreasedProductsDto>();
+    protected int CatId = 0;
+    protected bool IsTypeAllowed = false;
+    private bool Subtract = false;
+    bool authorized = false;
+    bool EmployeeAuthorized = false;
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            await _catagoryService.GetCatagories();
+            await _typeService.getProductTypes();
+            await _promotionService.GetPromotionsAdmin();
+            await Search();
+            await _productService.ResetPromotion();
+            await Search();
+            var authState = await AuthStateProvider.GetAuthenticationStateAsync();
+
+            if (authState.User.Identity.IsAuthenticated)
+            {
+                var roleClaim = authState.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role);
+
+                if (roleClaim != null && roleClaim.Value.Contains("Admin"))
+                {
+                    authorized = true;
+                }
+
+                if (roleClaim != null && roleClaim.Value.Contains("Employee"))
+                {
+                    EmployeeAuthorized = true;
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+
+            Console.WriteLine(ex.Message);
+        }
+
+    }
+    public async Task SendStock(int Id)
+    {
+        var result = await _productService.GetProduct(Id);
+        Newmodel = result.Data!;
+        stock.ProductStockId = Newmodel.stockId;
+    }
+    public void toggleSubtract()
+    {
+        Subtract = !Subtract;
+    }
+    public async Task SubmitForm()
+    {
+        stock.Subtract = Subtract;
+        var response = await _productService.UpdateStock(stock);
+        var productToUpdate = Model.Products?.FirstOrDefault(p => p.stockId == stock.ProductStockId);
+        await Swal.FireAsync(new SweetAlertOptions
+            {
+                Icon = "success",
+                Title = "ได้ทำการปรับเปลี่ยน Stock แล้ว",
+                ShowConfirmButton = false,
+                Timer = 3000
+            });
+        if (productToUpdate != null)
+        {
+            productToUpdate.numStock = response;
+        }
+        Subtract = false;
+
+    }
+
+    private async Task Search()
+    {
+        Model = await _productService.LoadAdminProductIndex(productSearchParam);
+    }
+
+    private async Task GoToFirstPage()
+    {
+        productSearchParam.Currentpage = 1;
+        await Search();
+    }
+
+    private async Task GoToLastPage()
+    {
+        productSearchParam.Currentpage = Model.TotalPages;
+        await Search();
+    }
+
+    private async Task GoToPage(int pageNumber)
+    {
+        productSearchParam.Currentpage = pageNumber;
+        await Search();
+    }
+
+    protected void TriggerType(ChangeEventArgs e)
+    {
+        try
+        {
+            CatId = Convert.ToInt32(e.Value);
+            productSearchParam.filterCata = CatId;
+            productSearchParam.filterType = null;
+
+            IsTypeAllowed = !string.IsNullOrEmpty(e.Value?.ToString());
+        }
+        catch (Exception ex)
+        {
+            productSearchParam.filterCata = null;
+            productSearchParam.filterType = null;
+        }
+
+    }
+
+    //ส่วนลบ Product
+    private int productIdToDelete;
+
+    private async Task HandleDeleteButtonClick(int productId)
+    {
+        productIdToDelete = productId;
+        bool confirmed = await ShowDeleteConfirmation(productId);
+        if (confirmed)
+        {
+            await _productService.DeleteProduct(productId);
+
+            var itemToRemove = Model.Products!.FirstOrDefault(item => item.ProductId == productId);
+            if (itemToRemove != null)
+            {
+                Model.Products!.Remove(itemToRemove);
+            }
+
+        }
+    }
+
+    public async Task<bool> ShowDeleteConfirmation(int productId)
+    {
+        var result = await Swal.FireAsync(new SweetAlertOptions
+            {
+                Title = "Are you sure?",
+                Text = "คุณต้องการจะลบจริงๆหรือไม่?",
+                Icon = SweetAlertIcon.Warning,
+                ShowCancelButton = true,
+                ConfirmButtonColor = "#d33",
+                ConfirmButtonText = "Yes, delete it!",
+                CancelButtonText = "No, keep it"
+            });
+
+        if (!string.IsNullOrEmpty(result.Value))
+        {
+            await Swal.FireAsync(
+                "Deleted",
+                $"Product with ID {productId} has been deleted.",
+                SweetAlertIcon.Success
+            );
+            return true;
+        }
+        // else if (result.Dismiss == DismissReason.Cancel)
+        // {
+        //     await Swal.FireAsync(
+        //         "Cancelled",
+        //         $"Deletion of product with ID {productId} is cancelled.",
+        //         SweetAlertIcon.Error
+        //     );
+        // }
+
+        return false;
+    }
+    public async Task calldecreasedProduct()
+    {
+        decreasedProducts = await _productService.GetDecreasedProducts();
+    }
+}

@@ -1,0 +1,230 @@
+﻿@inject AuthenticationStateProvider AuthStateProvider
+@using System.Security.Claims
+@page "/admin/CatagoriesIndex"
+@attribute [Authorize(Roles = "Admin,Employee")]
+@inherits CatagoriesBase
+@inject HttpClient Http
+@inject NavigationManager navigationManager
+@inject IAccountService AccountService
+@inject IAuthenticationService authenService
+@inject SweetAlertService Swal
+@attribute [Authorize]
+
+<section class="content">
+
+    <div class="container-fluid">
+        <div class="BoxInner">
+            <div class="card card-outline card-primary">
+                <div class="ContainerAll text-center py-3">
+
+                    <div class="box-centerside">
+                        <div class="pb-4">
+                            <h4>สร้างหมวดหมู่สินค้า</h4>
+                        </div>
+                        <form id="myForm" onsubmit:preventDefault @onsubmit="CreateCatagory" class="InnerBox justify-content-center">
+                            <div class="create-col">
+                                <div class="half">
+                                    <div class="InputCB">
+                                        <label for="ProductCatagoryId" class="text-left ml-2 mt-2 boxtext">ID หมวดหมู่</label>
+                                        <input type="text" class="regboxdisable" id="ProductCatagoryId" name="ProductCatagoryId" placeholder="Auto" disabled />
+                                    </div>
+                                    <div class="InputCB">
+                                        <label for="ProductCatagoryName" class="text-left ml-2 mt-2 boxtext">ชื่อหมวดหมู่สินค้า</label>
+                                        <input type="text" class="regboxhalf" @bind="model.ProductCatagoryName" id="ProductCatagoryName" name="ProductCatagoryName" placeholder="ProductCatagoryName" />
+                                    </div>
+                                </div>
+                                <div class="ButtonPosition">
+                                    <div class="ItemPosition">
+                                        <input type="submit" value="ทำการสร้างหมวดหมู่สินค้า" class="btn ButtonSubmit" style="background: #000030;color: white;float: right" />
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <table class="table">
+                <thead>
+                    <tr>
+                        <th>ID หมวดหมู่</th>
+                        <th>ชื่อหมวดหมู่</th>
+                        <th>ทำให้เห็น</th>
+                        <th>สถานะลบ</th>
+                        <th>เพิ่มโดย</th>
+                        <th>วันที่เพิ่ม</th>
+                        <th>อัพเดทโดย</th>
+                        <th>วันที่อัพเดท</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                @foreach (var item in _catagoryService.Catagories)
+                {
+                        <tr>
+                            <td>@item.ProductCatagoryId</td>
+                            <td>@item.ProductCatagoryName</td>
+                            <td>@item.Visible</td>
+                            <td>@item.Deleted</td>
+                            <td>@item.InsertBy</td>
+                            <td>@item.InsertDate</td>
+                            <td>@item.UpdateBy</td>
+                            <td>@item.UpdateDate</td>
+                            <td>
+                            <button type="button" @onclick="@(() => SendCatagory(@item.ProductCatagoryId))" class="btn btn-warning mb-2" style="width:100%;" data-toggle="modal" data-target="#exampleModal">
+                                แก้ไข
+                            </button>
+                            @if (authorized)
+                            {
+                                <button type="button" class="btn btn-danger mt-2" style="width:100%;" @onclick="@(() => HandleDeleteButtonClick(@item.ProductCatagoryId))">
+                                    ลบ
+                                </button>
+                            }
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+        </table>
+
+    </div><!-- /.container-fluid -->
+</section>
+
+
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">แก้ไขหมวดหมู่</h5>
+                <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <EditForm id="myForm" class="form-signin justify-content-center" OnValidSubmit="@SubmitForm" Model="@model">
+                    <DataAnnotationsValidator />
+                    <div class="mb-3">
+                        <label for="oldPassword" class="col-form-label">ชื่อหมวดหมู่:</label>
+                        <InputText type="text" class="form-control" @bind-Value="Model.ProductCatagoryName"/>
+                    </div>
+                    <button type="submit" class="btn btn-primary">ทำการแก้ไข ชื่อหมวดหมู่</button>
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">ปิด</button>
+                </EditForm>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@code {
+    [Parameter]
+    public int Id { get; set; }
+
+    private ProductCatagory Model = new ProductCatagory();
+    bool authorized = false;
+    bool EmployeeAuthorized = false;
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            var authState = await AuthStateProvider.GetAuthenticationStateAsync();
+
+            if (authState.User.Identity.IsAuthenticated)
+            {
+                var roleClaim = authState.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role);
+
+                if (roleClaim != null && roleClaim.Value.Contains("Admin"))
+                {
+                    authorized = true;
+                }
+
+                if (roleClaim != null && roleClaim.Value.Contains("Employee"))
+                {
+                    EmployeeAuthorized = true;
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+
+            Console.WriteLine(ex.Message);
+        }
+
+    }
+
+    public async Task SendCatagory(int Id)
+    {
+        var result = await _catagoryService.GetCatagory(Id);
+        Model = result.Data!;
+    }
+
+    private async Task HandleDeleteButtonClick(int categoryId)
+    {
+        bool confirmed = await ShowDeleteConfirmation(categoryId);
+        if (confirmed)
+        {
+            await _catagoryService.DeleteCatagory(categoryId);
+
+            // Remove the category from the _catagoryService.Catagories collection
+            var categoryToRemove = _catagoryService.Catagories!.FirstOrDefault(cat => cat.ProductCatagoryId == categoryId);
+            if (categoryToRemove != null)
+            {
+                _catagoryService.Catagories!.Remove(categoryToRemove);
+            }
+        }
+    }
+
+
+    public async Task<bool> ShowDeleteConfirmation(int catagoryId)
+    {
+        var result = await Swal.FireAsync(new SweetAlertOptions
+            {
+                Title = "Are you sure?",
+                Text = "คุณต้องการจะลบจริงๆหรือไม่?",
+                Icon = SweetAlertIcon.Warning,
+                ShowCancelButton = true,
+                ConfirmButtonColor = "#d33",
+                ConfirmButtonText = "Yes, delete it!",
+                CancelButtonText = "No, keep it"
+            });
+
+        if (!string.IsNullOrEmpty(result.Value))
+        {
+            await Swal.FireAsync(
+                "Deleted",
+                $"Product with ID {catagoryId} has been deleted.",
+                SweetAlertIcon.Success
+            );
+            return true;
+        }
+        return false;
+    }
+
+    public async Task SubmitForm()
+    {
+        model.Url = Model.ProductCatagoryName.ToLower();
+        var response = await _catagoryService.UpdateCatagory(Model);
+        if (response.Success)
+        {
+            model = new ProductCatagory();
+            await Swal.FireAsync(new SweetAlertOptions
+                {
+                    Icon = "success",
+                    Title = "เปลี่ยนรหัสผ่านสำเร็จแล้ว",
+                    ShowConfirmButton = false,
+                    Timer = 3000
+                }
+            );
+        }
+        else
+        {
+            await Swal.FireAsync(new SweetAlertOptions
+                {
+                    Icon = "error",
+                    Title = "รหัสเดิมไม่ถูกต้อง",
+                    ShowConfirmButton = false,
+                    Timer = 3000
+                });
+        }
+    }
+}

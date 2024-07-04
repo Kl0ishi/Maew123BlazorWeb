@@ -1,0 +1,27 @@
+﻿<NavLink href="ShoppingCart" class="nav-link">
+    <i class="fas fa-shopping-cart"></i>&nbsp;Cart
+    <span class="badge bg-dark">@shoppingCartItemCount</span>
+</NavLink>
+
+@code {
+    private int shoppingCartItemCount = 0;
+
+    // protected override void OnInitialized()
+    // {
+    //     // subscribes the ShoppingCartChanged method to the OnShoppingCartChanged event
+    //     shoppingCartService.OnShoppingCartChanged += ShoppingCartChanged;
+    // }
+
+    // protected void ShoppingCartChanged(int totalQty) //event handler method ที่รับ int
+    // {
+    //     shoppingCartItemCount = totalQty;
+    //     //คำสั่ง rerender component
+    //     StateHasChanged();
+    // }
+
+    // //interface to unsubscribe for ลดความจำ
+    // void IDisposable.Dispose()
+    // {
+    //     shoppingCartService.OnShoppingCartChanged -= ShoppingCartChanged;
+    // }
+}

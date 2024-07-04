@@ -1,0 +1,80 @@
+﻿.absolutebutton {
+    position : absolute;
+    width: 100px;
+    height: 50px;
+    font-weight: 700;
+}
+
+.box-centerside {
+    /*background: url("../images/greybox-center-bg1.jpg") repeat-x scroll center top transparent;*/
+    display: inline-block;
+    margin-left: 0%;
+    width: 75%;
+    padding: 15px 20px 15px 20px;
+    flex-shrink: 0;
+    border: 1px solid rgba(0, 0, 0, 0.30);
+    background: #FFF;
+}
+
+.Centering {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.Spacing {
+    display: flex;
+    justify-content: space-between;
+    padding: 0 3px 3px 3px;
+}
+
+.ReceiptTitle {
+    font-size: 20px;
+    margin-right: 10px;
+}
+
+.ReceiptText {
+    font-size: 16px;
+    margin-top: 10px;
+}
+
+.ReceiptText {
+    font-size: 16px;
+}
+
+.ReceiptNumber {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 20px;
+    font-weight: 700;
+    color: #FFF;
+    background-color: black;
+    width: 170px;
+    height: 50px;
+}
+
+.NoteBox {
+    background-color: rgba(0, 0, 0, 0.1);
+    padding: 10px 10px 10px 20px;
+    width: 400px;
+    height: 100px;
+}
+
+.Half {
+    flex: 0 0 50%;
+}
+
+table {
+    border-collapse: collapse; /* Ensure borders are collapsed into a single border */
+    border-top: 2px solid black;
+}
+
+hr {
+    height: 2px;
+    background-color: black;
+}
+
+th, td {
+    padding: 8px; /* Add padding to improve readability */
+}

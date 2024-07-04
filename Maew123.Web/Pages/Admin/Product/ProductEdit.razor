@@ -1,0 +1,229 @@
+﻿@page "/admin/ProductEdit/{id:int}"
+@* @attribute [Authorize(Roles = "Admin")] *@
+@inherits ProductBase
+@inject HttpClient Http
+@inject NavigationManager navigationManager
+
+<section class="content">
+    <div class="container-fluid">
+        <div class="BoxInner">
+            <div class="card card-outline card-primary">
+                <div class="ContainerAll text-center py-3">
+
+                    <div class="box-centerside">
+                        <div class="pb-4">
+                            <h4>หน้าอัปเดตสินค้า</h4>
+                        </div>
+                        <form id="myForm" class="InnerBox justify-content-center" @onsubmit="UpdateProduct" Model="@model">
+                            <div class="create-col">
+                                <div class="half">
+                                    <div class="InputCB">
+                                        <input type="text" class="regboxhalf" @bind="model.ProductId" id="ProductId" name="ProductId" hidden />
+                                        <label for="ProductStatus" class="text-left ml-2 mt-2 boxtext">สถานะสินค้า</label>
+                                        <select class="regboxhalf" @bind="@model.ProductStatus" required>
+                                            <option value="">-- Select Status --</option>
+                                            @foreach (var status in DropdownForProduct.ProductStatuses)
+                                            {
+                                                <option value="@status" selected="@IsStatusSelected(status)">@status</option>
+                                            }
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="half">
+                                    <div class="InputCB">
+                                        <label for="ProductCatagoryName" class="text-left ml-2 mt-2 boxtext">ชื่อหมวดหมู่</label>
+                                        <select class="regboxhalf" @onchange="LoadProductTypes" required>
+                                            <option value="">-- Select Category --</option>
+                                            @foreach (var category in _catagoryService.Catagories)
+                                            {
+                                                <option value="@category.ProductCatagoryId" selected="@IsCategorySelected(category.ProductCatagoryId)">@category.ProductCatagoryName</option>
+                                            }
+                                        </select>
+                                    </div>
+                                    <div class="InputCB">
+                                        <label for="ProductTypeName" class="text-left ml-2 mt-2 boxtext">ชื่อชนิดสินค้า</label>
+                                        <select class="regboxhalf" @bind="@model.ProductTypeId" disabled="@(!IsProductTypeEnabled)" required>
+                                            <option value="">-- Select ProductType --</option>
+                                            @foreach (var type in _typeService.ProductTypes.Where(pt => pt.ProductCategoryId == selectedCatagoryId))
+                                            {
+                                                <option value="@type.ProductTypeId" selected="@IsTypeSelected(type.ProductTypeId)">@type.ProductTypeName</option>
+                                            }
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="InputCB">
+                                    <label for="ProductName" class="text-left ml-2 mt-2 boxtext">ชื่อสินค้า</label>
+                                    <input type="text" class="regbox" @bind="model.ProductName" id="ProductName" name="ProductName" placeholder="ProductName" required maxlength="50" />
+                                </div>
+                                <div class="half">
+                                    <div class="InputCB">
+                                        <label for="Condition" class="text-left ml-2 mt-2 boxtext">สภาพสินค้า</label>
+                                        <select class="regboxhalf" @bind="@model.Condition" required>
+                                            <option value="">-- Select Condition --</option>
+                                            @foreach (var condition in DropdownForProduct.ProductCondition)
+                                            {
+                                                <option value="@condition" selected="@IsConditionSelected(condition)">@condition</option>
+                                            }
+                                        </select>
+                                    </div>
+                                    <div class="InputCB">
+                                        <label for="stockId" class="text-left ml-2 mt-2 boxtext">คงเหลือ @model.stockNum ในคลัง</label>
+                                        <input type="number" class="regboxhalf" @bind="model.numStock" id="numStock" name="numStock" placeholder="เพิ่มจำนวน?" required min="0" oninput="validateNumStock(this)" />
+                                        <div class="invalid-feedback">Number of stock cannot be less than 0.</div>
+                                    </div>
+                                </div>
+                                <div class="InputCB">
+                                    <label for="PromotionName" class="text-left ml-2 mt-2 boxtext">โปรโมชั่นสินค้า</label>
+                                    <select class="regboxhalf" @bind="model.PromotionId">
+                                        <option value="">-- Add Promotion? --</option>
+                                        @foreach (var pro in _promotionService.PromotionsAdmin)
+                                        {
+                                            <option value="@pro.PromotionId">@pro.PromotionName ลด:@pro.DiscountPer วันที่@pro.StartDate-@pro.EndDate</option>
+                                        }
+                                    </select>
+                                </div>
+                                <div class="half">
+                                    <div class="InputCB">
+                                        <label for="Price" class="text-left ml-2 mt-2 boxtext">ราคาสินค้า</label>
+                                        <input type="text" class="regboxhalf" @bind="model.Price" id="Price" name="Price" placeholder="Price" required />
+                                    </div>
+                                </div>
+                                <div class="ButtonPosition">
+                                    <button type="submit" class="btn ButtonSubmit" style="background: #000030;color: white;float: right">
+                                        อัปเดตข้อมูลสินค้า
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div class="create-col">
+                                <div class="InputCB">
+                                    <div class="col-4">
+
+                                        @if (!string.IsNullOrEmpty(model.ImgPath) && loadedFiles.Count < 1)
+                                        {
+                                            <img src="@($"https://localhost:7266/api/images/Products/{model.ImgPath}")" style="width:350px;height:350px;
+                                            border:1px solid green; border-radius:10px;padding:10px;" alt="ProductImage" id="PrevImg" />
+                                        }
+                                        else if (string.IsNullOrEmpty(model.ImgPath) && loadedFiles.Count == 0)
+                                        {
+                                            <img src="https://placehold.jp/150*150.png" style="width:350px;height:350px;
+                                            border:1px solid green; border-radius:10px;padding:10px;" alt="ProductImage" id="PrevImg" />
+                                        }
+                                        else if (isLoading)
+                                        {
+                                            <p>Uploading...</p>
+                                        }
+                                        else
+                                        {
+                                            <ul>
+                                                @foreach (var file in loadedFiles)
+                                                {
+                                                    <li style="display:@isdisplayimage">
+                                                        <img src="@base64data" style="width:350px;height:350px;
+                                                                    border:1px solid green; border-radius:10px;padding:10px;" alt="ProductImage" id="PrevImg" />
+                                                    </li>
+                                                }
+                                            </ul>
+                                        }
+                                    </div>
+                                    <div class="col-8">
+                                        <label>
+                                            <InputFile OnChange="@LoadFiles" class="form-control" id="ChooseImg" multiple accept=".jpg,.jpeg,.png" />
+                                        </label>
+                                    </div>
+                                </div>
+
+                                <div class="InputCB">
+                                    <div class="Spacing">
+                                        <label for="Description" class="text-left ml-2 mt-2 boxtext">คำอธิบาย</label>
+                                        <div class="d-flex">
+                                            <label>
+                                                <input class="btn btn-outline-danger mx-2" type="checkbox" @bind="@model.Featured" /> เห็นด้านหน้า
+                                            </label>
+                                            <label>
+                                                <input class="btn btn-outline-danger mx-2" type="checkbox" @bind="@model.Visible" /> สามารถเห็นได้
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <textarea class="form-control regboxdes" @bind="model.Description" id="Description" name="Description" placeholder="Description" />
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div><!-- /.container-fluid -->
+    <script src="~/js/SelectImage.js"></script>
+</section>
+<script src="~/js/SelectImage.js"></script>
+
+@code {
+    [Parameter]
+    public int Id { get; set; }
+
+    protected override async Task OnParametersSetAsync()
+    {
+        var result = await _productService.GetProduct(Id);
+        if (!result.Success)
+        {
+            Errors = result.Message;
+        }
+        else
+        {
+            model = newDtoToOldDto(result.Data!);
+            selectedCatagoryId = model.ProductCatagoryId; // มีอยุที่ Base ไม่รุจะตีกันบ่
+            IsProductTypeEnabled = true; // มีอยุที่ Base ไม่รุจะตีกันบ่
+        }
+
+    }
+
+    private bool IsStatusSelected(string status)
+    {
+        return status == model.ProductStatus;
+    }
+
+    private bool IsCategorySelected(int categoryId)
+    {
+        return categoryId == selectedCatagoryId;
+    }
+
+    private bool IsTypeSelected(int typeId)
+    {
+        return typeId == model.ProductTypeId;
+    }
+
+    private bool IsConditionSelected(string condition)
+    {
+        return condition == model.Condition;
+    }
+
+    private ProductDto newDtoToOldDto(NewProductDto newProductDto)
+    {
+        return new ProductDto
+            {
+                ProductId = newProductDto.ProductId,
+                ProductName = newProductDto.ProductName,
+                ProductStatus = newProductDto.ProductStatus,
+                ProductCatagoryId = newProductDto.ProductCatagoryId,
+                ProductTypeId = newProductDto.ProductTypeId,
+                PromotionId = newProductDto.PromotionId,
+                Price = newProductDto.Price,
+                Condition = newProductDto.Condition,
+                Description = newProductDto.Description,
+                InsertBy = newProductDto.InsertBy,
+                InsertDate = newProductDto.InsertDate,
+                UpdateBy = newProductDto.UpdateBy,
+                UpdateDate = newProductDto.UpdateDate,
+                ImgPath = newProductDto.ImgPath,
+                stockId = newProductDto.stockId,
+                stockNum = newProductDto.numStock??0,
+                Featured = newProductDto.Featured,
+                Visible = newProductDto.Visible,
+                Deleted = newProductDto.Deleted,
+                Base64ImageData = newProductDto.Base64ImageData,
+            };
+    }
+
+}

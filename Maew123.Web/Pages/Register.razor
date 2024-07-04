@@ -1,0 +1,174 @@
+﻿@page "/Register"
+@inherits RegisterBase
+@inject HttpClient Http
+@inject NavigationManager navigationManager
+
+<PageTitle>Register</PageTitle>
+@attribute [AllowAnonymous]
+
+<AuthorizeView Context="authContext">
+    <Authorized>
+        <h1>
+            เข้าสู่ระบบไปแล้วจะเข้ามาทำอะไรอีก?
+            <button class="btn btn-primary" @onclick="NavigateToRoot"></button>
+        </h1>
+    </Authorized>
+    <NotAuthorized>
+        <section class="content-header">
+            <div class="container-fluid">
+                <div class="htext text-center mb-4">ยินดีต้อนรับเข้าสู่ระบบลูกค้า ร้าน maew123 ทุกท่าน</div>
+            </div><!-- /.container-fluid -->
+        </section>
+        <section class="content">
+            <div class="container-fluid">
+                <div class="col-12 justify-content-center d-flex">
+                    <div class="card card-outline card-primary">
+                        <div class="Regiscontainer text-center py-3">
+                            <div class="box-centerside">
+                                <div class="my-4">
+                                    <a href="#" class="h3" style="font-weight:700;">กรอกข้อมูลเพื่อสมัครสมาชิก</a>
+                                </div>
+
+                                <EditForm Context="formContext" id="myForm" class="form-signin justify-content-center" OnValidSubmit="Register" Model="@model">
+                                    <DataAnnotationsValidator />
+                                    <div class="input-group mb-3">
+                                        <InputText type="text" class="form-control" @bind-Value="model.Username" id="Username" name="Username" placeholder="Username" required />
+                                        <div class="input-group-append">
+                                            <div class="input-group-text">
+                                                <span class="fas fa-user"></span>
+                                            </div>
+                                        </div>
+                                        <div><ValidationMessage For="@(() => model.Username)" style="font-size:18px; text-align:left;" /></div>
+                                    </div>
+
+                                    <div class="input-group mb-3">
+                                        <div class="d-flex">
+                                            <InputText type="text" class="regbox form-control" @bind-Value="model.FirstName" id="FirstName" name="FirstName" placeholder="FirstName" required />
+                                            <InputText type="text" class="regbox form-control" @bind-Value="model.LastName" id="LastName" name="LastName" placeholder="LastName" required />
+                                            <div class="input-group-append">
+                                                <div class="input-group-text">
+                                                    <span class="fas fa-user"></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="d-flex">
+                                            <ValidationMessage For="@(() => model.FirstName)" style="font-size:18px; text-align:left;" />
+                                            <ValidationMessage For="@(() => model.LastName)" style="font-size:18px; text-align:left;" />
+                                        </div>
+                                    </div>
+
+                                    <div class="input-group mb-3">
+                                        <select id="Gender" name="Gender" class="regbox1 form-control" @bind="@model.Gender">
+                                            <option value="">-- เพศ --</option>
+                                            @foreach (var gender in DropdownForAccount.Genders)
+                                            {
+                                                <option value="@gender">@gender</option>
+                                            }
+                                        </select>
+                                        @* <InputText class="form-control" type="text" @bind-Value="@model.Gender" id="Gender" name="Gender" placeholder="Gender" required /> *@
+                                        <div class="input-group-append">
+                                            <div class="input-group-text">
+                                                <span class="fas fa-venus-mars"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div><ValidationMessage For="@(() => model.Gender)" style="font-size:18px; text-align:left;" /></div>
+
+                                    <div class="input-group mb-3">
+                                        <div class="d-flex">
+                                            <InputText type="email" class="regbox2 form-control" @bind-Value="@model.Email" id="Email" name="Email" placeholder="Email" required />
+                                            <div class="input-group-append">
+                                                <div class="input-group-text">
+                                                    <span class="fas fa-envelope"></span>
+                                                </div>
+                                            </div>
+                                            <InputText type="number" class="regbox2 form-control" @bind-Value="@model.UserTel" id="UserTel" name="UserTel" placeholder="Phone Number" required />
+                                            <div class="input-group-append">
+                                                <div class="input-group-text">
+                                                    <span class="fas fa-phone"></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div><ValidationMessage For="@(() => model.Email)" style="font-size:18px; text-align:left;" /></div>
+                                        <div><ValidationMessage For="@(() => model.UserTel)" style="font-size:18px; text-align:left;" /></div>
+                                    </div>
+
+                                    <div class="input-group mb-3">
+                                        <InputText class="form-control" type="@InputType" @bind-Value="@model.Password" id="password" name="password" placeholder="Password" required />
+                                        <div class="input-group-append">
+                                            <button class="btn btn-outline-secondary" type="button" @onclick="TogglePasswordVisibility">
+                                                <span class="fas fa-eye" style="color: @ToggleIconColor"></span>
+                                            </button>
+                                        </div>
+                                        <div><ValidationMessage For="@(() => model.Password)" style="font-size:18px; text-align:left;" /></div>
+                                    </div>
+
+                                    <div class="input-group flex-column mb-3">
+                                        <div class="d-flex">
+                                            <InputText class="form-control" type="@ConfirmInputType" @bind-Value="@model.ConfirmPassword" id="ConfirmPassword" name="ConfirmPassword" placeholder="Confirm Password" required />
+                                            <div class="input-group-append">
+                                                <button class="btn btn-outline-secondary" type="button" @onclick="ToggleConfirmPasswordVisibility">
+                                                    <span class="fas fa-eye" style="color: @ToggleConfirmIconColor"></span>
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <div><ValidationMessage For="@(() => model.ConfirmPassword)" style="font-size:18px; text-align:left;" /></div>
+                                    </div>
+
+                                    <label class="d-flex text-left">
+                                        <input type="checkbox" @bind="@IsCheckbox1Checked">
+                                        <div class="px-3">ฉันต้องการรับข้อเสนอสิทธิพิเศษ และโปรโมชันผ่านทางอีเมล</div>
+                                    </label>
+
+                                    <label class="d-flex text-left">
+                                        <input type="checkbox" @bind="@IsCheckbox2Checked">
+                                        <div class="px-3">ฉันยอมรับและยินยอมให้ข้อมูลส่วนบุคคลเพื่อรับการให้บริการจากบริษัท นโยบายข้อมูลส่วนบุคคล ของทางร้านแล้ว</div>
+                                    </label>
+                                    <div class="social-auth-links text-center mt-3 mb-3">
+                                        <button type="submit" class="btn btn-block Regis-button" disabled="@(!IsCheckbox1Checked || !IsCheckbox2Checked)">
+                                            สมัครสมาชิก
+                                        </button>
+                                    </div>
+                                </EditForm>
+                                @if(isloading){
+                                    <DisplaySpinner />
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div><!-- /.container-fluid -->
+        </section>
+    </NotAuthorized>
+</AuthorizeView>
+
+
+@code {
+    bool IsCheckbox1Checked { get; set; }
+    bool IsCheckbox2Checked { get; set; }
+    private string InputType { get; set; } = "password";
+    private string ConfirmInputType { get; set; } = "password";
+    private bool ShowPassword { get; set; } = false;
+    private bool ShowConfirmPassword { get; set; } = false;
+    private string ToggleIconColor => ShowPassword ? "green" : "gray";
+    private string ToggleConfirmIconColor => ShowConfirmPassword ? "green" : "gray";
+
+    private void TogglePasswordVisibility()
+    {
+        ShowPassword = !ShowPassword;
+        InputType = ShowPassword ? "text" : "password";
+    }
+
+    private void ToggleConfirmPasswordVisibility()
+    {
+        ShowConfirmPassword = !ShowConfirmPassword;
+        ConfirmInputType = ShowConfirmPassword ? "text" : "password";
+    }
+
+    private void UpdateSubmitButtonState()
+    {
+        // State has changed, causing re-evaluation of the button's disabled state
+        StateHasChanged();
+    }
+}
+

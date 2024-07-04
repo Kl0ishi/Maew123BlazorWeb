@@ -1,0 +1,6 @@
+@Maew123.api_HostAddress = http://localhost:5051
+
+GET {{Maew123.api_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

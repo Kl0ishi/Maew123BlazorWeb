@@ -1,0 +1,74 @@
+.container {
+    max-width: 1140px;
+    margin: 0 auto;
+}
+
+.dropdown-toggle {
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    color: white;
+}
+
+nav {
+    background-color: #000030;
+    display: flex;
+    align-items: center;
+}
+
+.nav-item {
+    display: flex;
+    align-items: center;
+    justify-content:center;
+    padding-left: 20px;
+    padding-right: 20px;
+}
+.main-header .nav-link {
+    height: auto;
+}
+.logo a {
+    font-size: 48px;
+    color: #FFF;
+    font-weight: 700;
+}
+.SidebarButton {
+    font-size: 28px;
+    color:white;
+}
+.nav-wrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 80px;
+}
+
+    .nav-wrapper .logo h3 {
+        color: #FFF;
+        font-family: Inter;
+        font-size: 40px;
+        font-style: normal;
+        font-weight: 900;
+        line-height: normal;
+    }
+@media (max-width: 991px) {
+    .nav-item {
+        padding-right: 0; /* Adjust the size for smaller screens */
+        padding-left: 15px;
+    }
+}
+@media (max-width: 851px) {
+    .dropdown-toggle {
+        font-size:14px;
+    }
+}
+@media (max-width: 730px) {
+    .dropdown-toggle {
+        font-size: 12px;
+    }
+}
+
+@media (max-width: 576px){
+    .SidebarButton{
+        font-size: 20px;
+    }
+}

@@ -1,0 +1,450 @@
+﻿@page "/admin/UserIndex"
+@attribute [Authorize(Roles = "Admin,Employee")]
+
+@using System.Security.Claims
+@inject HttpClient Http
+@inject NavigationManager navigationManager
+@inject IAdminService AdminService
+@inject SweetAlertService Swal
+@inject AuthenticationStateProvider AuthStateProvider
+
+<h3>การจัดการผู้ใช้งาน</h3>
+<select style="height:40px; width: 150px; border: 1px rgb(0,0,0 0.30)" @onchange="HandleRoleChange">
+    <option value="4">Member</option>
+    <option value="6">Employee</option>
+</select>
+
+@if (userToShow != null)
+{
+    <h4>หน้าการจัดการข้อมูลผู้ใช้งาน</h4>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>ID ผู้ใช้งาน</th>
+                <th style="width:550px;">ชื่อของผู้ใช้งาน</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var userLog in userToShow)
+            {
+                @if (userLog.UserName != "Admin")
+                {
+                    <tr>
+                        <td>@userLog.UserId</td>
+                        <td>@userLog.UserName</td>
+                        <td>
+                            <button class="btn btn-primary" @onclick="() => FetchUserDetails(userLog.UserId)" data-toggle="modal" data-target="#userDetailsModal">ข้อมูลผู้ใช้งาน</button>
+                            @if (isAdmin)
+                            {
+                                <button class="btn btn-warning" @onclick="() => UpdateUserDetails(userLog.UserId)" data-toggle="modal" data-target="#userDetailsModal2">แก้ไขข้อมูลผู้ใช้งาน</button>
+                                <a class="btn btn-danger" @onclick="() => HandleDeleteButtonClick(userLog.UserId)">ปิดการใช้งาน</a>
+                            }
+                        </td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>No user logs found.</p>
+}
+
+<div class="modal fade" id="userDetailsModal" tabindex="-1" role="dialog" aria-labelledby="userDetailsModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="userDetailsModalLabel">ข้อมูลผู้ใช้งาน</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <dl class="row">
+                    <dt class="col-sm-4">ID ผู้ใช้งาน</dt>
+                    <dd class="col-sm-8">@userDetails.UserId</dd>
+
+                    <dt class="col-sm-4">Email</dt>
+                    <dd class="col-sm-8">@userDetails.Email</dd>
+
+                    <dt class="col-sm-4">ชื่อของผู้ใช้งาน Username</dt>
+                    <dd class="col-sm-8">@userDetails.Username </dd>
+
+                    <dt class="col-sm-4">ชื่อ</dt>
+                    <dd class="col-sm-8">@userDetails.FirstName</dd>
+
+                    <dt class="col-sm-4">นามสกุล</dt>
+                    <dd class="col-sm-8">@userDetails.LastName</dd>
+
+                    <dt class="col-sm-4">เพศ</dt>
+                    <dd class="col-sm-8">@userDetails.Gender</dd>
+
+                    <dt class="col-sm-4">เบอร์โทร</dt>
+                    <dd class="col-sm-8">@userDetails.UserTel</dd>
+
+                    <dt class="col-sm-4">สมัครเมื่อ</dt>
+                    <dd class="col-sm-8">@userDetails.InsertDate</dd>
+
+                    <dt class="col-sm-4">อัปเดตข้อมูลครั้งสุดท้ายเมื่อ</dt>
+                    <dd class="col-sm-8">@userDetails.UpdateDate</dd>
+
+                    <dt class="col-sm-4">Role</dt>
+                    <dd class="col-sm-8">@userDetails.RoleName</dd>
+                </dl>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Update พนักงาน -->
+<div class="modal fade" id="userDetailsModal2" tabindex="-1" role="dialog" aria-labelledby="userDetailsModalLabel2" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="userDetailsModalLabel2">แก้ไขข้อมูลผู้ใช้งาน</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="form-group row">
+                        <label for="inputUserId" class="col-sm-4 col-form-label">ID ผู้ใช้งาน</label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control" id="inputUserId" value="@userDetails.UserId" readonly>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="inputEmail" class="col-sm-4 col-form-label">Email</label>
+                        <div class="col-sm-8">
+                            <input type="email" class="form-control" id="inputEmail" placeholder="Email" @bind="@userDetails.Email">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="inputUsername" class="col-sm-4 col-form-label">ชื่อของผู้ใช้งาน Username</label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control" id="inputUsername" placeholder="Username" @bind="@userDetails.Username">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="inputFirstName" class="col-sm-4 col-form-label">ชื่อ</label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control" id="inputFirstName" placeholder="First Name" @bind="@userDetails.FirstName">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="inputLastName" class="col-sm-4 col-form-label">นามสกุล</label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control" id="inputLastName" placeholder="Last Name" @bind="@userDetails.LastName">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="inputGender" class="col-sm-4 col-form-label">เพศ</label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control" id="inputGender" placeholder="Gender" @bind="@userDetails.Gender">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="inputUserTel" class="col-sm-4 col-form-label">เบอร์โทร</label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control" id="inputUserTel" placeholder="User Tel" @bind="@userDetails.UserTel">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="inputInsertDate" class="col-sm-4 col-form-label">สมัครเมื่อ</label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control" id="inputInsertDate" value="@userDetails.InsertDate" readonly>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="inputUpdateDate" class="col-sm-4 col-form-label">อัปเดตข้อมูลครั้งสุดท้ายเมื่อ</label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control" id="inputUpdateDate" value="@userDetails.UpdateDate" readonly>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" @onclick="UpdateUser" data-dismiss="modal">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- เพิ่มพนักงานใหม่ -->
+<div class="modal fade" id="userDetailsModal3" tabindex="-1" role="dialog" aria-labelledby="userDetailsModalLabel2" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="userDetailsModalLabel2">เพิ่มพนักงานใหม่</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="form-group row">
+                        <label for="inputEmail" class="col-sm-4 col-form-label">Email</label>
+                        <div class="col-sm-8">
+                            <input type="email" class="form-control" id="inputEmail" placeholder="Email" @bind="@newEmployee.Email">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="inputUsername" class="col-sm-4 col-form-label">Username</label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control" id="inputUsername" placeholder="Username" @bind="@newEmployee.Username">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="inputFirstName" class="col-sm-4 col-form-label">First Name</label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control" id="inputFirstName" placeholder="First Name" @bind="@newEmployee.FirstName">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="inputLastName" class="col-sm-4 col-form-label">Last Name</label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control" id="inputLastName" placeholder="Last Name" @bind="@newEmployee.LastName">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="inputGender" class="col-sm-4 col-form-label">Gender</label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control" id="inputGender" placeholder="Gender" @bind="@newEmployee.Gender">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="inputUserTel" class="col-sm-4 col-form-label">User Tel</label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control" id="inputUserTel" placeholder="User Tel" @bind="@newEmployee.UserTel">
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" @onclick="CreateEmployee" data-dismiss="modal">เพิ่ม</button>
+                <p>Note: รหัสเริ่มต้นของAccount: A1234567a</p>
+                <p>Note2: รายชื่อพนักงานจะแสดงหลังผ่านการเข้าสู่ระบบ</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    private List<UserLogDto> userLogs = new List<UserLogDto>();
+    private List<UserLogDto> userToShow = new List<UserLogDto>();
+    private UserLogDetailsDto userLogDetails = new UserLogDetailsDto();
+    private UserInfoDto userDetails = new UserInfoDto();
+    private RegisterRequest newEmployee = new RegisterRequest();
+    private int userIdToFetch;
+    private int RoleId;
+    private Dictionary<DateTime, int> loginCounts;
+
+    private bool isAdmin;
+    private bool isEmployee;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var userLogResponse = await AdminService.GetUsersLog();
+        if (userLogResponse.Success)
+        {
+            userLogs = userLogResponse.Data;
+            userToShow = userLogs;
+        }
+        else
+        {
+            await Swal.FireAsync("Error!", userLogResponse.Message, SweetAlertIcon.Error);
+        }
+        var authState = await AuthStateProvider.GetAuthenticationStateAsync();
+        if (authState.User.Identity.IsAuthenticated)
+        {
+            var roleClaim = authState.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role);
+            if (roleClaim != null)
+            {
+                if (roleClaim.Value.Contains("Admin"))
+                {
+                    isAdmin = true;
+                }
+
+                if (roleClaim.Value.Contains("Employee"))
+                {
+                    isEmployee = true;
+                }
+            }
+        }
+    }
+
+    private async Task HandleRoleChange(ChangeEventArgs e)
+    {
+        if (int.TryParse(e.Value.ToString(), out int roleId))
+        {
+            var response = await AdminService.GetUsersByRole(roleId);
+            if (response.Success)
+            {
+                var usersByRole = response.Data;
+                RoleId = roleId;
+                userToShow = userLogs.Where(log => usersByRole.Any(user => user.UserId == log.UserId)).ToList();
+            }
+            userLogDetails = null;
+
+        }
+        else
+        {
+        }
+    }
+
+    private async Task FetchUserLogDetails(int userId)
+    {
+        userIdToFetch = userId;
+
+        var userLogDetailsResponse = await AdminService.GetUserLogDetails(userIdToFetch);
+        if (userLogDetailsResponse.Success)
+        {
+            userLogDetails = userLogDetailsResponse.Data;
+            CalculateLoginCounts();
+        }
+        else
+        {
+            await Swal.FireAsync("Error!", userLogDetailsResponse.Message, SweetAlertIcon.Error);
+        }
+    }
+
+    private async Task FetchUserDetails(int userId)
+    {
+
+        var userDetailsResponse = await AdminService.GetUserDetails(userId);
+        if (userDetailsResponse.Success)
+        {
+            userDetails = userDetailsResponse.Data;
+        }
+        else
+        {
+            await Swal.FireAsync("Error!", userDetailsResponse.Message, SweetAlertIcon.Error);
+        }
+    }
+
+    private void CalculateLoginCounts()
+    {
+        loginCounts = new Dictionary<DateTime, int>();
+
+        if (userLogDetails != null)
+        {
+            foreach (var token in userLogDetails.Tokens)
+            {
+                var date = token.Date?.Date;
+
+                if (date != null)
+                {
+                    if (loginCounts.ContainsKey(date.Value))
+                    {
+                        loginCounts[date.Value]++;
+                    }
+                    else
+                    {
+                        loginCounts[date.Value] = 1;
+                    }
+                }
+            }
+        }
+    }
+
+    private async Task CreateEmployee()
+    {
+        newEmployee.Password = "A1234567a";
+        newEmployee.ConfirmPassword = newEmployee.Password;
+        var response = await AdminService.CreateNewEmployee(newEmployee);
+        if (response.Success)
+        {
+            userDetails = response.Data;
+        }
+        else
+        {
+            // Handle error
+        }
+    }
+
+    private async Task UpdateUserDetails(int userId)
+    {
+        var userDetailsResponse = await AdminService.GetUserDetails(userId);
+        if (userDetailsResponse.Success)
+        {
+            userDetails = userDetailsResponse.Data;
+        }
+        else
+        {
+            // Handle error
+        }
+    }
+
+    // Function to update user details
+    private async Task UpdateUser()
+    {
+        // Call service to update user details using userDetails object
+        var response = await AdminService.UpdateEmployee(userDetails);
+        if (response.Success)
+        {
+            userDetails = response.Data;
+        }
+        else
+        {
+            // Handle error
+        }
+    }
+
+    private async Task HandleDeleteButtonClick(int userId)
+    {
+        bool confirmed = await ShowDeleteConfirmation(userId);
+        if (confirmed)
+        {
+            var userToDelete = await AdminService.DeleteEmployee(userId);
+
+            var itemToRemove = userToShow.FirstOrDefault(item => item.UserId == userId);
+            if (itemToRemove != null)
+            {
+                userToShow.Remove(itemToRemove);
+            }
+
+        }
+    }
+
+    public async Task<bool> ShowDeleteConfirmation(int userId)
+    {
+        var result = await Swal.FireAsync(new SweetAlertOptions
+            {
+                Title = "Are you sure?",
+                Text = "คุณต้องการจะลบจริงๆหรือไม่?",
+                Icon = SweetAlertIcon.Warning,
+                ShowCancelButton = true,
+                ConfirmButtonColor = "#d33",
+                ConfirmButtonText = "Yes, delete it!",
+                CancelButtonText = "No, keep it"
+            });
+
+        if (!string.IsNullOrEmpty(result.Value))
+        {
+            await Swal.FireAsync(
+                "Deleted",
+                $"user with ID {userId} has been deleted.",
+                SweetAlertIcon.Success
+            );
+            return true;
+        }
+        // else if (result.Dismiss == DismissReason.Cancel)
+        // {
+        //     await Swal.FireAsync(
+        //         "Cancelled",
+        //         $"Deletion of product with ID {userId} is cancelled.",
+        //         SweetAlertIcon.Error
+        //     );
+        // }
+
+        return false;
+    }
+}

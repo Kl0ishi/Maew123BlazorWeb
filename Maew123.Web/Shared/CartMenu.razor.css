@@ -1,0 +1,32 @@
+﻿.CartMenu {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-right: 20px;
+    color: white;
+}
+i::after{
+    font-weight:normal;
+    content: " ตะกร้าสินค้า"
+}
+@media (max-width: 1140px) {
+    .CartMenu {
+        font-size: 16px;
+    }
+}
+@media (max-width: 851px) {
+    .CartMenu {
+        font-size: 14px;
+        padding-right: 0;
+    }
+}
+@media (max-width: 798px) {
+    i::after {
+        content: " ตะกร้า"
+    }
+}
+@media (max-width: 730px) {
+    .CartMenu {
+        font-size: 12px;
+    }
+}

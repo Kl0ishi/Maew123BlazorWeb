@@ -1,0 +1,27 @@
+﻿/* Second Navbar (Initially hidden) */
+.second-navbar {
+    /*    background-color: #555;
+    color: white;*/
+    margin-top: 56px;
+    padding: 10px;
+    position: fixed;
+    top: 10%;
+    width: 100%;
+    transition: top 0.3s;
+    z-index: 1000;
+}
+
+.container {
+    min-width: 70% !important; /*Set your own width %; */
+}
+
+.nav-container {
+    padding-top: 0;
+    padding-bottom: 0;
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+.content-container {
+    padding-top: 40px; /* Adjust the value based on your navbar height */
+}

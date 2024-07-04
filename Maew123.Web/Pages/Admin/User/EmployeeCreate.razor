@@ -1,0 +1,130 @@
+﻿@page "/admin/EmployeeCreate"
+@attribute [Authorize(Roles = "Admin")]
+
+@using System.Security.Claims
+@inject HttpClient Http
+@inject NavigationManager navigationManager
+@inject IAdminService AdminService
+@inject SweetAlertService Swal
+@inject AuthenticationStateProvider AuthStateProvider
+
+
+<section class="content">
+    <div class="container-fluid">
+        <div class="BoxInner">
+            <div class="card card-outline card-primary" >
+                <div class="ContainerAll text-center py-3">
+
+                    <div class="box-centerside">
+                        <div class="pb-4">
+                            <h4>หน้าเพิ่มพนักงาน</h4>
+                        </div>
+                        <form>
+                            <div class="form-group row">
+                                <label for="inputEmail" class="col-sm-4 col-form-label">Email</label>
+                                <div class="col-sm-8">
+                                    <input type="email" class="form-control" id="inputEmail" placeholder="Email" @bind="@newEmployee.Email">
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="inputUsername" class="col-sm-4 col-form-label">Username</label>
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control" id="inputUsername" placeholder="Username" @bind="@newEmployee.Username">
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="inputFirstName" class="col-sm-4 col-form-label">ชื่อ</label>
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control" id="inputFirstName" placeholder="First Name" @bind="@newEmployee.FirstName">
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="inputLastName" class="col-sm-4 col-form-label">นามสกุล</label>
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control" id="inputLastName" placeholder="Last Name" @bind="@newEmployee.LastName">
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="inputGender" class="col-sm-4 col-form-label">เพศ</label>
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control" id="inputGender" placeholder="Gender" @bind="@newEmployee.Gender">
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="inputUserTel" class="col-sm-4 col-form-label">เบอร์โทร</label>
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control" id="inputUserTel" placeholder="User Tel" @bind="@newEmployee.UserTel">
+                                </div>
+                            </div>
+                        </form>
+                        <div class="Spacing">
+                            <div>
+                                <button type="button" class="btn btn-danger" style="width:150px;height:48px" data-dismiss="modal">ปิด</button>
+                                <button type="button" class="btn btn-primary" style="width:200px;height:48px" @onclick="CreateEmployee" data-dismiss="modal">เพิ่ม</button>
+                            </div>
+                            <div>
+                                <div class="text-left">Note: รหัสเริ่มต้นของAccount: A1234567a</div>
+                                <div class="text-left">Note2: รายชื่อพนักงานจะแสดงหลังผ่านการเข้าสู่ระบบ</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+@code {
+    private List<UserLogDto> userLogs = new List<UserLogDto>();
+    private List<UserLogDto> userToShow = new List<UserLogDto>();
+    private UserLogDetailsDto userLogDetails = new UserLogDetailsDto();
+    private UserInfoDto userDetails = new UserInfoDto();
+    private RegisterRequest newEmployee = new RegisterRequest();
+    private int userIdToFetch;
+    private int RoleId;
+    private Dictionary<DateTime, int> loginCounts;
+
+    private bool isAdmin;
+    private bool isEmployee;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var userLogResponse = await AdminService.GetUsersLog();
+        if (userLogResponse.Success)
+        {
+            userLogs = userLogResponse.Data;
+            userToShow = userLogs;
+        }
+        else
+        {
+            await Swal.FireAsync("Error!", userLogResponse.Message, SweetAlertIcon.Error);
+        }
+        var authState = await AuthStateProvider.GetAuthenticationStateAsync();
+        if (authState.User.Identity.IsAuthenticated)
+        {
+            var roleClaim = authState.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role);
+            if (roleClaim != null)
+            {
+                if (roleClaim.Value.Contains("Admin"))
+                {
+                    isAdmin = true;
+                }
+            }
+        }
+    }
+    private async Task CreateEmployee()
+    {
+        newEmployee.Password = "A1234567a";
+        newEmployee.ConfirmPassword = newEmployee.Password;
+        var response = await AdminService.CreateNewEmployee(newEmployee);
+        if (response.Success)
+        {
+            userDetails = response.Data;
+        }
+        else
+        {
+            // Handle error
+        }
+    }
+}

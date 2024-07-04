@@ -1,0 +1,113 @@
+﻿@page "/TermAndCondition"
+@inherits RegisterBase
+@inject HttpClient Http
+@inject NavigationManager navigationManager
+<section class="content">
+    <div class="container-fluid">
+        <div class="box-container">
+            <div class="box box-25">
+                <div class="MenuHead">Help & Information</div>
+                <div class="ArrangeBox">
+                <div class="col-sm">
+                <div class="MenuSubHead">ติดต่อเรา</div>
+                <div class="MenuTC">
+                            <a href="Contact" class="MenuText">ติดต่อเรา</a>
+                    <a href="Contact" class="MenuTR">
+                        <svg class="MenuIcon" xmlns="http://www.w3.org/2000/svg" width="19" height="33" viewBox="0 0 19 33" fill="none">
+                            <path d="M4 28.6946L14.1646 18.5299C15.3651 17.3295 15.3651 15.3651 14.1646 14.1647L4 4" stroke="#292D32" stroke-width="6.90062" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round" />
+                        </svg>
+                    </a>
+                </div>
+                <div class="MenuTC">
+                            <a href="AboutUs" class="MenuText">เกี่ยวกับร้าน maew123</a>
+                    <a href="AboutUs" class="MenuTR">
+                        <svg class="MenuIcon" xmlns="http://www.w3.org/2000/svg" width="19" height="33" viewBox="0 0 19 33" fill="none">
+                            <path d="M4 28.6946L14.1646 18.5299C15.3651 17.3295 15.3651 15.3651 14.1646 14.1647L4 4" stroke="#292D32" stroke-width="6.90062" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round" />
+                        </svg>
+                    </a>
+                </div>
+                </div>
+                <div class="col-sm">
+                <div class="MenuSubHead">ช้องปิ้งออนไลน์</div>
+                <div class="MenuTC">
+                    <a href="HowtoRegister" class="MenuText">วิธีสมัครสมาชิก</a>
+                    <a href="HowtoRegister" class="MenuTR">
+                        <svg class="MenuIcon" xmlns="http://www.w3.org/2000/svg" width="19" height="33" viewBox="0 0 19 33" fill="none">
+                            <path d="M4 28.6946L14.1646 18.5299C15.3651 17.3295 15.3651 15.3651 14.1646 14.1647L4 4" stroke="#292D32" stroke-width="6.90062" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round" />
+                        </svg>
+                    </a>
+                </div>
+                <div class="MenuTC">
+                    <a href="HowtoShopping" class="MenuText">วิธีการซื้อออนไลน์</a>
+                    <a href="HowtoShopping" class="MenuTR">
+                        <svg class="MenuIcon" xmlns="http://www.w3.org/2000/svg" width="19" height="33" viewBox="0 0 19 33" fill="none">
+                            <path d="M4 28.6946L14.1646 18.5299C15.3651 17.3295 15.3651 15.3651 14.1646 14.1647L4 4" stroke="#292D32" stroke-width="6.90062" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round" />
+                        </svg>
+                    </a>
+                </div>
+                <div class="MenuTC">
+                    <a href="HowtoChangePassword" class="MenuText">วิธีเปลี่ยนรหัสผ่าน</a>
+                    <a href="HowtoChangePassword" class="MenuTR">
+                        <svg class="MenuIcon" xmlns="http://www.w3.org/2000/svg" width="19" height="33" viewBox="0 0 19 33" fill="none">
+                            <path d="M4 28.6946L14.1646 18.5299C15.3651 17.3295 15.3651 15.3651 14.1646 14.1647L4 4" stroke="#292D32" stroke-width="6.90062" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round" />
+                        </svg>
+                    </a>
+                </div>
+                <div class="MenuTC">
+                    <a href="Transfer" class="MenuText">การจัดส่งสินค้าทางเรา</a>
+                    <a href="Transfer" class="MenuTR">
+                        <svg class="MenuIcon" xmlns="http://www.w3.org/2000/svg" width="19" height="33" viewBox="0 0 19 33" fill="none">
+                            <path d="M4 28.6946L14.1646 18.5299C15.3651 17.3295 15.3651 15.3651 14.1646 14.1647L4 4" stroke="#292D32" stroke-width="6.90062" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round" />
+                        </svg>
+                    </a>
+                </div>
+                </div>
+                <div class="col-sm">
+                <div class="MenuSubHead">นโยบายและข้อกำหนด</div>
+                <div class="MenuTC">
+                            <a href="TermAndCondition" class="MenuText" style="color:#00F">ข้อกำหนดและเงื่อนไข</a>
+                    <a href="TermAndCondition" class="MenuTR">
+                        <svg class="MenuIcon" xmlns="http://www.w3.org/2000/svg" width="19" height="33" viewBox="0 0 19 33" fill="none">
+                            <path d="M4 28.6946L14.1646 18.5299C15.3651 17.3295 15.3651 15.3651 14.1646 14.1647L4 4" stroke="#292D32" stroke-width="6.90062" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round" />
+                        </svg>
+                    </a>
+                </div>
+                <div class="MenuTC">
+                            <a href="PrivacyTerm" class="MenuText">นโยบายความเป็นส่วนตัว</a>
+                    <a href="PrivacyTerm" class="MenuTR">
+                        <svg class="MenuIcon" xmlns="http://www.w3.org/2000/svg" width="19" height="33" viewBox="0 0 19 33" fill="none">
+                            <path d="M4 28.6946L14.1646 18.5299C15.3651 17.3295 15.3651 15.3651 14.1646 14.1647L4 4" stroke="#292D32" stroke-width="6.90062" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round" />
+                        </svg>
+                    </a>
+                </div>
+                </div>
+            </div>
+            </div>
+            
+
+            <div class="box box-75 pb-4">
+    <div class="ContentTitle">Terms And Condition ข้อกำหนดและเงื่อนไขร้าน maew123</div>
+    <div class="ContentText col-12">
+        <div style="font-size: 20px;">
+            <p>1. การสั่งซื้อสินค้าและบริการ จะถือว่าสมบูรณ์เมื่อท่านได้ชำระเงินค่าสินค้าและบริการครบถ้วนตามที่แจ้งไว้เรียบร้อยแล้ว และยอมรับข้อกำหนดและเงื่อนไขแล้วตามที่ได้ลงทะเบียนสมัครใช้งานของเว็บไซต์ของบริษัทฯ นี้ ทั้งนี้ ในส่วนราคาและโปรโมชั่นใดๆ (รายการส่งเสริมการขาย) ที่นำเสนอขายจะใช้ได้เฉพาะการซื้อสินค้าผ่าน เว็บไซต์ Maew123 นี้เท่านั้น ไม่สามารถนำไปใช้กับการซื้อสินค้า หรือที่สาขาของบริษัทฯ ได้การขายและสั่งซื้อสินค้า จะดำเนินการจัดส่งสินค้าให้แก่ท่าน</p>
+
+            <p>
+                3. การซื้อสินค้า เช่น คอมพิวเตอร์ สมาร์ทโฟน และอุปกรณ์ต่างๆ อื่นๆ ผู้ผลิต/ตัวแทน (บริษัทคู่ค้า) จะเป็นผู้ให้การรับประกัน คุณภาพสินค้าโดยตรง กรณีอยู่ภายใต้เงื่อนไขการรับประกันท่านสามารถติดต่อผู้ผลิต/ตัวแทน (บริษัทคู่ค้า) ได้โดยตรง
+            </p>
+
+            <p>
+                4. ราคาที่ระบุในเว็บไซต์ Maew123 เป็นราคาสินค้าที่ไม่ได้รวมค่าบริการติดตั้ง
+            </p>
+
+            <p>
+                4. โค้ดส่วนลดทุกประเภทที่ปรากฏ และ/หรือ ถูกผลิตขึ้นโดยเว็บ Maew123 สามารถใช้ได้ตามที่ระบุ ข้อกำหนดและเงื่อนไขเฉพาะที่แจ้งไว้เท่านั้น เช่น เป็นส่วนลดจากราคาสินค้า/บริการ
+                บริษัทฯ ไม่รับผิดชอบต่อโค้ดหรือตัวเลขอ้างอิงของโค้ดที่พิมพ์ออกจากระบบแล้วและเกิดการสูญหายหรือถูกขโมยไปในทุกกรณี โดยโค้ดหรือเลขที่อ้างอิงนี้ไม่สามารถทำขึ้นใหม่/นำมาใช้ใหม่
+                ไม่ว่าเพื่อกิจกรรมใดๆ นอกจากมีการทำตามเงื่อนไขที่บริษัทฯ กำหนดไว้ หากท่านไม่ใช้โค้ดหรือเลขที่อ้างอิงภายในกำหนดวันหมดอายุ ถือว่าท่านสละสิทธิ์การใช้โค้ดหรือเลขที่อ้างอิงนั้น
+            </p>
+            โค้ดไม่สามารถนำมาแลกเป็นเงินสดหรือส่วนลดอื่นๆ ทดแทนได้ในทุกกรณี
+        </div>
+    </div>
+            </div>
+        </div>
+    </div><!-- /.container-fluid -->
+</section>

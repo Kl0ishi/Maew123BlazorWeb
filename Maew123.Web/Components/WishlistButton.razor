@@ -1,0 +1,41 @@
+﻿@inject IAccountService AccountService
+@inject IAuthenticationService AuthenticationService
+
+<a @onclick="ToggleWishlist" disabled="@(!IsAuthenticated)" style="transition: transform 0.2s;">
+    <i class="wish fas fa-star" style="@(IsInWishlist ? "color:#76EB00;" : "");"></i>
+</a>
+
+@code {
+    [Parameter]
+    public int ProductId { get; set; }
+    private bool IsInWishlist { get; set; } = false;
+    private bool IsAuthenticated { get; set; } = false;
+
+    protected override async Task OnInitializedAsync()
+    {
+        IsAuthenticated = await AuthenticationService.IsUserAuthenticated();
+        if (IsAuthenticated)
+        {
+            await AccountService.GetWishListItems();
+            IsInWishlist = await AccountService.IsInWishlist(ProductId);
+        }
+        
+    }
+
+    private async Task ToggleWishlist()
+    {
+        if (IsInWishlist)
+        {
+            await AccountService.RemoveWishlist(ProductId);
+            AccountService.userInfoChanged += StateHasChanged;
+            IsInWishlist = false;
+        }
+        else
+        {
+            await AccountService.AddWishlist(ProductId);
+            AccountService.userInfoChanged += StateHasChanged;
+            IsInWishlist = true;
+        }
+    }
+
+}

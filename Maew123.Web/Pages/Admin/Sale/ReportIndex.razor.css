@@ -1,0 +1,25 @@
+﻿.ReportContainer {
+    width: 900px;
+    padding: 20px 25px;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    flex-shrink: 0;
+    border: 1px solid rgba(0, 0, 0, 0.30);
+    background: #FFF;
+}
+.InsideBox {
+    width: 100%;
+    padding: 30px 25px;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    flex-shrink: 0;
+    border: 1px solid rgba(0, 0, 0, 0.30);
+    background: #FFF;
+}
+.Centering{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+}

@@ -1,0 +1,136 @@
+﻿@page "/HowToShopping"
+@inherits RegisterBase
+@inject HttpClient Http
+@inject NavigationManager navigationManager
+<section class="content">
+    <div class="container-fluid">
+        <div class="box-container">
+            <div class="box box-25">
+                <div class="MenuHead">Help & Information</div>
+                <div class="ArrangeBox">
+                <div class="col-sm">
+                <div class="MenuSubHead">ติดต่อเรา</div>
+                <div class="MenuTC">
+                            <a href="Contact" class="MenuText">ติดต่อเรา</a>
+                    <a href="Contact" class="MenuTR">
+                        <svg class="MenuIcon" xmlns="http://www.w3.org/2000/svg" width="19" height="33" viewBox="0 0 19 33" fill="none">
+                            <path d="M4 28.6946L14.1646 18.5299C15.3651 17.3295 15.3651 15.3651 14.1646 14.1647L4 4" stroke="#292D32" stroke-width="6.90062" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round" />
+                        </svg>
+                    </a>
+                </div>
+                <div class="MenuTC">
+                    <a href="AboutUs" class="MenuText">เกี่ยวกับร้าน maew123</a>
+                    <a href="AboutUs" class="MenuTR">
+                        <svg class="MenuIcon" xmlns="http://www.w3.org/2000/svg" width="19" height="33" viewBox="0 0 19 33" fill="none">
+                            <path d="M4 28.6946L14.1646 18.5299C15.3651 17.3295 15.3651 15.3651 14.1646 14.1647L4 4" stroke="#292D32" stroke-width="6.90062" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round" />
+                        </svg>
+                    </a>
+                </div>
+                </div>
+                <div class="col-sm">
+                <div class="MenuSubHead">ช้องปิ้งออนไลน์</div>
+                <div class="MenuTC">
+                            <a href="HowtoRegister" class="MenuText">วิธีสมัครสมาชิก</a>
+                    <a href="HowtoRegister" class="MenuTR">
+                        <svg class="MenuIcon" xmlns="http://www.w3.org/2000/svg" width="19" height="33" viewBox="0 0 19 33" fill="none">
+                            <path d="M4 28.6946L14.1646 18.5299C15.3651 17.3295 15.3651 15.3651 14.1646 14.1647L4 4" stroke="#292D32" stroke-width="6.90062" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round" />
+                        </svg>
+                    </a>
+                </div>
+                <div class="MenuTC">
+                            <a href="HowtoShopping" class="MenuText" style="color:#00F">วิธีการซื้อออนไลน์</a>
+                    <a href="HowtoShopping" class="MenuTR">
+                        <svg class="MenuIcon" xmlns="http://www.w3.org/2000/svg" width="19" height="33" viewBox="0 0 19 33" fill="none">
+                            <path d="M4 28.6946L14.1646 18.5299C15.3651 17.3295 15.3651 15.3651 14.1646 14.1647L4 4" stroke="#292D32" stroke-width="6.90062" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round" />
+                        </svg>
+                    </a>
+                </div>
+                <div class="MenuTC">
+                    <a href="HowtoChangePassword" class="MenuText">วิธีเปลี่ยนรหัสผ่าน</a>
+                    <a href="HowtoChangePassword" class="MenuTR">
+                        <svg class="MenuIcon" xmlns="http://www.w3.org/2000/svg" width="19" height="33" viewBox="0 0 19 33" fill="none">
+                            <path d="M4 28.6946L14.1646 18.5299C15.3651 17.3295 15.3651 15.3651 14.1646 14.1647L4 4" stroke="#292D32" stroke-width="6.90062" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round" />
+                        </svg>
+                    </a>
+                </div>
+                <div class="MenuTC">
+                    <a href="Transfer" class="MenuText">การจัดส่งสินค้าทางเรา</a>
+                    <a href="Transfer" class="MenuTR">
+                        <svg class="MenuIcon" xmlns="http://www.w3.org/2000/svg" width="19" height="33" viewBox="0 0 19 33" fill="none">
+                            <path d="M4 28.6946L14.1646 18.5299C15.3651 17.3295 15.3651 15.3651 14.1646 14.1647L4 4" stroke="#292D32" stroke-width="6.90062" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round" />
+                        </svg>
+                    </a>
+                </div>
+                </div>
+                <div class="col-sm">
+                <div class="MenuSubHead">นโยบายและข้อกำหนด</div>
+                <div class="MenuTC">
+                    <a href="TermAndCondition" class="MenuText">ข้อกำหนดและเงื่อนไข</a>
+                    <a href="TermAndCondition" class="MenuTR">
+                        <svg class="MenuIcon" xmlns="http://www.w3.org/2000/svg" width="19" height="33" viewBox="0 0 19 33" fill="none">
+                            <path d="M4 28.6946L14.1646 18.5299C15.3651 17.3295 15.3651 15.3651 14.1646 14.1647L4 4" stroke="#292D32" stroke-width="6.90062" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round" />
+                        </svg>
+                    </a>
+                </div>
+                <div class="MenuTC">
+                    <a href="PrivacyTerm" class="MenuText">นโยบายความเป็นส่วนตัว</a>
+                    <a href="PrivacyTerm" class="MenuTR">
+                        <svg class="MenuIcon" xmlns="http://www.w3.org/2000/svg" width="19" height="33" viewBox="0 0 19 33" fill="none">
+                            <path d="M4 28.6946L14.1646 18.5299C15.3651 17.3295 15.3651 15.3651 14.1646 14.1647L4 4" stroke="#292D32" stroke-width="6.90062" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round" />
+                        </svg>
+                    </a>
+                </div>
+                </div>
+            </div>
+            </div>
+
+            <div class="box box-75 pb-4">
+    <div class="ContentTitle">วิธีการซื้อสินค้า</div>
+        <div class="col-12">
+
+        <div class="TutorialBox">
+            <div class="shift1">
+                <img style="border-radius: 20px;" class="CImage1" src="/picture/sp1.png" />
+                <div class="TP">
+                     <span class="CT1" style="border-radius: 10px;background: #060051;">ขั้นตอนที่ 1.</span>
+                     <span class="CT2"> เมื่อเข้าถึงหน้าหลักของเว็บไซต์ ให้กดเลือกสินค้าจากหน้าเว็บหลัก</span>
+                </div>
+            </div>
+
+            <div class="shift2">
+                <img style="border-radius: 20px;" class="CImage2" src="/picture/sp2.png" />
+                <div class="d-flex justify-content-center pt-3">
+                <div class="TPspecial px-2 py-2" style="border-radius: 10px;background: #060051;">
+                    <span class="CT1">หรือสามารถค้นหาจากแถบค้นหา ด้านซ้ายบนของทางเว็บไซต์</span>
+                </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="TutorialBox2 pt-4">
+        <div class="shift3">
+        <img style="border-radius: 20px;" class="CImage3" src="/picture/sp3.png" />
+        </div>
+        <div class="shift4">
+        <div class="PositionText">
+            <span class="CT1" style="border-radius: 10px;background: #060051;">ขั้นตอนที่ 2.</span>
+            <span class="CT3"> หลังจากเรื่องสินค้าเลือกสินค้า ก็จะมีหน้าต่างข้อมูลสินค้าให้ดู</span>
+            <li class="CT3">กดใส่ตะกล้าเพื่อสินค้าที่อยากจะซื้อ</li>
+            <li class="CT3">กด "ซื้อเลย" เพื่อทำการชำระสินค้าทั้งหมดที่เลือก</li>
+        </div>
+        </div>
+        </div>
+
+        <div class="col-12 pt-4">
+        <img style="border-radius: 20px;" class="CImage4" src="/picture/sp4.png" />
+        <div class="TP">
+            <span class="CT1" style="border-radius: 10px;background: #060051;">ขั้นตอนที่ 3.</span>
+            <span class="CT2"> เมื่อเข้ามาที่ตะกล้าสินค้าจะเห็นสินค้าที่ท่านเลือกทั้งหมด ให้ตรวจสอบสินค้าที่เลือกว่าถูกต้องหรือเปล่า เมื่อตรวจสบเสร็จสิ้นแล้ว ให้ทำการเลือกปุ่ม ดำเนินการต่อ เพื่อชำระสินค้าทั้งหมดโดยทันที</span>
+        </div>
+        </div>
+
+        </div>
+        </div>
+            </div>
+        </div><!-- /.container-fluid -->
+</section>

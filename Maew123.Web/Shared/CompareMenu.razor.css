@@ -1,0 +1,29 @@
+﻿.CompareButton {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+i::after {
+    font-weight: normal;
+    content: " เปรียบเทียบสินค้า"
+}
+@media (max-width: 1140px) {
+    .CompareButton{
+        font-size: 16px;
+    }
+}
+@media (max-width: 851px) {
+    .CompareButton {
+        font-size: 14px;
+    }
+}
+@media (max-width: 798px) {
+    i::after {
+        content: " เปรียบเทียบ"
+    }
+}
+@media (max-width: 730px) {
+    .CompareButton {
+        font-size: 12px;
+    }
+}

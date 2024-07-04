@@ -1,0 +1,141 @@
+﻿@inject NavigationManager NavigationManager
+@inject ICartService CartService
+@inject IAuthenticationService AuthService
+@inject IOrderService OrderService
+@inject IAccountService AccountService
+@inject SweetAlertService Swal
+
+@page "/compare"
+
+<PageTitle>ComparingProduct</PageTitle>
+
+<h3 class="my-4" style="font-weight:700">เปรียบเทียบสินค้า</h3>
+
+@if (cartProducts == null || cartProducts.Count == 0)
+{
+    <span>@message</span>
+}
+else
+{
+    var firstProductPrice = cartProducts.FirstOrDefault()?.Price;
+    <div class="">
+        <div class="box-100">
+            @foreach (var product in cartProducts)
+            {
+                <div class="CartContainer mb-3">
+                    <div class="Centering" style="position: relative;">
+                        <a class="absolutex" @onclick="@(() => RemoveProductFromComparing(product.ProductId))">
+                            <i class="fa-solid fa-xmark" style="color:white;font-size:24px;"></i>
+                        </a>
+                        <img src="@($"https://localhost:7266/api/images/Products/{product.ImageUrl}")" href="/product/@product.ProductId" class="ImgCompare" />
+                    </div>
+                    <div class="ItemInfo">
+                        <div class="TitleBox mt-2">
+                            <a class="ItemTitle" href="/product/@product.ProductId">@product.ProductName</a>
+                        </div>
+                        <div class="d-flex flex-column justify-content-between my-2">
+                            <div class="PriceBox">
+                                @if (product.PromotionId == null)
+                                {
+                                    <div class="Centering" style="font-size: 24px;">@product.Price บาท</div>
+                                    <button @onclick="(e => AddToCart(product.ProductId))" class="PropriceBox">
+                                        <div class="Centering">
+                                            <i class="fa-solid fa-cart-shopping"></i>
+                                            <div class="PriceText2">ซื้อเลยตอนนี้ !</div>
+                                        </div>
+                                    </button>
+                                }
+                                else
+                                {
+                                    <div class="Centering" style="font-size: 24px;">@product.Price บาท</div>
+                                    <button @onclick="(e => AddToCart(product.ProductId))" class="PropriceBox">
+                                        <div class="Centering">
+                                            <i class="fa-solid fa-cart-shopping"></i>
+                                            <div class="PriceText2">@(product.Price-product.Discount) บาท</div>
+                                        </div>
+                                        <div>ราคาที่ลดจากส่วนลด</div>
+                                    </button>
+                                }
+                            </div>
+                        </div>
+                        <div class="DescriptBox">
+                            <div class="ItemTitle">รายระเอียดสินค้า :</div>
+                            <hr />
+                            <div class="ItemDescript">@product.Description</div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+}
+
+@code {
+    private NewProductDto? product = null;
+    private int quantity = 1; // Initial quantity
+    List<CartDetailsDto> cartProducts = null;
+
+    string message = "Loading Product to Compare...";
+    bool isAuthenticated = false;
+
+    protected override async Task OnInitializedAsync()
+    {
+        isAuthenticated = await AuthService.IsUserAuthenticated();
+        if (isAuthenticated)
+        {
+            await AccountService.GetUserAddresses();
+        }
+        await LoadComapareItem();
+    }
+
+    private async Task RemoveProductFromComparing(int productId)
+    {
+        await CartService.RemoveProductFromComparing(productId);
+        await LoadComapareItem();
+    }
+
+    private async Task LoadComapareItem()
+    {
+        if ((await CartService.GetCompareItems()).Count == 0)
+        {
+            message = "Your cart is empty.";
+            cartProducts = new List<CartDetailsDto>();
+        }
+        else
+        {
+            cartProducts = await CartService.GetCompareProducts();
+        }
+    }
+
+    private async Task AddToCart(int id)
+    {
+        var cartItem = new ItemQuantityDto
+            {
+                ProductId = id,
+                Quantity = quantity
+            };
+
+        await CartService.AddToCart(cartItem);
+    }
+
+    private void DecreaseQuantity()
+    {
+        if (quantity > 1)
+        {
+            quantity--;
+        }
+    }
+
+    private void IncreaseQuantity()
+    {
+        if (quantity < product.numStock)
+        {
+            quantity++;
+        }
+    }
+
+    private void GoToHome()
+    {
+        NavigationManager.NavigateTo("");
+    }
+}

@@ -1,0 +1,107 @@
+﻿@page "/Transfer"
+@inherits RegisterBase
+@inject HttpClient Http
+@inject NavigationManager navigationManager
+<section class="content">
+    <div class="container-fluid">
+        <div class="box-container">
+            <div class="box box-25">
+                <div class="MenuHead">Help & Information</div>
+                <div class="ArrangeBox">
+                <div class="col-sm">
+                <div class="MenuSubHead">ติดต่อเรา</div>
+                <div class="MenuTC">
+                            <a href="Contact" class="MenuText">ติดต่อเรา</a>
+                    <a href="Contact" class="MenuTR">
+                        <svg class="MenuIcon" xmlns="http://www.w3.org/2000/svg" width="19" height="33" viewBox="0 0 19 33" fill="none">
+                            <path d="M4 28.6946L14.1646 18.5299C15.3651 17.3295 15.3651 15.3651 14.1646 14.1647L4 4" stroke="#292D32" stroke-width="6.90062" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round" />
+                        </svg>
+                    </a>
+                </div>
+                <div class="MenuTC">
+                            <a href="AboutUs" class="MenuText">เกี่ยวกับร้าน maew123</a>
+                    <a href="AboutUs" class="MenuTR">
+                        <svg class="MenuIcon" xmlns="http://www.w3.org/2000/svg" width="19" height="33" viewBox="0 0 19 33" fill="none">
+                            <path d="M4 28.6946L14.1646 18.5299C15.3651 17.3295 15.3651 15.3651 14.1646 14.1647L4 4" stroke="#292D32" stroke-width="6.90062" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round" />
+                        </svg>
+                    </a>
+                </div>
+                </div>
+                <div class="col-sm">
+                <div class="MenuSubHead">ช้องปิ้งออนไลน์</div>
+                <div class="MenuTC">
+                    <a href="HowtoRegister" class="MenuText">วิธีสมัครสมาชิก</a>
+                    <a href="HowtoRegister" class="MenuTR">
+                        <svg class="MenuIcon" xmlns="http://www.w3.org/2000/svg" width="19" height="33" viewBox="0 0 19 33" fill="none">
+                            <path d="M4 28.6946L14.1646 18.5299C15.3651 17.3295 15.3651 15.3651 14.1646 14.1647L4 4" stroke="#292D32" stroke-width="6.90062" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round" />
+                        </svg>
+                    </a>
+                </div>
+                <div class="MenuTC">
+                    <a href="HowtoShopping" class="MenuText">วิธีการซื้อออนไลน์</a>
+                    <a href="HowtoShopping" class="MenuTR">
+                        <svg class="MenuIcon" xmlns="http://www.w3.org/2000/svg" width="19" height="33" viewBox="0 0 19 33" fill="none">
+                            <path d="M4 28.6946L14.1646 18.5299C15.3651 17.3295 15.3651 15.3651 14.1646 14.1647L4 4" stroke="#292D32" stroke-width="6.90062" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round" />
+                        </svg>
+                    </a>
+                </div>
+                <div class="MenuTC">
+                    <a href="HowtoChangePassword" class="MenuText">วิธีเปลี่ยนรหัสผ่าน</a>
+                    <a href="HowtoChangePassword" class="MenuTR">
+                        <svg class="MenuIcon" xmlns="http://www.w3.org/2000/svg" width="19" height="33" viewBox="0 0 19 33" fill="none">
+                            <path d="M4 28.6946L14.1646 18.5299C15.3651 17.3295 15.3651 15.3651 14.1646 14.1647L4 4" stroke="#292D32" stroke-width="6.90062" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round" />
+                        </svg>
+                    </a>
+                </div>
+                <div class="MenuTC">
+                            <a href="Transfer" class="MenuText" style="color:#00F">การจัดส่งสินค้าทางเรา</a>
+                    <a href="Transfer" class="MenuTR">
+                        <svg class="MenuIcon" xmlns="http://www.w3.org/2000/svg" width="19" height="33" viewBox="0 0 19 33" fill="none">
+                            <path d="M4 28.6946L14.1646 18.5299C15.3651 17.3295 15.3651 15.3651 14.1646 14.1647L4 4" stroke="#292D32" stroke-width="6.90062" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round" />
+                        </svg>
+                    </a>
+                </div>
+                </div>
+                <div class="col-sm">
+                <div class="MenuSubHead">นโยบายและข้อกำหนด</div>
+                <div class="MenuTC">
+                            <a href="TermAndCondition" class="MenuText">ข้อกำหนดและเงื่อนไข</a>
+                    <a href="TermAndCondition" class="MenuTR">
+                        <svg class="MenuIcon" xmlns="http://www.w3.org/2000/svg" width="19" height="33" viewBox="0 0 19 33" fill="none">
+                            <path d="M4 28.6946L14.1646 18.5299C15.3651 17.3295 15.3651 15.3651 14.1646 14.1647L4 4" stroke="#292D32" stroke-width="6.90062" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round" />
+                        </svg>
+                    </a>
+                </div>
+                <div class="MenuTC">
+                            <a href="PrivacyTerm" class="MenuText">นโยบายความเป็นส่วนตัว</a>
+                    <a href="PrivacyTerm" class="MenuTR">
+                        <svg class="MenuIcon" xmlns="http://www.w3.org/2000/svg" width="19" height="33" viewBox="0 0 19 33" fill="none">
+                            <path d="M4 28.6946L14.1646 18.5299C15.3651 17.3295 15.3651 15.3651 14.1646 14.1647L4 4" stroke="#292D32" stroke-width="6.90062" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round" />
+                        </svg>
+                    </a>
+                </div>
+                </div>
+            </div>
+            </div>
+            
+
+            <div class="box box-75 pb-4">
+    <div class="ContentTitle">นโยบายการขนส่งของร้าน maew123</div>
+    <div class="ContentText col-12">
+        <div class="pb-3" style="font-size: 24px;">Order before noon for same-day delivery. Orders placed after noon may still be delivered on the same day,
+        but there is a possibility of delivery on the following day due to our cutoff rounds. 
+        We strive to fulfill orders promptly, but please be aware of potential next-day delivery in some cases, 
+        ensuring that your items are carefully prepared and dispatched with the utmost care. 
+        Thank you for choosing Maew123 for your shopping needs!</div>
+        <div style="font-size: 24px;width:800px;height:100px;">
+            การสั่งซื้อก่อนเที่ยงจะส่งภายในวันเดียวกัน แต่การสั่งซื้อหลังเที่ยงอาจจะยังสามารถจัดส่งในวันเดียวกันได้ 
+            แต่มีโอกาสที่จะมีการจัดส่งในวันถัดไป เนื่องจากเรามีการตัดรอบการจัดส่ง 
+            พยายามดำเนินการจัดส่งสินค้าโดยรวดเร็ว แต่โปรดทราบว่าอาจมีการจัดส่งในวันถัดไปในบางกรณี 
+            เพื่อให้แน่ใจว่าสินค้าของคุณจะได้รับการเตรียมและจัดส่งถึงมือคุณด้วยความระมัดระวังสูงสุด 
+            ขอบคุณที่เลือก Maew123 สำหรับการซื้อสินค้าและบริการของคุณ!
+        </div>
+    </div>
+    </div>
+            </div>
+        </div><!-- /.container-fluid -->
+</section>

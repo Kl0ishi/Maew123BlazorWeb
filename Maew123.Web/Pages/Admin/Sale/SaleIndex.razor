@@ -1,0 +1,585 @@
+﻿@page "/admin/SaleIndex"
+@attribute [Authorize(Roles = "Admin,Employee")]
+
+@inject HttpClient Http
+@inject NavigationManager navigationManager
+@inject IOrderService OrderService
+@inject SweetAlertService Swal
+@inject IReportService ReportService
+@inject IAccountService AccountService
+@inject IJSRuntime jsRuntime
+
+<div class="">
+    <div class="FilterContainer">
+        <h3>Filter Options</h3>
+        <div>
+            <h5>Status</h5>
+            <div class="Checkpos">
+                <div class="mr-2">
+                    @foreach (var status in DropdownForSale.SaleStatuses.Take(4))
+                    {
+                        <div>
+                            <input type="checkbox" id="@status" @onchange="() => ToggleStatus(DropdownForSale.SaleStatuses.IndexOf(status) + 1)" checked />
+                            <label for="@status">@status</label>
+                        </div>
+                    }
+                </div>
+                <div>
+                    @foreach (var status in DropdownForSale.SaleStatuses.Skip(4))
+                    {
+                        <div>
+                            <input type="checkbox" id="@status" @onchange="() => ToggleStatus(DropdownForSale.SaleStatuses.IndexOf(status) + 1)" checked />
+                            <label for="@status">@status</label>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+        <div class="SearchBox">
+            <div class="mr-4">
+                <div>
+                    <h5>Year</h5>
+                    <input type="number" @bind="SelectedYear" />
+                </div>
+                <div class="mt-2">
+                    <h5>Month</h5>
+                    <input type="number" @bind="SelectedMonth" />
+                </div>
+            </div>
+            <div>
+                <div>
+                    <h5>Order By</h5>
+                    <select class="selectbox" @bind="SelectedOrderBy">
+                        <option value="">Default</option>
+                        <option value="saledate">saledate</option>
+                        <option value="status">status</option>
+                        <option value="user">user</option>
+                    </select>
+                </div>
+                <div class="mt-2">
+                    <h5>Sort Direction</h5>
+                    <select class="selectbox" @bind="SelectedSortDirection">
+                        <option value="">Default</option>
+                        <option value="asc">Ascending</option>
+                        <option value="desc">Descending</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="mt-4" style="width:125px;">
+            <button class="btn-primary" @onclick="FilterData">Filter</button>
+        </div>
+    </div>
+</div>
+
+@if (Model == null || Model.Carts == null)
+{
+    <p>No sales found.</p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>SaleCode</th>
+                <th>ชื่อผู้ใช้งาน</th>
+                <th>จำนวนการสั่งซื้อ</th>
+                <th>ส่วนลดรวม</th>
+                <th>ราคารวม</th>
+                <th>วันที่สั่งซื้อ</th>
+                <th>สถานะการสั่งซื้อ</th>
+                <th>รูปสลิป</th>
+                <th>หมายเลขพัสดุ</th>
+                <th>วันที่ส่งพัสดุ</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var sale in Model.Carts)
+            {
+                <tr>
+                    <td><button type="button" @onclick="@(() => TriggerModalIncludeAddress(sale))" class="btn btn-outline-info" data-toggle="modal" data-target="#staticBackdrop">@sale.SaleCode</button></td>
+                    <td>@sale.UserName</td>
+                    <td>@sale.SaleNum</td>
+                    <td>@sale.SaleDiscount.ToString("N2")</td>
+                    <td>@sale.SaleTotal.Value.ToString("N2")</td>
+                    <td>@sale.OrderDate.ToShortDateString()</td>
+                    <td>@sale.StatusName</td>
+                    <td>
+                        @if (!string.IsNullOrEmpty(sale.ImgPath))
+                        {
+                            <img src="@($"https://localhost:7266/api/images/Payment/{sale.ImgPath}")" @onclick="() => ShowFullImage(sale.ImgPath)" style="cursor: pointer; width: 100px; height: 100px" />
+                        }
+                        else
+                        {
+                            <img style="width: 100px; height: 100px" class="card-img-top" src="/Picture/No_images.png">
+                        }
+                    </td>
+                    <td>@sale.ParcelNumber</td>
+                    <td>@(sale.SentDate.HasValue ? sale.SentDate.Value.ToShortDateString() : "")</td>
+                    <td>
+                        @if (sale.StatusId == 2)
+                        {
+                            <button class="btn btn-primary SaleButton mb-2" @onclick="() => AdminApprove(sale)">Approve</button>
+                            <button class="btn btn-warning SaleButton mb-2" @onclick="() => AdminAnnotate(sale)">แจ้งข้อผิดพลาด</button>
+                        }
+                        @if (sale.StatusId == 3)
+                        {
+                            <button class="btn btn-primary SaleButton mb-2" @onclick="() => DownloadDelivery(sale.SaleId, sale.SaleCode)">ใบเพื่อจัดส่ง</button>
+                            <button type="button" @onclick="@(() => TriggerModal(sale))" class="btn btn-success SaleButton mb-2" data-toggle="modal" data-target="#exampleModal">
+                                กรอกเลขพัสดุ
+                            </button>
+                        }
+                        @if (sale.StatusId <= 2)
+                        {
+                            <button class="btn btn-danger SaleButton mb-2" @onclick="() => AdminCancel(sale)">Cancel</button>
+                        }
+                        @if (sale.StatusId == 3 || sale.StatusId == 4)
+                        {
+                            //<button class="btn btn-info SaleButton mb-2" @onclick="() => Receipt(sale.SaleId)">ใบเสร็จรับเงิน</button>
+                            <a class="btn btn-info SaleButton mb-2" href="receipt/@sale.SaleId">ใบเสร็จรับเงิน</a>
+                        }
+                        @if (sale.StatusId == 4)
+                        {
+                            <button class="btn btn-outline-dark SaleButton mb-2" @onclick="(() => DownloadSaleReport(sale.SaleId))">Download</button>
+                            <button type="button" @onclick="@(() => TriggerModal(sale))" class="btn btn-warning SaleButton mb-2" data-toggle="modal" data-target="#exampleModal">
+                                แก้ไขเลขพัสดุ
+                            </button>
+                        }
+                        @if (sale.StatusId == 7)
+                        {
+                            <button class="btn btn-success SaleButton mb-2" @onclick="() => AdminApprove(sale)">ติดต่อกับผู้สั่งซื้อสำเร็จ</button>
+                            <button class="btn btn-danger SaleButton mb-2" @onclick="() => AdminCancel(sale)">ยกเลิกการสั่งซื้อ</button>
+                        }
+                        @if (sale.Annotation != null && sale.StatusId != 3)
+                        {
+                            <button class="btn btn-dark SaleButton mb-2" @onclick="() => DisplayAnnotation(sale)">หมายเหตุ</button>
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <div class="paging-buttons">
+        @if (Model.TotalPages > 0)
+        {
+            <ul class="pagination justify-content-end">
+                @if (Model.CurrentPage > 1)
+                {
+                    <li class="page-item">
+                        <button class="page-link" @onclick="() => GoToFirstPage()">First</button>
+                    </li>
+                }
+
+                @for (int pge = Model.StartPage; pge <= Model.EndPage; pge++)
+                {
+                    var pageNumber = pge;
+                    <li class="page-item @(pge == Model.CurrentPage ? "active" : "")">
+                        <button class="page-link" @onclick="() => GoToPage(pageNumber)">@pge</button>
+                    </li>
+                }
+
+                @if (Model.CurrentPage < Model.TotalPages)
+                {
+                    <li class="page-item">
+                        <button class="page-link" @onclick="() => GoToLastPage()">Last</button>
+                    </li>
+                }
+            </ul>
+        }
+    </div>
+}
+
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog custom-modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">กรอกเลขพัสดุ</h5>
+                <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="myForm" class="form-signin justify-content-center" @onsubmit="Send" Model="@cartsDto">
+                    <div class="d-flex mb-2">
+                        <label class="col-form-label mr-2">SaleCode:</label>
+                        <input class="form-control" style="color: rgb(0.0.0.0.2)" @bind="cartsDto.SaleCode" disabled />
+                    </div>
+                    <div class="d-flex mb-2">
+                        <div class="d-flex" style="width:100%">
+                            <div style="width:70%;">
+                                <label class="col-form-label">หมายเลขบริษัทจัดส่ง:</label>
+                                <select id="delivery" name="delivery" class="regbox1 form-control" @bind="@cartsDto.ParcelTypeNo">
+                                    <option disabled>-- รูปแบบการจัดส่ง --</option>
+                                    @foreach (var deliveryType in DropdownForSale.DeliveryTypes)
+                                    {
+                                        <option value="@deliveryType.Value" selected="@deliveryType.Value == cartsDto.ParcelTypeNo">@deliveryType.Name</option>
+                                    }
+                                </select>
+                            </div>
+                            <div class="pl-2" style="width:30%;">
+                                <label class="col-form-label">หมายเลขพัสดุ :</label>
+                                <input class="form-control" @bind="cartsDto.ParcelNumber" min="13" max="15" maxlength="15"></input>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mb-2">
+                        @if (!string.IsNullOrEmpty(cartsDto.ParcelTypeNo))
+                        {
+                            <img class="ParselImg" src="Picture/@DropdownForSale.GetImageFileName(cartsDto.ParcelTypeNo)" />
+                        }
+                    </div>
+                    <button type="submit" style="width:150px;" class="btn btn-primary">Send</button>
+                    <button type="button" style="width:150px;" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel">รายละเอียดการสั่งซื้อ</h5>
+                <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    @foreach (var details in cartsDto.CartDetails)
+                    {
+                        <div class="col-md-3 mb-3">
+                            <div class="card">
+                                <div class="card-header">
+                                    @details.ProductName
+                                </div>
+                                <div class="card-body">
+                                    <div class="Centering mb-3">
+                                        @if (!string.IsNullOrEmpty(details.ImageUrl))
+                                        {
+                                            <img src="@($"https://localhost:7266/api/images/Products/{details.ImageUrl}")" height="200px" width="200px" />
+                                        }
+                                        else
+                                        {
+                                            <img src="/Picture/No_images.png" style="width: 200px; height: 200px" class="card-img-top" alt="No Image" />
+                                        }
+                                    </div>
+                                    <div class="mb-2">
+                                        <div>Price: @details.DiscountedPrice.Value.ToString("N2")</div>
+                                        <div>Quantity: @details.Quantity.ToString("N2")</div>
+                                        <div>Total Price: @details.TotalPrice.Value.ToString("N2")</div>
+                                    </div>
+                                    @if (!string.IsNullOrEmpty(details.PromotionName))
+                                    {
+                                        <p>Promotion: @details.PromotionName</p>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+                @if (AddressSnapshot != null || AddressSnapshot.Id != 0)
+                {
+                    <div class="row">
+                        ที่อยู่การจัดส่ง
+                        <div class="Content col-12">
+                            <div>
+                                <div class="d-flex">
+                                    <span><b>ชื่อ: </b>@AddressSnapshot.FirstName @AddressSnapshot.LastName</span><br /> <span class="ml-2"><b>เบอร์: </b>@AddressSnapshot.Phone</span><br />
+                                </div>
+                                @* <span><b>ถนน: </b>@address.Street</span><br /> *@
+                                <span><b>อำเภอ: </b>@AddressSnapshot.City, <b class="ml-2">ตำบล: </b>@AddressSnapshot.State <b class="ml-2">จังหวัด: </b>@AddressSnapshot.Country<b class="ml-2">เลขไปรษณีย์: </b>@AddressSnapshot.Zip</span><br />
+                                <span><b>ที่อยู่: </b>@AddressSnapshot.AddressName</span><br />
+                            </div>
+                        </div>
+                    </div>
+                }
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@if (showFullImage)
+{
+    <div class="overlay" @onclick="HideFullImage">
+        <div class="full-image-container">
+            <span class="close" @onclick="HideFullImage">&times;</span>
+            <img src="@($"https://localhost:7266/api/images/Payment/{selectedImageUrl}")" alt="Full Image" />
+        </div>
+    </div>
+}
+
+@code {
+    private SaleFilterResultDto Model = new SaleFilterResultDto();
+    SaleFilterParam filterParam = new SaleFilterParam();
+    private List<int> SelectedStatusIds { get; set; } = new List<int> { 1, 2, 3, 4, 5, 6, 7};
+    private int? SelectedYear { get; set; } = DateTime.Now.Year;
+    private int? SelectedMonth { get; set; } = DateTime.Now.Month;
+    private string? SelectedOrderBy { get; set; }
+    private string? SelectedSortDirection { get; set; }
+    private CartsDto cartsDto = new CartsDto();
+    private AddressSaleSnapshot AddressSnapshot = new AddressSaleSnapshot();
+
+    bool showFullImage = false;
+    string selectedImageUrl = "";
+
+    private async Task ToggleStatus(int statusId)
+    {
+        if (SelectedStatusIds.Contains(statusId))
+        {
+            SelectedStatusIds.Remove(statusId);
+        }
+        else
+        {
+            SelectedStatusIds.Add(statusId);
+        }
+    }
+
+    void ShowFullImage(string imageUrl)
+    {
+        selectedImageUrl = imageUrl;
+        showFullImage = true;
+    }
+
+    void HideFullImage()
+    {
+        showFullImage = false;
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await FilterData();
+    }
+
+    private async Task FilterData()
+    {
+        filterParam.StatusIds = SelectedStatusIds;
+        filterParam.Year = SelectedYear;
+        filterParam.Month = SelectedMonth;
+        filterParam.OrderBy = SelectedOrderBy;
+        filterParam.SortDirection = SelectedSortDirection;
+
+        Model = await OrderService.GetAllSalesByStatus(filterParam);
+    }
+
+
+    private async Task GoToFirstPage()
+    {
+        filterParam.Currentpage = 1;
+        await FilterData();
+    }
+
+    private async Task GoToLastPage()
+    {
+        filterParam.Currentpage = Model.TotalPages;
+        await FilterData();
+    }
+
+    private async Task GoToPage(int pageNumber)
+    {
+        filterParam.Currentpage = pageNumber;
+        await FilterData();
+    }
+
+    public void TriggerModal(CartsDto cart)
+    {
+        cartsDto = cart;
+    }
+
+    public async Task TriggerModalIncludeAddress(CartsDto cart)
+    {
+        cartsDto = cart;
+        if (cart.AddressId != 0 && cart.AddressId != null)
+        {
+            AddressSnapshot = await AccountService.GetAddressSnapshotBysId(cart.AddressId);
+        }
+    }
+
+    private void setParcelTypeNo(ChangeEventArgs e)
+    {
+        string deliveryTypeNo = e.Value.ToString();
+        cartsDto.ParcelTypeNo = deliveryTypeNo;
+    }
+
+    public bool IsNumberLegit()
+    {
+        if (cartsDto.ParcelNumber?.Length >= 13)
+            return true;
+        return false;
+    }
+
+    private async Task AdminApprove(CartsDto sale)
+    {
+        if (await OrderService.ConfirmByAdmin(sale))
+        {
+            await FilterData();
+        }
+    }
+
+    private async Task AdminAnnotate(CartsDto sale)
+    {
+        string msgAfterConfirmed = await ShowAnnotateConfirmation();
+        if (msgAfterConfirmed != null && msgAfterConfirmed != "")
+        {
+            sale.Annotation = msgAfterConfirmed;
+            if (await OrderService.AnnotateByAdmin(sale))
+            {
+                await FilterData();
+            }
+        }
+    }
+
+    private async Task Send()
+    {
+        if (IsNumberLegit())
+        {
+            if (await OrderService.AlreadySentByAdmin(cartsDto))
+            {
+                await FilterData();
+            }
+            await Swal.FireAsync(new SweetAlertOptions
+                {
+                    Icon = "success",
+                    Title = "เพิ่มหมายเลขพัสดุสำเร็จแล้ว",
+                    ShowConfirmButton = false,
+                    Timer = 3000
+                });
+        }
+        else
+        {
+            await Swal.FireAsync(new SweetAlertOptions
+                {
+                    Icon = "error",
+                    Title = "เลขพัสดุต้องมี 13-15 ตัวขึ้นไป",
+                    ShowConfirmButton = false,
+                    Timer = 3000,
+                    ShowCloseButton = true
+                });
+        }
+
+    }
+
+    private async Task AdminCancel(CartsDto sale)
+    {
+        string msgAfterConfirmed = await ShowDeleteConfirmation();
+        if (msgAfterConfirmed != null && msgAfterConfirmed != "")
+        {
+            if (sale.Annotation == null)
+            {
+                sale.Annotation = "";
+                sale.Annotation += $"{msgAfterConfirmed}";
+            }
+            else
+            {
+                sale.Annotation += $", {msgAfterConfirmed}";
+            }
+
+            if (await OrderService.CancelByAdmin(sale))
+            {
+                await FilterData();
+            }
+        }
+    }
+
+    private async Task Receipt(int saleId)
+    {
+        var url = $"{navigationManager.BaseUri}receipt/{saleId}";
+        await jsRuntime.InvokeVoidAsync("open", url, "_blank");
+    }
+
+    public async Task<string> ShowAnnotateConfirmation()
+    {
+        var result = await Swal.FireAsync(new SweetAlertOptions
+            {
+                Title = "ดำเนินการแจ้งข้อผิดพลาด",
+                Icon = SweetAlertIcon.Warning,
+                InputLabel = "หมายเหตุ",
+                Input = "textarea",
+                InputPlaceholder = "โปรดระบุข้อผิดพลาด...",
+                ShowCancelButton = true,
+                ConfirmButtonColor = "#ED9455",
+                ConfirmButtonText = "แจ้งข้อผิดพลาด!",
+                CancelButtonText = "ไม่! ยังก่อน",
+                ShowCloseButton = true
+            });
+
+        if (!string.IsNullOrEmpty(result.Value))
+        {
+            await Swal.FireAsync(
+                "Order have been cancel",
+                "ยกเลิกรายการสำเร็จแล้ว",
+                SweetAlertIcon.Success
+            );
+            return result.Value;
+        }
+
+        return null;
+    }
+
+    public async Task<string> ShowDeleteConfirmation()
+    {
+        //ทีแรกยกเลิกเป็น boolean ทีนี้อยากเปลี่ยนเป็นส่งข้อความกลับไปต่อ api แทน
+        // var result = await Swal.FireAsync(new SweetAlertOptions
+        //     {
+        //         Title = "Are you sure?",
+        //         Text = "คุณต้องการจะยกเลิกการสั่งซื้อดังกล่าวจริงไหม?",
+        //         Icon = SweetAlertIcon.Warning,
+        //         ShowCancelButton = true,
+        //         ConfirmButtonColor = "#d33",
+        //         ConfirmButtonText = "ยกเลิก!",
+        //         CancelButtonText = "ไม่! ยังก่อน"
+        //     });
+
+        var result = await Swal.FireAsync(new SweetAlertOptions
+            {
+                Title = "ดำเนินการยกเลิกการสั่งซื้อ",
+                Icon = SweetAlertIcon.Warning,
+                IconColor = "#d33",
+                InputLabel = "หมายเหตุการยกเลิกการสั่งซื้อ",
+                Input = "textarea",
+                InputPlaceholder = "โปรดระบุหมายเหตุ...",
+                ShowCancelButton = true,
+                ConfirmButtonColor = "#d33",
+                ConfirmButtonText = "ยกเลิกการสั่งซื้อ!",
+                CancelButtonText = "ไม่! ยังก่อน",
+                ShowCloseButton = true
+            });
+
+        if (!string.IsNullOrEmpty(result.Value))
+        {
+            await Swal.FireAsync(
+                "Annotate",
+                "แจ้งเตือนข้อผิดพลาดสำเร็จ",
+                SweetAlertIcon.Success
+            );
+            return result.Value;
+        }
+
+        return null;
+    }
+
+    public async Task DisplayAnnotation(CartsDto Sale)
+    {
+        var result = await Swal.FireAsync(new SweetAlertOptions
+            {
+                Title = "หมายเหตุข้อผิดพลาดต่างๆ...",
+                Html = $@"<b>หมายเหตุ:</b> <span style=""color:darkred"">{Sale.Annotation}</span>",
+                Text = $"{Sale.Annotation}",
+                Icon = SweetAlertIcon.Info,
+                ConfirmButtonText = "Ok",
+                ShowCloseButton = true
+            });
+    }
+
+        private async Task DownloadDelivery(int saleId, string? saleCode)
+    {
+        await ReportService.DeliveryPdf(saleId, saleCode);
+    }
+
+    private async Task DownloadSaleReport(int saleId)
+    {
+        await ReportService.SaleReportPdf(saleId);
+    }
+}

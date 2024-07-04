@@ -1,0 +1,100 @@
+﻿@page "/Login"
+@inherits LoginBase
+@inject HttpClient Http
+@* @inject IRecaptchaService RecaptchaService *@
+
+<PageTitle>Login</PageTitle>
+@attribute [AllowAnonymous]
+
+<AuthorizeView Context="authContext">
+    <Authorized>
+        <h1>
+            คุณเข้าสู่ระบบไปแล้วจะเข้ามาทำอะไรอีก?
+            <button class="btn btn-primary" @onclick="NavigateToRoot"></button>
+        </h1>
+    </Authorized>
+    <NotAuthorized>
+
+        <section class="content">
+            <div class="container-fluid">
+                <div class="login-container d-flex flex-column align-items-center">
+                    <div class="htext text-center mx-4" style="height:80px;">ยินดีต้อนรับเข้าสู่ระบบลูกค้า ร้าน maew123 ทุกท่าน</div>
+                    <div class="login-box">
+                        <!-- /.login-logo -->
+                        <div class="card card-outline card-primary">
+                            <div class="card-header text-center">
+                                <a href="#" class="h3"><b>เข้าสู่ระบบ</b></a>
+                            </div>
+                            <div class="card-body">
+                                <div class="box-centerside">
+                                    <p class="login-box-msg">Sign in to start your session</p>
+                                    <EditForm Context="formContext" class="form-signin" OnValidSubmit="SubmitAsync" Model="@model" Context="editContext">
+                                        @* ใส่ Context ไม่ให้ซ้ำกับ AuthorizeView *@
+                                        <div class="input-group mb-3">
+                                            <InputText class="form-control" @bind-Value="@model.Username" id="username" name="username" placeholder="Email/Username" required />
+                                            <div class="input-group-append">
+                                                <div class="input-group-text">
+                                                    <span class="fas fa-envelope"></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="input-group mb-3">
+                                            <InputText class="form-control" type="@InputType" @bind-Value="@model.Password" id="password" name="password" placeholder="Password" required />
+                                            <div class="input-group-append">
+                                                <button class="btn btn-outline-secondary" type="button" @onclick="TogglePasswordVisibility">
+                                                    <span class="fas fa-eye" style="color: @ToggleIconColor"></span>
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div style="width:50%">
+                                                <div class="icheck-primary">
+                                                    <a href="Register">สมัครสมาชิก&nbsp;</a>
+                                                    <i class="fas fa-solid fa-user-plus"></i>
+                                                </div>
+                                            </div>
+                                            <!-- /.col -->
+                                            <div style="width:50%; text-align:right;">
+                                                <a href="forgot-password">ลืมรหัสผ่าน?</a>
+                                            </div>
+                                            <!-- /.col -->
+                                        </div>
+
+                                        <div class="social-auth-links text-center mt-3 mb-3">
+
+                                            <button type="submit" class="btn btn-block login-button">
+                                                เข้าสู่ระบบ
+                                            </button>
+                                        </div>
+                                    </EditForm>
+                                    @if (isloading)
+                                    {
+                                        <DisplaySpinner />
+                                    }
+
+                                </div>
+
+                            </div>
+                            <!-- /.card-body -->
+                        </div>
+                        <!-- /.card -->
+                    </div>
+                    <!-- /.login-box -->
+                </div>
+            </div><!-- /.container-fluid -->
+        </section>
+    </NotAuthorized>
+</AuthorizeView>
+
+@code {
+    private string InputType { get; set; } = "password";
+    private bool ShowPassword { get; set; } = false;
+    private string ToggleIconColor => ShowPassword ? "green" : "gray";
+
+    private void TogglePasswordVisibility()
+    {
+        ShowPassword = !ShowPassword;
+        InputType = ShowPassword ? "text" : "password";
+    }
+
+}

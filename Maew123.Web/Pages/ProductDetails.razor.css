@@ -1,0 +1,180 @@
+﻿a {
+    color: black !important;
+}
+
+.media-img {
+    border: 1px solid rgba(0, 0, 0, 0.30);
+    max-height: 500px;
+    max-width: 500px;
+    border-radius: 6px;
+}
+
+.media-img-wrapper {
+    max-width: 500px;
+    max-height: 500px;
+    text-align: center;
+}
+
+.box-container {
+    display: flex;
+}
+
+.box {
+    box-sizing: border-box;
+    padding-top: 20px;
+}
+
+.box-25 {
+    flex: 0 0 25%;
+}
+
+.box-75 {
+    flex: 0 0 75%;
+}
+
+.original-price {
+    text-decoration: line-through;
+}
+
+.DetailContainer {
+    display: flex;
+    padding: 30px 25px;
+    gap: 10px;
+    flex-shrink: 0;
+    border-radius: 10px;
+    border: 1px solid rgba(0, 0, 0, 0.30);
+    background: #FFF;
+    margin-top: 20px;
+    margin-right: 20px;
+}
+
+.DetailContent {
+    flex: 1;
+}
+
+.DetailBox {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.DetailName {
+    font-size: 32px;
+    font-weight: 700;
+}
+
+.DetailInfo {
+    font-size: 20px;
+}
+
+.Remain {
+    font-size: 18px;
+    color: rgba(0, 0, 0, 0.30);
+}
+
+.Spacing {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.Cart-Button {
+    width: 65%;
+    height: 70px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    flex-shrink: 0;
+    border-radius: 5px;
+    background: #000030;
+    color: white;
+    margin: 0 auto;
+    text-align: center;
+    margin-top: 20px;
+    transition: transform 0.5s;
+}
+
+    .Cart-Button:hover {
+        transform: scale(1.05); /* Increase size on hover */
+    }
+
+.QuantityBox {
+    width: 100%;
+    height: 70px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+    flex-shrink: 0;
+    border-radius: 5px;
+    background: rgba(217, 217, 217, 0.4);
+    text-align: center;
+    margin-top: 20px;
+}
+
+.QuantityDisplay {
+    font-size: 18px;
+    font-weight: 700;
+}
+
+.QuantityButton {
+    width: 80px;
+    transition: transform 0.5s;
+}
+
+    .QuantityButton:hover {
+        transform: scale(1.6); /* Increase size on hover */
+    }
+
+/*<-----------right side----------->*/
+.SaleContainer {
+    display: flex;
+    flex-direction: column;
+    padding: 30px 25px;
+    flex-shrink: 0;
+    border-radius: 10px;
+    border: 1px solid rgba(0, 0, 0, 0.30);
+    background: #FFF;
+    margin-top: 20px;
+}
+
+.SaleTitle {
+    font-size: 24px;
+    font-weight: 700;
+}
+
+.SaleDetail {
+    font-size: 18px;
+}
+
+.Centering {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.redbox {
+    margin-top: 10px;
+    padding: 2px 5px 2px 5px;
+    text-align: center;
+    color: white;
+    border-radius: 10px;
+    background: #FF0000;
+}
+
+@media (max-width: 1023.98px) {
+    .media {
+        flex-direction: column;
+    }
+
+    .media-img {
+        max-width: 300px;
+    }
+
+    .media-img-wrapper {
+        width: 100%;
+        height: auto;
+    }
+}

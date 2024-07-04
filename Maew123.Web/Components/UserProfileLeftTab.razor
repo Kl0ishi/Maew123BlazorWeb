@@ -1,0 +1,39 @@
+﻿@inject AuthenticationStateProvider authStateProvider
+@inject IAuthenticationService AuthenticationService
+@inject NavigationManager NavigationManager
+
+<div class="box box-25">
+    <div class="MenuHead" style="margin-left:10px;">บัญชีของฉัน</div>
+    <div class="ArrangeBox">
+        <div class="MakeSpace">
+            <img class="imgmenu" width="48" height="48" src="https://img.icons8.com/material-rounded/48/name.png" alt="name" />
+            <a href="UserInfo" class="MenuText">ข้อมูลส่วนตัว</a>
+        </div>
+        <div class="MakeSpace">
+            <img class="imgmenu" width="48" height="48" src="https://img.icons8.com/material-rounded/48/place-marker.png" alt="place-marker" />
+            <a href="Address" class="MenuText">ที่อยู่สำหรับการจัดส่ง</a>
+        </div>
+        <div class="MakeSpace">
+            <img class="imgmenu" width="48" height="48" src="https://img.icons8.com/material-rounded/48/cardboard-box.png" alt="cardboard-box" />
+            <a href="DeliveryStatus" class="MenuText">รายการซื้อสินค้า</a>
+        </div>
+        <div class="MakeSpace">
+            <img class="imgmenu" width="48" height="48" src="https://img.icons8.com/windows/48/star-of-bethlehem.png" alt="star-of-bethlehem" />
+            <a href="WishList" class="MenuText">รายการ WishList</a>
+        </div>
+        <div class="MakeSpace">
+            <img class="imgmenu" width="48" height="48" src="https://img.icons8.com/material-rounded/48/exit.png" alt="exit" />
+            <a href="" class="MenuText" @onclick="Logout">ออกจากระบบ</a>
+        </div>
+    </div>
+</div>
+
+
+@code{
+    private async Task Logout()
+    {
+        await AuthenticationService.LogoutAsync();
+        await authStateProvider.GetAuthenticationStateAsync();
+        NavigationManager.NavigateTo("", forceLoad: true);
+    }
+}

@@ -1,0 +1,137 @@
+﻿@page "/HowToRegister"
+@inherits RegisterBase
+@inject HttpClient Http
+@inject NavigationManager navigationManager
+<section class="content">
+    <div class="container-fluid">
+        <div class="box-container">
+            <div class="box box-25">
+                <div class="MenuHead">Help & Information</div>
+                <div class="ArrangeBox">
+                <div class="col-sm">
+                <div class="MenuSubHead">ติดต่อเรา</div>
+                <div class="MenuTC">
+                            <a href="Contact" class="MenuText">ติดต่อเรา</a>
+                    <a href="Contact" class="MenuTR">
+                        <svg class="MenuIcon" xmlns="http://www.w3.org/2000/svg" width="19" height="33" viewBox="0 0 19 33" fill="none">
+                            <path d="M4 28.6946L14.1646 18.5299C15.3651 17.3295 15.3651 15.3651 14.1646 14.1647L4 4" stroke="#292D32" stroke-width="6.90062" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round" />
+                        </svg>
+                    </a>
+                </div>
+                <div class="MenuTC">
+                    <a href="AboutUs" class="MenuText">เกี่ยวกับร้าน maew123</a>
+                    <a href="AboutUs" class="MenuTR">
+                        <svg class="MenuIcon" xmlns="http://www.w3.org/2000/svg" width="19" height="33" viewBox="0 0 19 33" fill="none">
+                            <path d="M4 28.6946L14.1646 18.5299C15.3651 17.3295 15.3651 15.3651 14.1646 14.1647L4 4" stroke="#292D32" stroke-width="6.90062" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round" />
+                        </svg>
+                    </a>
+                </div>
+                </div>
+                <div class="col-sm">
+                <div class="MenuSubHead">ช้องปิ้งออนไลน์</div>
+                <div class="MenuTC">
+                            <a href="HowtoRegister" class="MenuText" style="color:#00F">วิธีสมัครสมาชิก</a>
+                    <a href="HowtoRegister" class="MenuTR">
+                        <svg class="MenuIcon" xmlns="http://www.w3.org/2000/svg" width="19" height="33" viewBox="0 0 19 33" fill="none">
+                            <path d="M4 28.6946L14.1646 18.5299C15.3651 17.3295 15.3651 15.3651 14.1646 14.1647L4 4" stroke="#292D32" stroke-width="6.90062" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round" />
+                        </svg>
+                    </a>
+                </div>
+                <div class="MenuTC">
+                    <a href="HowtoShopping" class="MenuText">วิธีการซื้อออนไลน์</a>
+                    <a href="HowtoShopping" class="MenuTR">
+                        <svg class="MenuIcon" xmlns="http://www.w3.org/2000/svg" width="19" height="33" viewBox="0 0 19 33" fill="none">
+                            <path d="M4 28.6946L14.1646 18.5299C15.3651 17.3295 15.3651 15.3651 14.1646 14.1647L4 4" stroke="#292D32" stroke-width="6.90062" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round" />
+                        </svg>
+                    </a>
+                </div>
+                <div class="MenuTC">
+                    <a href="HowtoChangePassword" class="MenuText">วิธีเปลี่ยนรหัสผ่าน</a>
+                    <a href="HowtoChangePassword" class="MenuTR">
+                        <svg class="MenuIcon" xmlns="http://www.w3.org/2000/svg" width="19" height="33" viewBox="0 0 19 33" fill="none">
+                            <path d="M4 28.6946L14.1646 18.5299C15.3651 17.3295 15.3651 15.3651 14.1646 14.1647L4 4" stroke="#292D32" stroke-width="6.90062" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round" />
+                        </svg>
+                    </a>
+                </div>
+                <div class="MenuTC">
+                    <a href="Transfer" class="MenuText">การจัดส่งสินค้าทางเรา</a>
+                    <a href="Transfer" class="MenuTR">
+                        <svg class="MenuIcon" xmlns="http://www.w3.org/2000/svg" width="19" height="33" viewBox="0 0 19 33" fill="none">
+                            <path d="M4 28.6946L14.1646 18.5299C15.3651 17.3295 15.3651 15.3651 14.1646 14.1647L4 4" stroke="#292D32" stroke-width="6.90062" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round" />
+                        </svg>
+                    </a>
+                </div>
+                </div>
+                <div class="col-sm">
+                <div class="MenuSubHead">นโยบายและข้อกำหนด</div>
+                <div class="MenuTC">
+                    <a href="TermAndCondition" class="MenuText">ข้อกำหนดและเงื่อนไข</a>
+                    <a href="TermAndCondition" class="MenuTR">
+                        <svg class="MenuIcon" xmlns="http://www.w3.org/2000/svg" width="19" height="33" viewBox="0 0 19 33" fill="none">
+                            <path d="M4 28.6946L14.1646 18.5299C15.3651 17.3295 15.3651 15.3651 14.1646 14.1647L4 4" stroke="#292D32" stroke-width="6.90062" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round" />
+                        </svg>
+                    </a>
+                </div>
+                <div class="MenuTC">
+                    <a href="PrivacyTerm" class="MenuText">นโยบายความเป็นส่วนตัว</a>
+                    <a href="PrivacyTerm" class="MenuTR">
+                        <svg class="MenuIcon" xmlns="http://www.w3.org/2000/svg" width="19" height="33" viewBox="0 0 19 33" fill="none">
+                            <path d="M4 28.6946L14.1646 18.5299C15.3651 17.3295 15.3651 15.3651 14.1646 14.1647L4 4" stroke="#292D32" stroke-width="6.90062" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round" />
+                        </svg>
+                    </a>
+                </div>
+                </div>
+            </div>
+            </div>
+
+            <div class="box box-75 pb-4">
+    <div class="ContentTitle">วิธีการสมัครสมาชิก</div>
+    <div class="col-12 pb-5">
+
+    <div class="LeftPosition">
+    <div class="LaterUse">
+    <img style="border-radius: 20px;" class="CImage" src="/picture/rg1.png" />
+    <div class="TP">
+        <span class="CT1" style="border-radius: 10px;background: #060051;">ขั้นตอนที่ 1.</span>
+        <span class="CT2"> เมื่อเข้าถึงหน้าหลักของเว็บไซต์ ให้กด เข้าสู่ระบบ ทางขวาบนของเว็บไซต์</span>
+    </div>
+    </div>
+        <div class="PositionArrow">
+            <div class="ItemPosition">
+                                <img width="100" height="100" src="https://img.icons8.com/glyph-neue/100/right-down2.png" alt="right-down2" />
+            </div>
+        </div>
+    </div>
+
+    <div class="container pt-3">
+        <div class="GORIGHT">
+        <img style="border-radius: 20px;" class="CImageSecond" src="/picture/rg2.png" />
+        <div class="TP">
+            <span class="CT1" style="border-radius: 10px;background: #060051;">ขั้นตอนที่ 2.</span>
+            <span class="CT2">เมื่อเข้ามาถึงหน้า เข้าสู่ระบบแล้วให้กดปุ่ม สมัครสมาชิกด้านล่าง
+            </span>
+        </div>
+        </div>
+    </div>
+
+        <div class="LeftPosition pt-3">
+    <div class="d-flex flex-column">
+        <img style="border-radius: 20px;" class="CImageThird" src="/picture/rg3.png" />
+        <div class="TP">
+            <span class="CT1" style="border-radius: 10px;background: #060051;">ขั้นตอนที่ 3.</span>
+            <span class="CT2">หลังจากนั้นให้กรอกข้อมูลทั้งหมด แล้วกดปุ่มยอมรับข้อตกลง ของทางร้าน และกดสมัครสมาชิก
+            </span>
+        </div>
+    </div>
+        <div class="PositionArrow">
+            <div class="ItemPosition">
+                <img width="100" height="100" src="https://img.icons8.com/glyph-neue/100/down-left.png" alt="down-left"/>
+            </div>
+        </div>
+    </div>
+
+    </div>
+    </div>
+            </div>
+        </div><!-- /.container-fluid -->
+</section>

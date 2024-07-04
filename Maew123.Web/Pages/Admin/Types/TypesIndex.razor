@@ -1,0 +1,250 @@
+﻿@inject AuthenticationStateProvider AuthStateProvider
+@using System.Security.Claims
+@page "/admin/TypesIndex"
+@attribute [Authorize(Roles = "Admin,Employee")]
+@inherits TypesBase
+@inject HttpClient Http
+@inject SweetAlertService Swal
+
+<section class="content">
+    <div class="container-fluid">
+
+        <div class="BoxInner">
+            <div class="card card-outline card-primary">
+                <div class="ContainerAll text-center py-3">
+
+                    <div class="box-centerside">
+                        <div class="pb-4">
+                            <h4>สร้างชนิดสินค้า</h4>
+                        </div>
+                        <form id="myForm" @onsubmit="CreateProductType" class="InnerBox justify-content-center">
+                            <div class="create-col">
+                                <div class="half">
+                                    <div class="InputCB">
+                                        <label for="ProductTypeId" class="text-left ml-2 mt-2 boxtext">ID ชนิดของสินค้า</label>
+                                        <input type="text" class="regboxdisable" id="ProductTypeId" name="ProductTypeId" placeholder="Auto" disabled />
+                                    </div>
+                                    <div class="InputCB">
+                                        <label for="ProductTypeName" class="text-left ml-2 mt-2 boxtext">ชื่อชนิดสินค้า</label>
+                                        <input type="text" class="regboxhalf" @bind="model.ProductTypeName" id="ProductTypeName" name="ProductTypeName" placeholder="ProductTypeName" />
+                                    </div>
+                                    <div class="InputCB">
+                                        <label for="ProductTypeName" class="text-left ml-2 mt-2 boxtext">หมวดหมู่ (ID)</label>
+                                        <select type="text" class="regboxhalf" @bind="model.ProductCategoryId" id="ProductCatagoryName" name="ProductCatagoryName" placeholder="Pick Catagory">
+                                            <option value="">-- Choose Catagory --</option>
+                                            @foreach (var cata in _catagoryService.Catagories)
+                                            {
+                                                <option value="@cata.ProductCatagoryId">@cata.ProductCatagoryName (@cata.ProductCatagoryId)</option>
+                                            }
+                                        </select>
+
+                                    </div>
+                                </div>
+                                <div class="ButtonPosition">
+                                    <div class="ItemPosition">
+                                        <input type="submit" value="ทำการสร้างชนิดสินค้า" class="btn ButtonSubmit" style="background: #000030;color: white;float: right" />
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>ID ชนิดสินค้า</th>
+                    <th>ชื่อชนิดสินค้า</th>
+                    <th>สถานะชนิดสินค้า</th>
+                    <th>หมวดหมู่</th>
+                    <th>เพิ่มโดย</th>
+                    <th>วันที่เพิ่ม</th>
+                    <th>อัพเดทโดย</th>
+                    <th>อัพเดทวันที่</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+
+                @foreach (var item in _typeService.ProductTypes)
+                {
+                    <tr>
+                        <td>@item.ProductTypeId</td>
+                        <td>@item.ProductTypeName</td>
+                        <td>@item.ProductTypeStatus</td>
+                        <td>@item.ProductCategoryId</td>
+                        <td>@item.InsertBy</td>
+                        <td>@item.InsertDate</td>
+                        <td>@item.UpdateBy</td>
+                        <td>@item.UpdateDate</td>
+                        <td>
+                            <button type="button" @onclick="@(() => SendType(@item.ProductTypeId))" class="btn btn-warning" style="width:100%;" data-toggle="modal" data-target="#exampleModal">
+                                แก้ไข
+                            </button>
+                            <button type="button" class="btn btn-danger mt-2" style="width:100%;" @onclick="@(() => HandleDeleteButtonClick(@item.ProductTypeId))">
+                                ลบ
+                            </button>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+    </div><!-- /.container-fluid -->
+</section>
+
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">แก้ไขชนิดสินค้า</h5>
+                <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <EditForm id="myForm" class="form-signin justify-content-center" OnValidSubmit="@SubmitForm" Model="@model">
+                    <DataAnnotationsValidator />
+                    <div class="ModalBox">
+                        <div class="smallerbox mb-3 pr-2">
+                            <label class="col-form-label">ID ชนิดสินค้า:</label>
+                            <input type="number" class="form-control" @bind="Model.ProductTypeId" disabled />
+                        </div>
+                        <div class="mediumbox mb-3 pr-2">
+                            <label class="col-form-label">ชื่อชนิดสินค้า:</label>
+                            <input type="text" class="form-control" @bind="Model.ProductTypeName" />
+                        </div>
+                        <div class="mediumbox mb-3">
+                            <label for="ProductTypeName" class="text-left ml-2 mt-2 boxtext">ชื่อหมวดหมู่ (id)</label>
+                            <select type="text" class="form-control" @bind="Model.ProductCategoryId" id="ProductTypeName" name="ProductTypeName" placeholder="ProductTypeName">
+                                <option value=""></option>
+                                @foreach (var cata in _catagoryService.Catagories)
+                                {
+                                    <option value="@cata.ProductCatagoryId">@cata.ProductCatagoryName (@cata.ProductCatagoryId)</option>
+                                }
+                            </select>
+
+                        </div>
+
+                    </div>
+                    <button type="submit" class="btn btn-primary">ทำการแก้ไข ชื่อชนิดสินค้า</button>
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">ปิด</button>
+                </EditForm>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@code {
+    [Parameter]
+    public int Id { get; set; }
+
+    private ProductType Model = new ProductType();
+    bool authorized = false;
+    bool EmployeeAuthorized = false;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await _typeService.getProductTypes();
+        await _catagoryService.GetCatagories();
+        try
+        {
+            var authState = await AuthStateProvider.GetAuthenticationStateAsync();
+
+            if (authState.User.Identity.IsAuthenticated)
+            {
+                var roleClaim = authState.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role);
+
+                if (roleClaim != null && roleClaim.Value.Contains("Admin"))
+                {
+                    authorized = true;
+                }
+
+                if (roleClaim != null && roleClaim.Value.Contains("Employee"))
+                {
+                    EmployeeAuthorized = true;
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+
+            Console.WriteLine(ex.Message);
+        }
+    }
+    public async Task SendType(int Id)
+    {
+        var result = await _typeService.GetProductType(Id);
+        Model = result.Data!;
+    }
+
+    private async Task HandleDeleteButtonClick(int producttypeid)
+    {
+        bool confirmed = await ShowDeleteConfirmation(producttypeid);
+        if (confirmed)
+        {
+            await _typeService.DeleteProductType(producttypeid);
+
+            // Remove the category from the _catagoryService.Catagories collection
+            var typetoremove = _typeService.ProductTypes!.FirstOrDefault(cat => cat.ProductTypeId == producttypeid);
+            if (typetoremove != null)
+            {
+                _typeService.ProductTypes!.Remove(typetoremove);
+            }
+        }
+    }
+
+
+    public async Task<bool> ShowDeleteConfirmation(int catagoryId)
+    {
+        var result = await Swal.FireAsync(new SweetAlertOptions
+            {
+                Title = "Are you sure?",
+                Text = "คุณต้องการจะลบจริงๆหรือไม่?",
+                Icon = SweetAlertIcon.Warning,
+                ShowCancelButton = true,
+                ConfirmButtonColor = "#d33",
+                ConfirmButtonText = "Yes, delete it!",
+                CancelButtonText = "No, keep it"
+            });
+
+        if (!string.IsNullOrEmpty(result.Value))
+        {
+            await Swal.FireAsync(
+                "Deleted",
+                $"Product with ID {catagoryId} has been deleted.",
+                SweetAlertIcon.Success
+            );
+            return true;
+        }
+        return false;
+    }
+
+    public async Task SubmitForm()
+    {
+        var response = await _typeService.UpdateProductType(Model);
+        if (response.Success)
+        {
+            model = new ProductType();
+            await Swal.FireAsync(new SweetAlertOptions
+                {
+                    Icon = "success",
+                    Title = "เปลี่ยนรหัสผ่านสำเร็จแล้ว",
+                    ShowConfirmButton = false,
+                    Timer = 3000
+                }
+            );
+        }
+        else
+        {
+            await Swal.FireAsync(new SweetAlertOptions
+                {
+                    Icon = "error",
+                    Title = "รหัสเดิมไม่ถูกต้อง",
+                    ShowConfirmButton = false,
+                    Timer = 3000
+                });
+        }
+    }
+}

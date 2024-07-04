@@ -1,0 +1,273 @@
+﻿@inject NavigationManager NavigationManager
+@inject ICartService CartService
+@inject IAuthenticationService AuthService
+@inject IOrderService OrderService
+@inject IAccountService AccountService
+@inject SweetAlertService Swal
+
+@page "/cart"
+
+<PageTitle>ShoppingCart</PageTitle>
+
+<div class="d-flex">
+    <h3 class="my-4 mr-4" style="font-weight:700">ตะกร้าสินค้า</h3>
+    <div class="Centering">
+        <button class="btn btn-success" style="height: 40px;width: 120px;" @onclick="CheckAllProducts">@((selectAll ? "เลือกออกทั้งหมด" : "เลือกทั้งหมด"))</button>
+    </div>
+</div>
+
+@if (cartProducts == null || cartProducts.Count == 0)
+{
+    <span>@message</span>
+}
+else
+{
+    var firstProductPrice = cartProducts.FirstOrDefault()?.Price;
+    <div class="d-flex">
+        <div class="box-75">
+            @foreach (var product in cartProducts)
+            {
+                <div class="CartContainer mb-3">
+                    <div>
+                        <input class="CheckPosition" type="checkbox" checked="@IsProductChecked(product.ProductId)" @onchange="() => ToggleProductCheckState(product.ProductId)" />
+                    </div>
+
+                    <div class="image-wrapper">
+                        <img src="@($"https://localhost:7266/api/images/Products/{product.ImageUrl}")" href="/product/@product.ProductId" class="ImgCart" />
+                    </div>
+                    <div class="ItemInfo">
+                        <a class="ItemTitle" href="/product/@product.ProductId">@product.ProductName</a>
+                        @* <span>@product.PromotionName</span><br /> *@
+                        <div class="d-flex flex-column justify-content-between my-4">
+                            <div class="d-flex my-4">
+                                @if (product.PromotionId == null)
+                                {
+                                    <div style="font-size: 28px;">@product.Price.ToString("N2").-</div>
+                                }
+                                else
+                                {
+                                    <div class="PriceText1">@((product.Price - product.Discount).ToString("N2")).-</div>
+                                    <div class="PriceText2">@product.Price.ToString("N2").-</div>
+                                }
+                            </div>
+
+                            <input type="number" value="@product.Quantity"
+                                   @onchange="@((ChangeEventArgs e) => UpdateQuantity(e, product))"
+                                   class="form-control input-quantity"
+                                   min="1" />
+                        </div>
+                        @* <button class="btn-delete" @onclick="@(() =>
+                RemoveProductFromCart(product.ProductId))">
+                Delete
+                </button> *@
+                    </div>
+                    <div class="Centering" style="margin-left:auto;">
+                        <div style="font-size: 28px;margin-right: 20px;">@((product.Proprice != 0 ? product.Proprice * product.Quantity : product.Price * product.Quantity).Value.ToString("N2")).-</div>
+                        <a style="width:80px;" @onclick="@(() => RemoveProductFromCart(product.ProductId))">
+                            <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="40" height="40" viewBox="0 0 64 64">
+                                <path d="M 28 6 C 25.791 6 24 7.791 24 10 L 24 12 L 23.599609 12 L 10 14 L 10 17 L 54 17 L 54 14 L 40.400391 12 L 40 12 L 40 10 C 40 7.791 38.209 6 36 6 L 28 6 z M 28 10 L 36 10 L 36 12 L 28 12 L 28 10 z M 12 19 L 14.701172 52.322266 C 14.869172 54.399266 16.605453 56 18.689453 56 L 45.3125 56 C 47.3965 56 49.129828 54.401219 49.298828 52.324219 L 51.923828 20 L 12 19 z M 20 26 C 21.105 26 22 26.895 22 28 L 22 51 L 19 51 L 18 28 C 18 26.895 18.895 26 20 26 z M 32 26 C 33.657 26 35 27.343 35 29 L 35 51 L 29 51 L 29 29 C 29 27.343 30.343 26 32 26 z M 44 26 C 45.105 26 46 26.895 46 28 L 45 51 L 42 51 L 42 28 C 42 26.895 42.895 26 44 26 z"></path>
+                            </svg>
+                        </a>
+                    </div>
+                    @* <div class="">ราคา: $@product.Price</div>
+            <div class="fw-bolder">ส่วนลด: $@(product.Proprice != null ? product.Price - product.Proprice : 0)</div>
+            <div class=" fw-bold">จำนวน: @product.Quantity</div>
+            <div class="fw-bold">รวมเป็น: $@(product.Proprice != null ? product.Proprice * product.Quantity : product.Price * product.Quantity)</div> *@
+                </div>
+            }
+        </div>
+        <div class="box-25">
+            <div class="SummeryContainer">
+                <div class="CartTitle">สรุปการซื้อ</div>
+                <div class="PriceSpacing mt-3">
+                    <div class="CartText">ราคา</div>
+                    <div class="CartText">@(cartProducts.Sum(product => product.Discount != 0 ? (product.Price - product.Discount) * product.Quantity : product.Price * product.Quantity).ToString("N2")) บาท</div>
+                </div>
+                <div class="PriceSpacing mt-3">
+                    <div class="CartText">ส่วนลด</div>
+                    <div class="CartText">@(cartProducts.Sum(product => product.Discount != 0 ? (product.Discount) * product.Quantity : 0).ToString("N2")) บาท</div>
+                </div>
+                <hr />
+                <div class="PriceSpacing">
+                    <div class="CartTitle">ยอดสุทธิ</div>
+                    <div class="cart-product-price">
+                        @*             ราคารวม (@cartProducts.Count): $@cartProducts.Sum(product => product.Price * product.Quantity) *@
+                        @(cartProducts.Sum(product => product.Discount != 0 ? (product.Price - product.Discount) * product.Quantity : product.Price * product.Quantity).ToString("N2")) บาท
+                    </div>
+                </div>
+                <div style="font-size:16px;">(ราคารวมภาษีเพิ่มเติมแล้ว)</div>
+                <div class="flex-colume mt-3">
+                    <button @onclick="PlaceOrder" class="btn cart-button" style="background: #2CA900;color: #FFFFFF;border: 2px solid #2CA900;">ดำเนินการต่อ</button>
+                    <button @onclick="GoToHome" class="btn cart-button mt-2" style="background: white;color: #00B227;border: 2px solid #2CA900;">เลือกสินค้าต่อ</button>
+                </div>
+            </div>
+            @if (isAuthenticated)
+            {
+                <div class="SummeryContainer mt-2">
+                    <h5 style="font-weight:700;">Delivery Address</h5>
+                    <AddressDropDown Addresses="AccountService.userAddresses" OnAddressSelected="@((int addressId) => UpdateAddress(addressId))" />
+                </div>
+            }
+        </div>
+    </div>
+}
+
+@code {
+    List<CartDetailsDto> cartProducts = null;
+
+    private int SelectedAddressId { get; set; }
+    List<int> checkedProductIds = new List<int>();
+
+    private void UpdateAddress(int addressId)
+    {
+        SelectedAddressId = addressId;
+    }
+
+    string message = "Loading cart...";
+    bool isAuthenticated = false;
+
+    protected override async Task OnInitializedAsync()
+    {
+        isAuthenticated = await AuthService.IsUserAuthenticated();
+        if (isAuthenticated)
+        {
+            await AccountService.GetUserAddresses();
+        }
+        await LoadCart();
+    }
+
+    private async Task RemoveProductFromCart(int productId)
+    {
+        await CartService.RemoveProductFromCart(productId);
+        await LoadCart();
+    }
+
+    private async Task LoadCart()
+    {
+        if ((await CartService.GetCartItems()).Count == 0)
+        {
+            message = "Your cart is empty.";
+            cartProducts = new List<CartDetailsDto>();
+        }
+        else
+        {
+            cartProducts = await CartService.GetCartProducts();
+        }
+    }
+
+    private async Task UpdateQuantity(ChangeEventArgs e, CartDetailsDto product)
+    {
+        product.Quantity = int.Parse(e.Value.ToString());
+        if (product.Quantity < 1)
+            product.Quantity = 1;
+        await CartService.UpdateQuantity(product);
+    }
+
+    private async Task PlaceOrder()
+    {
+        var checkedProducts = cartProducts.Where(product => checkedProductIds.Contains(product.ProductId)).ToList();
+        if (checkedProducts.Count == 0) // Check if no products are checked
+        {
+            await Swal.FireAsync(new SweetAlertOptions
+                {
+                    Icon = "warning",
+                    Title = "โปรดเลือกสินค้าที่ต้องการสั่งซื้อ",
+                    ShowConfirmButton = false,
+                    Timer = 3000
+                });
+            return; // Exit the method if no products are checked
+        }
+
+        if (!isAuthenticated)
+        {
+            await Swal.FireAsync(new SweetAlertOptions
+                {
+                    Icon = "warning",
+                    Title = "โปรดเข้าสู่ระบบก่อนการดำเนินการ",
+                    ShowConfirmButton = false,
+                    Timer = 3000
+                });
+        }
+        else if (SelectedAddressId == 0)
+        {
+            await Swal.FireAsync(new SweetAlertOptions
+                {
+                    Icon = "warning",
+                    Title = "โปรดระบุที่อยู่จัดส่ง",
+                    ShowConfirmButton = false,
+                    Timer = 3000
+                });
+        }
+        else
+        {
+            CartDto cartDto = new CartDto();
+            foreach (CartDetailsDto cartitem in checkedProducts) // Iterate over checkedProducts instead of cartProducts
+            {
+                var item = new ItemQuantityDto
+                    {
+                        ProductId = cartitem.ProductId,
+                        Quantity = cartitem.Quantity
+                    };
+                cartDto.Quans.Add(item);
+            }
+
+            cartDto.AddressId = SelectedAddressId;
+
+            var result = await OrderService.Checkout(cartDto);
+            await LoadCart();
+            if (result.Data > 0)
+            {
+                //await CartService.RemoveCart(); อันเก่าที่ลบทั้งหมดจากlocalsto
+                await CartService.RemoveCheckedItemsFromCart(checkedProducts);
+                NavigationManager.NavigateTo($"Payment/{result.Data}");
+            }
+            else
+            {
+                await Swal.FireAsync(new SweetAlertOptions
+                    {
+                        Icon = "error",
+                        Title = result.Message,
+                        ShowConfirmButton = false,
+                        Timer = 3000
+                    });
+            }
+
+        }
+    }
+
+    bool selectAll = false;
+
+    private void CheckAllProducts()
+    {
+        if (selectAll)
+        {
+            checkedProductIds.Clear();
+        }
+        else
+        {
+            checkedProductIds = cartProducts.Select(p => p.ProductId).ToList();
+        }
+        selectAll = !selectAll;
+    }
+    Dictionary<int, bool> productCheckStates = new Dictionary<int, bool>();
+    private bool IsProductChecked(int productId)
+    {
+        return checkedProductIds.Contains(productId);
+    }
+
+    private void ToggleProductCheckState(int productId)
+    {
+        if (checkedProductIds.Contains(productId))
+        {
+            checkedProductIds.Remove(productId);
+        }
+        else
+        {
+            checkedProductIds.Add(productId);
+        }
+    }
+    private void GoToHome()
+    {
+        NavigationManager.NavigateTo("");
+    }
+}

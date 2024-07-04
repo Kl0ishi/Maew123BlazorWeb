@@ -1,0 +1,92 @@
+﻿@page "/Product-Catagory"
+@page "/Product-Catagory/{catagoryUrl}"
+@page "/Product-Catagory/Product-Type/{tId:int}"
+@page "/search/{searchText}"
+@inject DialogService DialogService
+@inject IProductService ProductService
+@inject ICatagoryService CategoryService
+@inject ITypeService TypeService
+@inject ICartService CartService
+
+<section class="content">
+    <div class="container-fluid">
+        <div class="box-container">
+            <div class="box box-20">
+                <div class="MenuHead pb-4">Searching Product</div>
+                <div class="ArrangeBox">
+                    <div class="col-sm">
+                        @foreach (var category in CategoryService.Catagories)
+                        {
+                            <div class="MenuTC">
+                                <a href="Product-Catagory/@category.Url" class="MenuText">@category.ProductCatagoryName</a>
+                                <a @onclick="() => SelectCategory(category.ProductCatagoryId)" class="MenuTR">
+                                    <i class="MenuIcon fas fa-plus"></i>
+                                </a>
+                            </div>
+                            @if (selectedCategoryId == category.ProductCatagoryId)
+                            {
+                                <div class="ProductTypes">
+                                    @foreach (var productType in TypeService.ProductTypes.Where(pt => pt.ProductCategoryId == category.ProductCatagoryId))
+                                    {
+                                        <div>
+                                            <a href="Product-Catagory/Product-Type/@productType.ProductTypeId" class="ProductType">@productType.ProductTypeName</a>
+                                        </div>
+                                    }
+                                </div>
+                            }
+                        }
+                    </div>
+                </div>
+            </div>
+
+            <div class="box box-80 pb-4">
+                <div class="ContentText col-12">
+                    <ProductList />
+                </div>
+            </div>
+        </div>
+    </div><!-- /.container-fluid -->
+</section>
+
+@code {
+    protected override async Task OnInitializedAsync()
+    {
+        await CategoryService.GetCatagories();
+        await TypeService.getProductTypes();
+    }
+
+    int selectedCategoryId = -1;
+    void SelectCategory(int categoryId)
+    {
+        if (selectedCategoryId == categoryId)
+        {
+            selectedCategoryId = -1;
+            return;
+        }
+        selectedCategoryId = categoryId;
+    }
+
+    [Parameter]
+    public string? CatagoryUrl { get; set; } = null;
+    [Parameter]
+    public int? tId { get; set; } = null;
+    [Parameter]
+    public string? SearchText { get; set; } = null;
+
+    protected override async Task OnParametersSetAsync()
+    {
+        if (SearchText != null)
+        {
+            await ProductService.SearchProducts(SearchText);
+        }
+        else if (CatagoryUrl != null)
+        {
+            await ProductService.GetProducts(CatagoryUrl);
+        }
+        else if (tId != null)
+        {
+            await ProductService.GetProductsByTypeUnderCate(tId ?? 0);
+        }
+    }
+
+}

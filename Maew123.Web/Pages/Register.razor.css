@@ -1,0 +1,170 @@
+﻿.Regis-container {
+    display: flex;
+    align-items: center;
+    flex-direction:column;
+    justify-content: center;
+}
+.input-group{
+}
+.Regis-box {
+    width: 70%;
+    height: 650px;
+    flex-shrink: 0;
+    fill: #FFF;
+    stroke-width: 1px;
+    stroke: rgba(0, 0, 0, 0.20);
+}
+.Regis-button {
+    width: 400px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    flex-shrink: 0;
+    border-radius: 15px;
+    background: #000030;
+    color: white;
+    margin: 0 auto;
+    text-align: center;
+}
+.card{
+    width: 900px;
+}
+.Regiscontainer{
+    align-items:center;
+    justify-content:center;
+    width:100%
+}
+.box-centerside {
+    /*background: url("../images/greybox-center-bg1.jpg") repeat-x scroll center top transparent;*/
+    display: inline-block;
+    margin-left: 0%;
+    width: 50%;
+}
+.google-button {
+    width: 400px;
+    padding: 10px 27px;
+    gap: 60px;
+    border: 1px solid rgba(0, 0, 0, 0.30);
+    background: #FFF;
+    margin: 0 auto;
+    text-align: center;
+}
+.test {
+    width: 900px;
+    height: 730px;
+}
+
+.regbox {
+    margin-right: auto;
+    width: 45%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+}
+.regbox2 {
+    margin-right: auto;
+    width: 40%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+.regtext {
+    color: rgba(0, 0, 0, 0.30);
+    font-family: Inter;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+}
+
+.checkbox {
+    display: flex;
+    justify-content: end;
+    padding: 10px;
+    display: flex;
+    width: 100%;
+    text-align: left;
+    margin-top: 20px;
+}
+
+.htext{
+    font-size:32px;
+    font-weight:700;
+}
+.htext2 {
+    font-size: 24px;
+    font-weight: 700;
+    display: none;
+}
+@media(max-width:990px){
+    .regbox {
+        width: 43%;
+    }
+    .regbox2{
+        width: 37%;
+    }
+    .htext{
+        font-size:26px;
+    }
+}
+
+@media(max-width:768px) {
+    .htext {
+        display: none;
+    }
+    .htext2{
+        display:block;
+    }
+    .box-centerside {
+        width: 70%;
+    }
+
+    hr {
+        display: none;
+    }
+
+    .regbox {
+        width: 42%;
+    }
+
+    .regbox2 {
+        width: 36%;
+    }
+
+    .Regis-container {
+    }
+}
+
+    @media(max-width:628px) {
+        .htext {
+            font-size: 22px;
+        }
+
+        .h4 {
+            font-size: 20px;
+        }
+
+        .box-centerside {
+            width: 100%;
+        }
+
+        hr {
+            display: none;
+        }
+
+        .regbox {
+            width: 210px;
+        }
+
+        .regbox2 {
+            width: 190px;
+        }
+
+        .Regis-container {
+            height:90vh; 
+        }
+    }

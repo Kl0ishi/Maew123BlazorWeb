@@ -1,0 +1,146 @@
+﻿@page "/Address"
+
+@inject HttpClient Http
+@inject NavigationManager navigationManager
+@inject IAccountService AccountService
+@inject SweetAlertService Swal
+
+<section class="content">
+    <div class="container-fluid">
+        <div class="box-container">
+            <UserProfileLeftTab />
+
+            <div class="box box-75 pb-4">
+                <div class="Title">
+                    <img width="48" height="48" src="https://img.icons8.com/material-rounded/48/place-marker.png" alt="place-marker" />ที่อยู่สำหรับการจัดส่งสินค้า
+                </div>
+                @if (AccountService.userAddresses == null || AccountService.userAddresses.Count < 1)
+                {
+                    <div class="ContentAdd col-12">
+                        <a href="AddressCreate" class="btn Create-button mr-5 d-flex" style="background: white;color: #000030;border: 1px solid #000030;">
+                            <img width="24" height="24" src="https://img.icons8.com/ios/24/plus-math--v1.png" alt="plus-math--v1" />
+                            <div style="font-weight:700;font-family: Inter;font-size:20px">เพิ่มที่อยู่</div>
+                        </a>
+                    </div>
+                }
+                else
+                {
+                    @foreach (Maew123.Models.Models.Address address in AccountService.userAddresses)
+                    {
+                        <div class="row">
+                            <div class="Content col-12">
+                                <div>
+                                    <div class="d-flex">
+                                        <span><b>ชื่อ: </b>@address.FirstName @address.LastName</span><br /> <span class="ml-2"><b>เบอร์: </b>@address.Phone</span><br />
+                                    </div>
+                                    @* <span><b>ถนน: </b>@address.Street</span><br /> *@
+                                    <span><b>อำเภอ: </b>@address.City, <b class="ml-2">ตำบล: </b>@address.State <b class="ml-2">จังหวัด: </b>@address.Country<b class="ml-2">เลขไปรษณีย์: </b>@address.Zip</span><br />
+                                    <span><b>ที่อยู่: </b>@address.addressName</span><br />
+                                </div>
+                                <div class="">
+                                    <a href=@($"AddressEdit/{address.Id}")>
+                                        <i class="fa-solid fa-pencil mx-4" style="color:rgba(0, 0, 0, 0.3);font-size: 30px"></i>
+                                    </a>
+                                    <a @onclick="() => HandleDeleteButtonClick(address.Id)">
+                                        <i class="fa-solid fa-minus" style="color:rgba(0, 0, 0, 0.3);font-size: 30px"></i>
+                                    </a>
+                                    <a class="form-check form-switch">
+                                        @if (address.IsDefault ?? false)
+                                        {
+                                            <input class="form-check-input" type="checkbox" id="flexSwitchCheckCheckedDisabled" checked disabled>
+                                        }
+                                        else
+                                        {
+                                            <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault" @onclick="() => SetAddressDefault(address.Id)">
+                                        }
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+
+                    }
+                    <div class="ContentAdd col-12">
+                        <a href="AddressCreate" class="btn Create-button mr-5 d-flex" style="background: white;color: #000030;border: 1px solid #000030;">
+                            <img width="24" height="24" src="https://img.icons8.com/ios/24/plus-math--v1.png" alt="plus-math--v1" />
+                            <div style="font-weight:700;font-family: Inter;font-size:20px">เพิ่มที่อยู่</div>
+                        </a>
+                    </div>
+                }
+            </div>
+        </div>
+    </div><!-- /.container-fluid -->
+</section>
+
+@code {
+    protected override async Task OnInitializedAsync()
+    {
+        await AccountService.GetUserAddresses();
+
+    }
+
+    private async Task SetAddressDefault(int AddressId)
+    {
+        if (await AccountService.SetAddressDefault(AddressId))
+        {
+            await AccountService.GetUserAddresses();
+            await showSuccess("ตั้งเป็นที่อยู่เริ่มต้น!");
+        }
+        else
+        {
+            await showError("ตั้งที่อยู่เริ่มต้นไม่สำเร็จ");
+        }
+    }
+
+    private async Task HandleDeleteButtonClick(int AddressId)
+    {
+        bool confirmed = await ShowDeleteConfirmation(AddressId);
+        if (confirmed)
+        {
+            if (await AccountService.DeleteAddress(AddressId))
+            {
+                await showSuccess("Deleted!");
+                var addressss = AccountService.userAddresses.FirstOrDefault(a => a.Id == AddressId);
+                AccountService.userAddresses.Remove(addressss!);
+            }
+
+        }
+    }
+
+    public async Task<bool> ShowDeleteConfirmation(int AddressId)
+    {
+        var result = await Swal.FireAsync(new SweetAlertOptions
+            {
+                Title = "Are you sure?",
+                Text = "คุณต้องการจะลบจริงๆหรือไม่?",
+                Icon = SweetAlertIcon.Warning,
+                ShowCancelButton = true,
+                ConfirmButtonColor = "#d33",
+                ConfirmButtonText = "Yes, delete it!",
+                CancelButtonText = "No, keep it"
+            });
+
+        if (!string.IsNullOrEmpty(result.Value))
+        {
+            return true;
+        }
+        return false;
+    }
+
+    public async Task showSuccess(string msg)
+    {
+        await Swal.FireAsync(
+                $"{msg}",
+                $"ดำเนินการสำเร็จ",
+                SweetAlertIcon.Success
+            );
+    }
+
+    public async Task showError(string msg)
+    {
+        await Swal.FireAsync(
+                $"{msg}",
+                $"เกิดข้อผิดพลาดบางอย่าง",
+                SweetAlertIcon.Error
+            );
+    }
+}

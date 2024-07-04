@@ -1,0 +1,242 @@
+﻿<!-- SaleDetails.razor -->
+@inject IOrderService _saleService
+@inject IAccountService AccountService
+@inject IAuthenticationService authenService
+@inject SweetAlertService Swal
+@inject NavigationManager navigationManager
+@inject IJSRuntime jsRuntime
+@implements IDisposable
+
+@if (_saleService.Sale == null || _saleService.Sale.Count == 0)
+{
+    <div class="Content col-12">
+        <img width="100" height="100" src="https://img.icons8.com/wired/100/package.png" alt="package" />
+        <div class="wishtext">ยังไม่มีการสั่งซื้อสินค้า</div>
+    </div>
+}
+else if (_saleService.Sale != null || _saleService.Sale?.Count > 0)
+{
+    foreach (var sale in _saleService.Sale)
+    {
+        decimal? sumSale = 0;
+        int sumDiscount = 0;
+        decimal? totalPrice = 0;
+        decimal totalVat = 0;
+        decimal totalPriceWithoutVat = 0;
+
+        <div class="ContentInfo col-12">
+            <div class="row">
+                @*                 <div class="col">
+        ชื่อสมาชิกคุณ <span style="font-weight: 700;">@AccountService.userInfo.FirstName @AccountService.userInfo.LastName</span>
+        </div> *@
+                <div class="col">
+                    วันที่สั่งซื้อ <span style="font-weight: 700;"> @sale.FormattedOrderDate  </span>
+                </div>
+            </div>
+            <hr />
+            <div class="saleitembox">
+                @foreach (var cartDetail in sale.CartDetails)
+                {
+                    @*                  var discountedPrice = cartDetail.TotalPrice / cartDetail.Quantity;
+        var discount = cartDetail.Discount ?? 0;
+        var unitPrice = discountedPrice + discount;
+        var sumPrice = (unitPrice * cartDetail.Quantity) + (cartDetail.Proprice ?? 0);
+        var vatPrice = (cartDetail.TotalPrice * 7) / 100;
+        var sumWithoutVat = cartDetail.TotalPrice - vatPrice; *@
+
+                    sumSale += cartDetail.SumPrice;
+                    sumDiscount += (cartDetail.Discount * cartDetail.Quantity);
+                    totalPrice += cartDetail.TotalPrice;
+                    totalVat += (cartDetail.VatPrice ?? 0);
+                    totalPriceWithoutVat += (cartDetail.SumWithoutVat ?? 0);
+
+                    <div class="mt-2">
+                        <div class="d-flex">
+                            @if (!string.IsNullOrEmpty(cartDetail.ImageUrl))
+                            {
+                                <div class="image-wrapper">
+                                    <img src="@($"https://localhost:7266/api/images/Products/{cartDetail.ImageUrl}")" href="/product/@cartDetail.ProductId" class="ImgCart" />
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="image-wrapper">
+                                    <img class="card-img-top ImgCart " src="/Picture/No_images.png">
+                                </div>
+                            }
+                            <div class="saletext" style="width:250px;">@cartDetail.ProductName</div>
+                            <div class="saletext" style="width:100px;">จำนวน: @cartDetail.Quantity</div>
+                            <div class="saleprice" style="margin-left: 20px;">
+                                <div>ราคา: @(String.Format("{0:N2}", cartDetail.SumPrice))</div>
+                                <div class="redbox">ส่วนลด: @(String.Format("{0:N2}", cartDetail.Discount))</div>
+                            </div>
+                            <div class="saleprice" style="width:300px;">
+                                <div>ราคารวมสุทธิ: @(String.Format("{0:N2}", cartDetail.TotalPrice))</div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+            <div class="mt-2"></div>
+            <hr />
+            <div class="summaryrow">
+                <div>
+                    @if(sale.StatusId == 7)
+                    {
+                        <div class="text-danger" style="font-size: 20px; font-weight:700;">เกิดข้อผิดพลาด: @($"{sale.Annotation}")</div>
+                        <div style="font-size: 20px; font-weight:700;">กรุณาติดต่อ 0911956267</div>
+                    }
+                    @if (sale.StatusId == 1)
+                    {
+                        <a href="Payment/@sale.SaleId" class="btn btn-success">ชำระเงินที่นี่</a>
+                        <button type="button" @onclick="@(async () => await cancelProduct(sale))" class="btn btn-danger">ยกเลิกการสั่งซื้อ</button>
+                    }
+                    @if (sale.StatusId == 3)
+                    {
+                        //<button class="btn btn-info SaleButton mb-2" @onclick="() => Receipt(sale.SaleId)">ใบเสร็จรับเงิน</button>
+                        <a class="btn btn-info SaleButton mb-2" href="receipt/@sale.SaleId">ใบเสร็จรับเงิน</a>
+                    }
+                    @if (sale.StatusId == 4)
+                    {
+                        //<button class="btn btn-info SaleButton mb-2" @onclick="() => Receipt(sale.SaleId)">ใบเสร็จรับเงิน</button>
+                        <a class="btn btn-info SaleButton mb-2" href="receipt/@sale.SaleId">ใบเสร็จรับเงิน</a>
+                        <button class="btn btn-warning SaleButton mb-2" @onclick="() => ParselReq(sale)" data-toggle="modal" data-target="#exampleModal">หมายเลขพัสดุ</button>
+                    }
+                </div>
+                <div class="TotalPrice">
+                    <div style="font-weight:700;">ทั้งหมด: @(String.Format("{0:N2}", sumSale)).- &nbsp;</div>
+                    <div style="font-weight:700;">ส่วนลด: @(String.Format("{0:N2}", sumDiscount)).- &nbsp;</div>
+                    <div style="font-weight:700;">ราคารวมสุทธิ: @(String.Format("{0:N2}", totalPrice)).- &nbsp;</div>
+                </div>
+            </div>
+        </div>
+    }
+}
+else
+{
+    <div class="no-sale-details">No sale details available.</div>
+}
+
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog custom-modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">ข้อมูลบริษัทการจัดส่ง และหมายเลขพัสดุ</h5>
+                <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div id="myForm" class="form-signin justify-content-center">
+                    <div class="mb-3 d-flex">
+                        @if (!string.IsNullOrEmpty(cartsDto.ParcelTypeNo))
+                        {
+                            <img class="mr-2" style="width:200px; height:200px;border: 1px solid rgba(0, 0, 0, 0.30);"  src="Picture/@DropdownForSale.GetImageFileName(cartsDto.ParcelTypeNo)" />
+                            <div class="delivertext">
+                                <div>Deliveree</div>
+                                <div class="col-form-label">หมายเลขพัสดุ : @cartsDto.ParcelNumber</div>
+                            </div>
+                        }
+                    </div>
+                    <button type="button" style="width: 200px" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@code {
+    [Parameter]
+    public int Tab { get; set; }
+    private CartsDto cartsDto = new CartsDto();
+    protected string Message { get; set; } = string.Empty;
+
+    protected override async Task OnParametersSetAsync()
+    {
+        await LoadSaleDetails(Tab);
+    }
+
+    private async Task LoadSaleDetails(int tab)
+    {
+        switch (tab)
+        {
+            case 1:
+                await _saleService.GetPaymentRequest();
+
+                break;
+            case 2:
+                await _saleService.GetAlreadyPayment();
+                break;
+            case 3:
+                await _saleService.GetWaitForSent();
+                break;
+            case 4:
+                await _saleService.GetAlreadySent();
+                break;
+            case 5:
+                await _saleService.GetAllSaleForUser();
+                break;
+            case 7:
+                await _saleService.GetAnnotatedOrder();
+                break;
+            default:
+                break;
+        }
+
+        _saleService.SalesChanged += StateHasChanged;
+    }
+
+    private async Task cancelProduct(CartsDto cart)
+    {
+        var checkConsent = await ShowDeleteConfirmation();
+        if (checkConsent)
+        {
+            if (await _saleService.CancelOrder(cart))
+            {
+                _saleService.Sale.Remove(cart);
+                await LoadSaleDetails(1);
+            }
+        }
+    }
+
+    public async Task<bool> ShowDeleteConfirmation()
+    {
+        var result = await Swal.FireAsync(new SweetAlertOptions
+            {
+                Title = "Are you sure?",
+                Text = "คุณต้องการจะยกเลิกการสั่งซื้อดังกล่าวจริงหรือไม่?",
+                Icon = SweetAlertIcon.Warning,
+                ShowCancelButton = true,
+                ConfirmButtonColor = "#d33",
+                ConfirmButtonText = "ยกเลิก!",
+                CancelButtonText = "ไม่! ยังก่อน"
+            });
+
+        if (!string.IsNullOrEmpty(result.Value))
+        {
+            await Swal.FireAsync(
+                "Deleted",
+                "ยกเลิกรายการสำเร็จแล้ว",
+                SweetAlertIcon.Success
+            );
+            return true;
+        }
+
+        return false;
+    }
+
+    private async Task Receipt(int saleId)
+    {
+        var url = $"{navigationManager.BaseUri}receipt/{saleId}";
+        await jsRuntime.InvokeVoidAsync("open", url, "_blank");
+    }
+
+    private void ParselReq(CartsDto parsel)
+    {
+        cartsDto = parsel;
+    }
+
+    public void Dispose()
+    {
+        _saleService.SalesChanged -= StateHasChanged;
+    }
+}

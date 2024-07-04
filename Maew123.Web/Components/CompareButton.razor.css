@@ -1,0 +1,19 @@
+﻿.CompareButton {
+    width: 35%;
+    height: 70px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-shrink: 0;
+    border-radius: 5px;
+    background: white;
+    color: #000030;
+    border: 1px solid #000030;
+    text-align: center;
+    padding-left: 10px;
+    margin-top: 20px;
+    transition: transform 0.5s;
+}
+    .CompareButton:hover {
+        transform: scale(1.05); /* Increase size on hover */
+    }

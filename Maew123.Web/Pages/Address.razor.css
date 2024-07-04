@@ -1,0 +1,145 @@
+﻿.box-container {
+    display: flex;
+}
+
+.box {
+    box-sizing: border-box;
+    padding-top: 20px;
+}
+
+.box-25 {
+    flex: 0 0 25%;
+}
+
+.box-75 {
+    flex: 0 0 75%;
+}
+
+.MakeSpace {
+    padding-bottom: 30px;
+}
+
+.MenuHead {
+    padding-left: 5px;
+    padding-bottom: 50px;
+    color: #000;
+    font-family: Inter;
+    font-size: 32px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+}
+
+.MenuText {
+    width: 100%;
+    /*height: 52px;*/
+    color: #000;
+    font-family: Inter;
+    font-size: 24px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+    transition: color 0.5s ease;
+    /*border: 1px solid #ccc;*/ /** Just to Know the space if it lean or miss position*/
+}
+
+    .MenuText:hover {
+        color: #00f;
+    }
+
+@media (max-width: 1199px) {
+    .box-container {
+        flex-direction: column; /* Stack boxes vertically on smaller screens */
+    }
+
+    .box {
+        width: 100%; /* Take up full width on smaller screens */
+    }
+
+    .ArrangeBox {
+        display: flex;
+    }
+
+    .imgmenu {
+        width: 36px;
+        height: 36px;
+    }
+}
+
+/*<-------------------right side---------------------->*/
+
+.Title {
+    padding-left: 30px;
+    padding-bottom: 30px;
+    flex-shrink: 0;
+    color: #000;
+    font-family: Inter;
+    font-size: 28px;
+    font-style: normal;
+    font-weight: 800;
+    line-height: normal;
+    /*        border: 1px solid #ccc;*/
+}
+
+.Content {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    padding: 34px 51px;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+    flex-shrink: 0;
+    border-radius: 10px;
+    border: 1px solid rgba(0, 0, 0, 0.30);
+    background-color: #FFF;
+    margin-top: 20px;
+}
+
+.ContentAdd {
+    display: flex;
+    width: 100%;
+    height: 150px;
+    padding: 34px 51px;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    flex-shrink: 0;
+    border-radius: 10px;
+    border: 1px solid rgba(0, 0, 0, 0.30);
+    background-color: rgba(0, 0, 0, 0.1);
+    margin-top: 20px;
+}
+
+.contenttitle {
+    /*    position: absolute;
+    top: 50px;
+    left: 150px;*/
+    width: 300px;
+    height: 60px;
+    color: #000;
+    font-family: Inter;
+    font-size: 26px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 60px;
+}
+
+.boxtext {
+    color: #000;
+    font-family: Inter;
+    font-size: 24px;
+    font-style: normal;
+    font-weight: 700px;
+    line-height: normal;
+}
+
+.Create-button {
+    height: auto;
+    width: 300px;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    border-radius: 15px;
+    text-align: center;
+}

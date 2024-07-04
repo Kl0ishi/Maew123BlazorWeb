@@ -1,0 +1,160 @@
+﻿@page "/product/{id:int}"
+@using Maew123.Models.Models
+@inject IProductService ProductService
+@inject ICartService CartService
+@inject SweetAlertService Swal
+
+<div class="d-flex pt-5">
+    <div class="box-75">
+        @if (product == null)
+        {
+            <DisplaySpinner />
+            <span>@message</span>
+        }
+        else
+        {
+            <div class="DetailContainer">
+                <div class="media-img-wrapper mr-2">
+                    @if (!string.IsNullOrEmpty(product.ImgPath))
+                    {
+                        <img src="@($"https://localhost:7266/api/images/Products/{product.ImgPath}")"
+                             class="media-img">
+                    }
+                    else
+                    {
+                        <img src="/Picture/No_images.png" class="media-img">
+                    }
+                </div>
+                <div class="DetailBox">
+                    <div class="DetailContent">
+                        <div class="DetailName">@product.ProductName</div>
+                        <div class="DetailInfo">@product.Description</div>
+                    </div>
+                    <hr />
+                    <div class="Spacing">
+                        @if (product.numStock == 0)
+                        {
+                            <div class="Remain">สินค้าคงเหลือ : Out of Stock</div>
+                        }
+                        else
+                        {
+                            <div class="Remain">สินค้าคงเหลือ : @product.numStock รายการ</div>
+                        }
+                        <div class="Centering">
+                            <WishlistButton ProductId="@product.ProductId" />
+                            <div>เพิ่่ม Wishlist</div>
+                        </div>
+                    </div>
+                    <div class="QuantityBox">
+                        <a class="QuantityButton" @onclick="DecreaseQuantity">
+                            <i class="fa-solid fa-minus"></i>
+                        </a>
+                        <div class="QuantityDisplay">@quantity</div>
+                        <a class="QuantityButton" @onclick="IncreaseQuantity">
+                            <i class="fa-solid fa-plus"></i>
+                        </a>
+                    </div>
+                    <div class="d-flex">
+                        <button class="Cart-Button" @onclick="AddToCart">
+                            <i class="fa-solid fa-cart-plus"></i>
+                            <i class="oi oi-cart"></i>&nbsp;&nbsp;เพื่อใส่ตะกร้า
+                        </button>
+                        <CompareButton ProductId="@product.ProductId" />
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+    @if (product != null)
+    {
+        <div class="box-25">
+            <div class="SaleContainer">
+                <div class="SaleTitle">@product.ProductName</div>
+                @if (@product.PromotionId == null)
+                {
+                    <div class="Spacing mt-4">
+                        <div class="SaleDetail">ราคา</div>
+                        <div class="SaleDetail">@(String.Format("{0:N2}", product.Price)) บาท </div>
+                    </div>
+                }
+                else
+                {
+                    <div class="Spacing mt-4">
+                        <div class="SaleDetail">ราคา</div>
+                        <div class="SaleDetail">@(String.Format("{0:N2}", product.Price - product.Discount)) บาท </div>
+                    </div>
+                    <div class="Spacing">
+                        <div class="SaleDetail">จากปกติ @(String.Format("{0:N2}", product.Price)) บาท </div>
+                        <div class="redbox">ลดราคา @(String.Format("{0:N2}", product.Discount)) บาท </div>
+                    </div>
+                }
+            </div>
+            <div class="SaleContainer">
+                <div>@product.Condition</div>
+            </div>
+        </div>
+    }
+</div>
+
+@code {
+    private NewProductDto? product = null;
+    private string message = string.Empty;
+    private int quantity = 1; // Initial quantity
+
+    [Parameter]
+    public int Id { get; set; }
+
+    protected override async Task OnParametersSetAsync()
+    {
+        message = "Loading product...";
+        var result = await ProductService.GetProduct(Id);
+        if (!result.Success)
+        {
+            message = result.Message;
+        }
+        else
+        {
+            product = result.Data;
+        }
+    }
+
+    private async Task AddToCart()
+    {
+        if (product.numStock == 0)
+        {
+            await Swal.FireAsync(new SweetAlertOptions
+                {
+                    Icon = "error",
+                    Title = "จำนวนสินค้าใน Stock หมดแล้ว",
+                    ShowConfirmButton = false,
+                    Timer = 3000
+                });
+        }
+        else
+        {
+            var cartItem = new ItemQuantityDto
+                {
+                    ProductId = product.ProductId,
+                    Quantity = quantity
+                };
+
+            await CartService.AddToCart(cartItem);
+        }
+    }
+
+    private void DecreaseQuantity()
+    {
+        if (quantity > 1)
+        {
+            quantity--;
+        }
+    }
+
+    private void IncreaseQuantity()
+    {
+        if (quantity < product.numStock)
+        {
+            quantity++;
+        }
+    }
+}

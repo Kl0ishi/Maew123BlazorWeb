@@ -1,0 +1,297 @@
+﻿@page "/admin/UserLog"
+@attribute [Authorize(Roles = "Admin,Employee")]
+
+@using System.Security.Claims
+@inject HttpClient Http
+@inject NavigationManager navigationManager
+@inject IAdminService AdminService
+@inject SweetAlertService Swal
+@inject AuthenticationStateProvider AuthStateProvider
+
+<h3>แสดงการเข้าสู่ระบบ</h3>
+<select style="height:40px; width: 150px; border: 1px rgb(0,0,0 0.30)" @onchange="HandleRoleChange">
+    <option value="4">Member</option>
+    <option value="6">Employee</option>
+    <option value="7">Admin</option>
+</select>
+
+@if (userToShow != null)
+{
+    <h4>หน้าการแสดงการเข้าสู่ระบบ</h4>
+    <table class="table">
+        <!-- Table header -->
+        <thead>
+            <tr>
+                <th>ID ผู้ใช้งาน</th>
+                <th>ชื่อผู้ใช้งาน</th>
+                <th>
+                    เข้าสู่ระบบล่าสุด
+                    <button @onclick="ToggleSortDirection">
+                        <span class="sort-icon">@sortIcon</span>
+                    </button>
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <!-- Table body -->
+        <tbody>
+            @foreach (var userLog in userToShow)
+            {
+                <tr>
+                    <td>@userLog.UserId</td>
+                    <td>@userLog.UserName</td>
+                    <td>@(userLog.LastLogin.HasValue ? userLog.LastLogin.Value.ToShortDateString() : "N/A")</td>
+                    <td>
+                        <button class="btn btn-secondary" @onclick="() => FetchUserLogDetails(userLog.UserId)">ประวัติการเข้าสู่ระบบ</button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>No user logs found.</p>
+}
+
+@if (userLogDetailsModalVisible)
+{
+    <div class="modal fade show" tabindex="-1" role="dialog" style="display: block;" >
+        <div class="modal-dialog custom-modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">User Log Details</h5>
+                    <button type="button" class="btn btn-danger close" style="width:200px;height:100%; font-size: 20px;" @onclick="CloseUserLogDetailsModal">
+                        close
+                    </button>
+                </div>
+                <div class="modal-body d-flex" style="max-height: 800px; overflow-y: auto;">
+                    <!-- Display login counts as buttons -->
+                    <div class="leftside">
+                        @foreach (var loginDate in loginCounts)
+                        {
+                            <button class="btn btn-info" style="width: 200px;margin-top: 10px;" @onclick="() => FetchUserLogDetailsByDate(loginDate.Key)">
+                                @loginDate.Key.ToShortDateString(): @loginDate.Value
+                            </button>
+                        }
+                    </div>
+
+                    <!-- Display user log details -->
+                    <ul>
+                        @if (selectedLoginCountDetails != null)
+                        {
+                            <h5 class="modal-title">เวลาที่เข้าสู่ระบบ</h5>
+                            
+                            @foreach (var token in selectedLoginCountDetails)
+                            {
+                                <li class="mt-2"> @(token.Date?.ToString("h:mm tt") ?? "No Date Available")</li>
+                            }
+                        }
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@code {
+    private List<UserLogDto> userLogs = new List<UserLogDto>();
+    private List<UserLogDto> userToShow = new List<UserLogDto>();
+    private UserLogDetailsDto userLogDetails = new UserLogDetailsDto();
+    private UserInfoDto userDetails = new UserInfoDto();
+    private RegisterRequest newEmployee = new RegisterRequest();
+    private int userIdToFetch;
+    private int RoleId;
+    private Dictionary<DateTime, int> loginCounts;
+
+    private bool isAdmin;
+    private bool isEmployee;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var userLogResponse = await AdminService.GetUsersLog();
+        if (userLogResponse.Success)
+        {
+            userLogs = userLogResponse.Data;
+            userToShow = userLogs;
+        }
+        else
+        {
+            await Swal.FireAsync("Error!", userLogResponse.Message, SweetAlertIcon.Error);
+        }
+        var authState = await AuthStateProvider.GetAuthenticationStateAsync();
+        if (authState.User.Identity.IsAuthenticated)
+        {
+            var roleClaim = authState.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role);
+            if (roleClaim != null)
+            {
+                if (roleClaim.Value.Contains("Admin"))
+                {
+                    isAdmin = true;
+                }
+
+                if (roleClaim.Value.Contains("Employee"))
+                {
+                    isEmployee = true;
+                }
+            }
+        }
+    }
+
+    private async Task HandleRoleChange(ChangeEventArgs e)
+    {
+        if (int.TryParse(e.Value.ToString(), out int roleId))
+        {
+            var response = await AdminService.GetUsersByRole(roleId);
+            if (response.Success)
+            {
+                var usersByRole = response.Data;
+                RoleId = roleId;
+                userToShow = userLogs.Where(log => usersByRole.Any(user => user.UserId == log.UserId)).ToList();
+            }
+            userLogDetails = null;
+
+        }
+        else
+        {
+        }
+    }
+
+    private async Task HandleDeleteButtonClick(int userId)
+    {
+        bool confirmed = await ShowDeleteConfirmation(userId);
+        if (confirmed)
+        {
+            var userToDelete = await AdminService.DeleteEmployee(userId);
+
+            var itemToRemove = userToShow.FirstOrDefault(item => item.UserId == userId);
+            if (itemToRemove != null)
+            {
+                userToShow.Remove(itemToRemove);
+            }
+
+        }
+    }
+
+    public async Task<bool> ShowDeleteConfirmation(int userId)
+    {
+        var result = await Swal.FireAsync(new SweetAlertOptions
+            {
+                Title = "Are you sure?",
+                Text = "คุณต้องการจะลบจริงๆหรือไม่?",
+                Icon = SweetAlertIcon.Warning,
+                ShowCancelButton = true,
+                ConfirmButtonColor = "#d33",
+                ConfirmButtonText = "Yes, delete it!",
+                CancelButtonText = "No, keep it"
+            });
+
+        if (!string.IsNullOrEmpty(result.Value))
+        {
+            await Swal.FireAsync(
+                "Deleted",
+                $"user with ID {userId} has been deleted.",
+                SweetAlertIcon.Success
+            );
+            return true;
+        }
+        // else if (result.Dismiss == DismissReason.Cancel)
+        // {
+        //     await Swal.FireAsync(
+        //         "Cancelled",
+        //         $"Deletion of product with ID {userId} is cancelled.",
+        //         SweetAlertIcon.Error
+        //     );
+        // }
+
+        return false;
+    }
+
+    string sortIcon = "▲"; // Initial sort icon (upward arrow)
+    bool isAscending = true; // Initial sorting direction
+
+    void ToggleSortDirection()
+    {
+        // Toggle the sorting direction
+        isAscending = !isAscending;
+
+        // Update the sort icon based on the sorting direction
+        sortIcon = isAscending ? "▲" : "▼";
+
+        // Sort the userToShow list based on the sorting direction
+        if (isAscending)
+        {
+            userToShow = userToShow.OrderBy(u => u.LastLogin).ToList();
+        }
+        else
+        {
+            userToShow = userToShow.OrderByDescending(u => u.LastLogin).ToList();
+        }
+    }
+
+    // Boolean to track the visibility of the user log details modal
+    private bool userLogDetailsModalVisible = false;
+
+    // Method to show user log details modal
+    private async Task FetchUserLogDetails(int userId)
+    {
+        userIdToFetch = userId;
+
+        var userLogDetailsResponse = await AdminService.GetUserLogDetails(userIdToFetch);
+        if (userLogDetailsResponse.Success)
+        {
+            userLogDetails = userLogDetailsResponse.Data;
+
+            // Calculate login counts after fetching user log details
+            CalculateLoginCounts();
+        }
+        else
+        {
+            await Swal.FireAsync("Error!", userLogDetailsResponse.Message, SweetAlertIcon.Error);
+        }
+        userLogDetailsModalVisible = true;
+    }
+
+    private void CalculateLoginCounts()
+    {
+        loginCounts = new Dictionary<DateTime, int>();
+
+        if (userLogDetails != null)
+        {
+            foreach (var token in userLogDetails.Tokens)
+            {
+                var date = token.Date?.Date;
+
+                if (date != null)
+                {
+                    if (loginCounts.ContainsKey(date.Value))
+                    {
+                        loginCounts[date.Value]++;
+                    }
+                    else
+                    {
+                        loginCounts[date.Value] = 1;
+                    }
+                }
+            }
+        }
+    }
+    private void CloseUserLogDetailsModal()
+    {
+        userLogDetailsModalVisible = false;
+        selectedLoginCountDetails = null; // Clear the selectedLoginCountDetails list
+    }
+
+    private List<Token> selectedLoginCountDetails;
+
+    private async Task FetchUserLogDetailsByDate(DateTime date)
+    {
+        // Filter user log details by the provided date
+        var filteredUserLogDetails = userLogDetails.Tokens
+            .Where(token => token.Date?.Date == date.Date)
+            .ToList();
+
+        // Update userLogDetails with the filtered results
+        selectedLoginCountDetails = filteredUserLogDetails;
+    }
+}

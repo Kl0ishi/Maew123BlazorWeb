@@ -1,0 +1,209 @@
+﻿@page "/receipt/{saleId:int}"
+@using System.Text.Json
+@inject HttpClient Http
+@inject NavigationManager navigationManager
+@inject IAccountService AccountService
+@inject IAuthenticationService authenService
+@inject IOrderService OrderService
+@inject IReportService ReportService
+@attribute [Authorize]
+
+<div class="Centering">
+    <div class="box-centerside">
+        @if (Sale == null)
+        {
+            <div class="Centering">
+                <h3>กำลังโหลด...</h3>
+                <DisplaySpinner />
+            </div>
+        }
+        else
+        {
+            <div class="Centering">
+                <div class="ReceiptTitle" style="font-weight:700;">
+                    ใบเสร็จรับเงิน(Receipt)
+                </div>
+                <div class="ReceiptNumber">
+                    #@Sale.SaleCode
+                </div>
+            </div>
+            <div class="d-flex mt-2">
+                <div class="Half">
+                    <div class="ReceiptTitle">
+                        ร้านค้าผู้ให้บริการ
+                    </div>
+                    <div class="ReceiptText">
+                        ร้านขายสินค้า IT Maew123 จำกัด
+                    </div>
+                    <div class="ReceiptText">
+                        ซอย วชิรธรรมสาธิต 57 แยก 37-5-1 ตำบลบางจาก อำเภอพระโขนง ถนนสุขุมวิท 101/1 กรุงเทพมหานคร 10260
+                    </div>
+                    <div class="ReceiptText">
+                        หมายเลขประจำผู้เสียภาษีอากร 012345678910
+                    </div>
+                    <div class="ReceiptText">
+                        ติดต่อ 0894823768 หรือ 0875910805
+                    </div>
+                </div>
+                <div class="Half">
+                    <div class="ReceiptTitle" style="display:flex;">
+                        <div style="margin-right: 150px;">
+                            รายละเอียดลูกค้า
+                        </div>
+                        <div>
+                            <button class="btn btn-warning absolutebutton" @onclick="DownloadPdf">
+                                Download
+                            </button>
+                        </div>
+                    </div>
+                    <div class="ReceiptText">
+                        คุณ @Sale.FirstName @Sale.LastName
+                    </div>
+                    <div class="ReceiptText">
+                        ติดต่อ @Sale.UserTel
+                    </div>
+                    <div class="ReceiptText">
+                        วันที่ @Sale.FormattedPayDate
+                    </div>
+                    <div class="ReceiptText">
+                        ชำระผ่านทาง ธนาคารไทยพาณิชย์ SCB
+                    </div>
+                </div>
+            </div>
+            <table class="table mt-4">
+                <thead>
+                    <tr>
+                        <th style="width: 50%;">รายการสินค้า</th>
+                        <th style="width: 10%;text-align:right;">จำนวน</th>
+                        <th style="width: 20%;text-align:right;">ราคาต่อหน่วย</th>
+                        <th style="width: 20%;text-align:right;">จำนวนเงิน</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    @foreach (var item in Sale.CartDetails)
+                    {
+                        sumSale += item.SumPrice;
+                        sumDiscount += (item.Discount * item.Quantity);
+                        totalPrice += item.TotalPrice;
+                        totalVat += (item.VatPrice ?? 0);
+                        totalPriceWithoutVat += (item.SumWithoutVat ?? 0);
+                        <tr>
+                            <td>@item.ProductName</td>
+                            <td style="text-align:right;">@item.Quantity</td>
+                            <td style="text-align:right;">@(item.UnitPrice.HasValue ? item.UnitPrice.Value.ToString("N2") : "0.00")</td>
+                            <td style="text-align:right;">@(item.SumPrice.HasValue ? item.SumPrice.Value.ToString("N2") : "0.00")</td>
+                        </tr>
+                    } 
+                </tbody>
+            </table>
+            <hr />
+
+            <div class="d-flex mt-2">
+                <div class="Half">
+                    <div class="NoteBox">
+                        หมายเหตุ
+                    </div>
+                </div>
+
+                <div class="Half">
+                    <div class="Spacing">
+                        <div class="ReceiptTotal">
+                            ทั้งหมด
+                        </div>
+                        <div class="ReceiptTotal">
+                            @(sumSale.HasValue ? sumSale.Value.ToString("N2") : "0.00") บาท
+                        </div>
+                    </div>
+                    <div class="Spacing mt-2">
+                        <div class="ReceiptTotal">
+                            ส่วนลด
+                        </div>
+                        <div class="ReceiptTotal">
+                            @sumDiscount.ToString("N2") บาท
+                        </div>
+                    </div>
+                    @* <div class="Spacing mt-2">
+                <div class="ReceiptTotal">
+                ค่าจัดส่ง (คิดตามน้ำหนักสินค้า)
+                </div>
+                <div class="ReceiptTotal">
+                บาท
+                </div>
+                </div> *@
+                    <div class="Spacing mt-2" style="background-color: rgba(0, 0, 0, 0.1);">
+                        <div class="ReceiptTotal">
+                            ราคารวมสุทธิ
+                        </div>
+                        <div class="ReceiptTotal">
+                            @(totalPrice.HasValue ? totalPrice.Value.ToString("N2") : "0.00") บาท
+                        </div>
+                    </div>
+                    <div class="Spacing mt-3">
+                        <div class="ReceiptTotal">
+                            ภาษีมูลค่าเพิ่ม 7%
+                        </div>
+                        <div class="ReceiptTotal">
+                            @totalVat.ToString("N2") บาท
+                        </div>
+                    </div>
+                    <div class="Spacing mt-2">
+                        <div class="ReceiptText">
+                            ราคาไม่รวมภาษีมูลค่าเพิ่ม
+                        </div>
+                        <div class="ReceiptText">
+                            @totalPriceWithoutVat.ToString("N2") บาท
+                        </div>
+                    </div>
+                    <div class="Spacing mt-2" style="background-color: rgba(0, 0, 0, 0.1);">
+                        <div class="ReceiptTotal">
+                            ราคารวมสุทธิ
+                        </div>
+                        <div class="ReceiptTotal">
+                            @(ConvertToBaht.ConvertToThaiBaht(totalPrice.HasValue ? totalPrice.Value : 0))
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="Centering mt-4">
+                ขอบคุณที่ใช้บริการ (Thank you)
+            </div>
+        }
+    </div>
+</div>
+
+@code {
+    private DateTime today = DateTime.Now;
+
+    protected decimal? sumSale = 0;
+    protected int sumDiscount;
+    protected decimal? totalPrice = 0;
+    protected decimal totalVat;
+    protected decimal totalPriceWithoutVat;
+
+    [Parameter]
+    public int SaleId { get; set; }
+
+    private CartsDto Sale { get; set; } = new CartsDto();
+
+    protected override async Task OnInitializedAsync()
+    {
+        await AccountService.GetUserInfo();
+
+    }
+
+    protected override async Task OnParametersSetAsync()
+    {
+        Sale = await OrderService.GetCartsBySaleId(SaleId);
+    }
+
+    public async Task DownloadPdf()
+    {
+        await ReportService.SaleReceiptPdf(SaleId);
+        sumSale = 0;
+        sumDiscount = 0;
+        totalPrice = 0;
+        totalVat = 0;
+        totalPriceWithoutVat = 0;
+    }
+}

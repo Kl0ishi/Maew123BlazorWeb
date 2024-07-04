@@ -1,0 +1,36 @@
+﻿@inject ICartService CartService
+@inject SweetAlertService Swal
+
+<a class="CompareButton" @onclick="CompareProduct">
+    <i class="fa-solid fa-arrows-left-right-to-line" style="font-size: 25px;"></i>
+    <i class="oi oi-cart"></i>เปรียบเทียบสินค้า
+</a>
+
+@code {
+    [Parameter]
+    public int ProductId { get; set; }
+
+    private async Task CompareProduct()
+    {
+        var cartItem = new ItemQuantityDto
+            {
+                ProductId = ProductId,
+            };
+
+        var (success, message) = await CartService.AddCompareProduct(cartItem);
+        if (!success)
+        {
+            ShowErrorMessage(message);
+        }
+    }
+
+    private async Task ShowErrorMessage(string message)
+    {
+        await Swal.FireAsync(new SweetAlertOptions
+            {
+                Title = "Error",
+                Text = message,
+                Icon = SweetAlertIcon.Error
+            });
+    }
+}

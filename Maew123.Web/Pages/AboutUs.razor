@@ -1,0 +1,99 @@
+﻿@page "/AboutUs"
+@inherits RegisterBase
+@inject HttpClient Http
+@inject NavigationManager navigationManager
+<section class="content">
+    <div class="container-fluid">
+        <div class="box-container">
+            <div class="box box-25">
+                <div class="MenuHead">Help & Information</div>
+                <div class="ArrangeBox">
+                <div class="col-sm">
+                <div class="MenuSubHead">ติดต่อเรา</div>
+                <div class="MenuTC">
+                            <a href="Contact" class="MenuText">ติดต่อเรา</a>
+                    <a href="Contact" class="MenuTR">
+                        <svg class="MenuIcon" xmlns="http://www.w3.org/2000/svg" width="19" height="33" viewBox="0 0 19 33" fill="none">
+                            <path d="M4 28.6946L14.1646 18.5299C15.3651 17.3295 15.3651 15.3651 14.1646 14.1647L4 4" stroke="#292D32" stroke-width="6.90062" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round" />
+                        </svg>
+                    </a>
+                </div>
+                <div class="MenuTC">
+                            <a href="AboutUs" class="MenuText" style="color:#00F">เกี่ยวกับร้าน maew123</a>
+                    <a href="AboutUs" class="MenuTR">
+                        <svg class="MenuIcon" xmlns="http://www.w3.org/2000/svg" width="19" height="33" viewBox="0 0 19 33" fill="none">
+                            <path d="M4 28.6946L14.1646 18.5299C15.3651 17.3295 15.3651 15.3651 14.1646 14.1647L4 4" stroke="#292D32" stroke-width="6.90062" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round" />
+                        </svg>
+                    </a>
+                </div>
+                </div>
+                <div class="col-sm">
+                <div class="MenuSubHead">ช้องปิ้งออนไลน์</div>
+                <div class="MenuTC">
+                    <a href="HowtoRegister" class="MenuText">วิธีสมัครสมาชิก</a>
+                    <a href="HowtoRegister" class="MenuTR">
+                        <svg class="MenuIcon" xmlns="http://www.w3.org/2000/svg" width="19" height="33" viewBox="0 0 19 33" fill="none">
+                            <path d="M4 28.6946L14.1646 18.5299C15.3651 17.3295 15.3651 15.3651 14.1646 14.1647L4 4" stroke="#292D32" stroke-width="6.90062" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round" />
+                        </svg>
+                    </a>
+                </div>
+                <div class="MenuTC">
+                    <a href="HowtoShopping" class="MenuText">วิธีการซื้อออนไลน์</a>
+                    <a href="HowtoShopping" class="MenuTR">
+                        <svg class="MenuIcon" xmlns="http://www.w3.org/2000/svg" width="19" height="33" viewBox="0 0 19 33" fill="none">
+                            <path d="M4 28.6946L14.1646 18.5299C15.3651 17.3295 15.3651 15.3651 14.1646 14.1647L4 4" stroke="#292D32" stroke-width="6.90062" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round" />
+                        </svg>
+                    </a>
+                </div>
+                <div class="MenuTC">
+                    <a href="HowtoChangePassword" class="MenuText">วิธีเปลี่ยนรหัสผ่าน</a>
+                    <a href="HowtoChangePassword" class="MenuTR">
+                        <svg class="MenuIcon" xmlns="http://www.w3.org/2000/svg" width="19" height="33" viewBox="0 0 19 33" fill="none">
+                            <path d="M4 28.6946L14.1646 18.5299C15.3651 17.3295 15.3651 15.3651 14.1646 14.1647L4 4" stroke="#292D32" stroke-width="6.90062" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round" />
+                        </svg>
+                    </a>
+                </div>
+                <div class="MenuTC">
+                    <a href="Transfer" class="MenuText">การจัดส่งสินค้าทางเรา</a>
+                    <a href="Transfer" class="MenuTR">
+                        <svg class="MenuIcon" xmlns="http://www.w3.org/2000/svg" width="19" height="33" viewBox="0 0 19 33" fill="none">
+                            <path d="M4 28.6946L14.1646 18.5299C15.3651 17.3295 15.3651 15.3651 14.1646 14.1647L4 4" stroke="#292D32" stroke-width="6.90062" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round" />
+                        </svg>
+                    </a>
+                </div>
+                </div>
+                <div class="col-sm">
+                <div class="MenuSubHead">นโยบายและข้อกำหนด</div>
+                <div class="MenuTC">
+                    <a href="TermAndCondition" class="MenuText">ข้อกำหนดและเงื่อนไข</a>
+                    <a href="TermAndCondition" class="MenuTR">
+                        <svg class="MenuIcon" xmlns="http://www.w3.org/2000/svg" width="19" height="33" viewBox="0 0 19 33" fill="none">
+                            <path d="M4 28.6946L14.1646 18.5299C15.3651 17.3295 15.3651 15.3651 14.1646 14.1647L4 4" stroke="#292D32" stroke-width="6.90062" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round" />
+                        </svg>
+                    </a>
+                </div>
+                <div class="MenuTC">
+                    <a href="PrivacyTerm" class="MenuText">นโยบายความเป็นส่วนตัว</a>
+                    <a href="PrivacyTerm" class="MenuTR">
+                        <svg class="MenuIcon" xmlns="http://www.w3.org/2000/svg" width="19" height="33" viewBox="0 0 19 33" fill="none">
+                            <path d="M4 28.6946L14.1646 18.5299C15.3651 17.3295 15.3651 15.3651 14.1646 14.1647L4 4" stroke="#292D32" stroke-width="6.90062" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round" />
+                        </svg>
+                    </a>
+                </div>
+                </div>
+            </div>
+            </div>
+            <div class="box box-75 pb-4">
+    <div class="ContentTitle">About Maew123 ITSHOP</div>
+    <div class="ContentText">
+        <p>The store "maew123" has a history rooted in the owner's background in computer equipment, stemming from their previous role as a computer science teacher. </p>
+        <p>The owner's passion for computer devices grew during their teaching career, prompting them to explore the idea of opening a store to sell computer equipment. </p>
+        <p>The name "maew123" is derived from the owner's affection for their spouse, whose nickname is "แมว" (maew in Thai), meaning cat. </p>
+        <p>The number "123" may be a numerical addition for uniqueness or personal significance. Therefore, the store's name reflects the owner's love for their spouse, known affectionately as "maew."</p>
+
+        <p style="font-weight:600;">ร้านmaew123นั้นมีประวัติมาจากการที่เจ้าของธุรกิจมีความรู้เกี่ยวกับอุปกรณ์คอมอยู่แล้วตั้งแต่ยังเป็นอาจารย์สอนคอมพิวเตอร์ ทำให้ความสนใจในอุปกรณ์คอมพิวเตอร์ของเจ้าของนั้นมีมากและได้ลองอยากที่จะเปิดร้านขายอุปกรณ์คอมพิวเตอร์ขึ้นมาและที่มาของชื่อร้านmaew123 นั้นก็คือภรรยาของเจ้าของร้านนั้นชื่อเล่นว่าแมวด้วยความที่ว่าเจ้าของร้านรักภรรยาตัวเองมากๆเลยตั้งชื่อร้านว่าmaew123</p>
+</div>
+</div>
+</div>
+        </div><!-- /.container-fluid -->
+</section>

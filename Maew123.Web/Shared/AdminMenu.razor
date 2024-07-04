@@ -1,0 +1,73 @@
+﻿@inject AuthenticationStateProvider AuthStateProvider
+@using System.Security.Claims
+
+@if (authorized)
+{
+    <hr />
+    <li><NavLink class="dropdown-item" href="admin/ProductIndex">การจัดการสินค้า</NavLink></li>
+    <li><NavLink class="dropdown-item" href="admin/CatagoriesIndex">การจัดการหมวดหมู่</NavLink></li>
+    <li><NavLink class="dropdown-item" href="admin/TypesIndex">การจัดการชนิดสินค้า</NavLink></li>
+    <li><NavLink class="dropdown-item" href="admin/PromotionIndex">การจัดการโปรโมชั้น</NavLink></li>
+
+    <hr />
+    <li><NavLink class="dropdown-item" href="admin/UserIndex">การจัดการผู้ใช้งาน</NavLink></li>
+    <li><NavLink class="dropdown-item" href="admin/UserLog">ประวัติการเข้าใช้งาน</NavLink></li>
+    <li><NavLink class="dropdown-item" href="admin/EmployeeCreate">สร้างพนักงานใหม่</NavLink></li>
+
+    <hr />
+    <li><NavLink class="dropdown-item" href="admin/SaleIndex">การจัดการ-การสั่งซื้อสินค้า</NavLink></li>
+    <li><NavLink class="dropdown-item" href="admin/ReportIndex">รายงาน</NavLink></li>
+}
+@if (EmployeeAuthorized)
+{
+    <hr />
+    <li><NavLink class="dropdown-item" href="admin/ProductIndex">การจัดการสินค้า</NavLink></li>
+    <li><NavLink class="dropdown-item" href="admin/CatagoriesIndex">การจัดการหมวดหมู่</NavLink></li>
+    <li><NavLink class="dropdown-item" href="admin/TypesIndex">การจัดการชนิดสินค้า</NavLink></li>
+    <li><NavLink class="dropdown-item" href="admin/PromotionIndex">การจัดการโปรโมชั้น</NavLink></li>
+
+    <hr />
+    <li><NavLink class="dropdown-item" href="admin/SaleIndex">การจัดการ-การสั่งซื้อสินค้า</NavLink></li>
+    <li><NavLink class="dropdown-item" href="admin/UserIndex">การจัดการผู้ใช้งาน</NavLink></li>
+    <li><NavLink class="dropdown-item" href="admin/UserLog">ประวัติการเข้าใช้งาน</NavLink></li>
+}
+
+@code {
+    bool authorized = false;
+    bool EmployeeAuthorized = false;
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            // string role = (await AuthStateProvider.GetAuthenticationStateAsync())
+            //          .User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role).Value;
+            // if (role.Contains("Admin"))
+            // {
+            //     authorized = true;
+            // }
+            var authState = await AuthStateProvider.GetAuthenticationStateAsync();
+            
+            if (authState.User.Identity.IsAuthenticated)
+            {
+                var roleClaim = authState.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role);
+
+                if (roleClaim != null && roleClaim.Value.Contains("Admin"))
+                {
+                    authorized = true;
+                }
+
+                if (roleClaim != null && roleClaim.Value.Contains("Employee"))
+                {
+                    EmployeeAuthorized = true;
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+
+            Console.WriteLine(ex.Message);
+        }
+        
+    }
+}

@@ -1,0 +1,135 @@
+﻿@page "/PrivacyTerm"
+@inherits RegisterBase
+@inject HttpClient Http
+@inject NavigationManager navigationManager
+<section class="content">
+    <div class="container-fluid">
+        <div class="box-container">
+            <div class="box box-25">
+                <div class="MenuHead">Help & Information</div>
+                <div class="ArrangeBox">
+                <div class="col-sm">
+                <div class="MenuSubHead">ติดต่อเรา</div>
+                <div class="MenuTC">
+                            <a href="Contact" class="MenuText">ติดต่อเรา</a>
+                    <a href="Contact" class="MenuTR">
+                        <svg class="MenuIcon" xmlns="http://www.w3.org/2000/svg" width="19" height="33" viewBox="0 0 19 33" fill="none">
+                            <path d="M4 28.6946L14.1646 18.5299C15.3651 17.3295 15.3651 15.3651 14.1646 14.1647L4 4" stroke="#292D32" stroke-width="6.90062" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round" />
+                        </svg>
+                    </a>
+                </div>
+                <div class="MenuTC">
+                            <a href="AboutUs" class="MenuText">เกี่ยวกับร้าน maew123</a>
+                    <a href="AboutUs" class="MenuTR">
+                        <svg class="MenuIcon" xmlns="http://www.w3.org/2000/svg" width="19" height="33" viewBox="0 0 19 33" fill="none">
+                            <path d="M4 28.6946L14.1646 18.5299C15.3651 17.3295 15.3651 15.3651 14.1646 14.1647L4 4" stroke="#292D32" stroke-width="6.90062" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round" />
+                        </svg>
+                    </a>
+                </div>
+                </div>
+                <div class="col-sm">
+                <div class="MenuSubHead">ช้องปิ้งออนไลน์</div>
+                <div class="MenuTC">
+                    <a href="HowtoRegister" class="MenuText">วิธีสมัครสมาชิก</a>
+                    <a href="HowtoRegister" class="MenuTR">
+                        <svg class="MenuIcon" xmlns="http://www.w3.org/2000/svg" width="19" height="33" viewBox="0 0 19 33" fill="none">
+                            <path d="M4 28.6946L14.1646 18.5299C15.3651 17.3295 15.3651 15.3651 14.1646 14.1647L4 4" stroke="#292D32" stroke-width="6.90062" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round" />
+                        </svg>
+                    </a>
+                </div>
+                <div class="MenuTC">
+                    <a href="HowtoShopping" class="MenuText">วิธีการซื้อออนไลน์</a>
+                    <a href="HowtoShopping" class="MenuTR">
+                        <svg class="MenuIcon" xmlns="http://www.w3.org/2000/svg" width="19" height="33" viewBox="0 0 19 33" fill="none">
+                            <path d="M4 28.6946L14.1646 18.5299C15.3651 17.3295 15.3651 15.3651 14.1646 14.1647L4 4" stroke="#292D32" stroke-width="6.90062" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round" />
+                        </svg>
+                    </a>
+                </div>
+                <div class="MenuTC">
+                    <a href="HowtoChangePassword" class="MenuText">วิธีเปลี่ยนรหัสผ่าน</a>
+                    <a href="HowtoChangePassword" class="MenuTR">
+                        <svg class="MenuIcon" xmlns="http://www.w3.org/2000/svg" width="19" height="33" viewBox="0 0 19 33" fill="none">
+                            <path d="M4 28.6946L14.1646 18.5299C15.3651 17.3295 15.3651 15.3651 14.1646 14.1647L4 4" stroke="#292D32" stroke-width="6.90062" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round" />
+                        </svg>
+                    </a>
+                </div>
+                <div class="MenuTC">
+                    <a href="Transfer" class="MenuText">การจัดส่งสินค้าทางเรา</a>
+                    <a href="Transfer" class="MenuTR">
+                        <svg class="MenuIcon" xmlns="http://www.w3.org/2000/svg" width="19" height="33" viewBox="0 0 19 33" fill="none">
+                            <path d="M4 28.6946L14.1646 18.5299C15.3651 17.3295 15.3651 15.3651 14.1646 14.1647L4 4" stroke="#292D32" stroke-width="6.90062" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round" />
+                        </svg>
+                    </a>
+                </div>
+                </div>
+                <div class="col-sm">
+                <div class="MenuSubHead">นโยบายและข้อกำหนด</div>
+                <div class="MenuTC">
+                    <a href="TermAndCondition" class="MenuText">ข้อกำหนดและเงื่อนไข</a>
+                    <a href="TermAndCondition" class="MenuTR">
+                        <svg class="MenuIcon" xmlns="http://www.w3.org/2000/svg" width="19" height="33" viewBox="0 0 19 33" fill="none">
+                            <path d="M4 28.6946L14.1646 18.5299C15.3651 17.3295 15.3651 15.3651 14.1646 14.1647L4 4" stroke="#292D32" stroke-width="6.90062" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round" />
+                        </svg>
+                    </a>
+                </div>
+                <div class="MenuTC">
+                            <a href="PrivacyTerm" class="MenuText" style="color:#00F">นโยบายความเป็นส่วนตัว</a>
+                    <a href="PrivacyTerm" class="MenuTR">
+                        <svg class="MenuIcon" xmlns="http://www.w3.org/2000/svg" width="19" height="33" viewBox="0 0 19 33" fill="none">
+                            <path d="M4 28.6946L14.1646 18.5299C15.3651 17.3295 15.3651 15.3651 14.1646 14.1647L4 4" stroke="#292D32" stroke-width="6.90062" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round" />
+                        </svg>
+                    </a>
+                </div>
+                </div>
+            </div>
+            </div>
+            
+
+            <div class="box box-75 pb-4">
+                <div class="ContentTitle">Privacy Policy นโยบายความเป็นส่วนตัวร้าน maew123</div>
+                    <div class="ContentText col-12">
+            <div style="font-size: 20px;">
+            <p>1. บทนำ
+            </p>
+            <p>
+            ยินดีต้อนรับสู่ค้าน [Maew123] นโยบายความเป็นส่วนตัวนี้ถูกออกแบบเพื่อแจ้งให้คุณทราบเกี่ยวกับวิธีการเก็บรวบรวม ใช้ และเปิดเผยข้อมูลที่เราอาจได้รับเมื่อคุณใช้เว็บไซต์ของเรา
+            </p>
+            <p>2. ข้อมูลที่เราเก็บรวบรวม</p>
+            <p>
+            เราอาจเก็บข้อมูลที่สามารถระบุตัวตนได้ เช่น ชื่อ ที่อยู่อีเมล และรายละเอียดการติดต่ออื่น ๆ เมื่อคุณส่งมอบข้อมูลดังกล่าวโดยสมัครใจ นอกจากนี้ เราอาจเก็บข้อมูลที่ไม่สามารถระบุตัวตนได้ เช่น ประเภทของเบราว์เซอร์ ระบบปฏิบัติการ และหน้าเว็บที่คุณดูบนเว็บไซต์ของเรา
+            </p>
+            <p>3. การใช้ข้อมูล</p>
+            <p>
+            เราอาจใช้ข้อมูลที่เรารวบรวมได้เพื่อวัตถุประสงค์ต่าง ๆ รวมถึง แต่ไม่จำกัดเพียง:
+            
+            การให้บริการและบำรุงรักษาเว็บไซต์ของเรา
+            การปรับปรุงบริการของเรา
+            การตอบสนองต่อคำถามหรือคำขอของคุณ
+            การส่งอีเมลที่เป็นระยะ (หากคุณสมัครรับข่าวสารของเรา)
+            </p>
+            <p>4. คุกกี้และเทคโนโลยีการติดตาม</p>
+            <p>
+            เว็บไซต์ของเราอาจใช้คุกกี้และเทคโนโลยีการติดตามที่คล้ายกันเพื่อเพิ่มประสบการณ์ของคุณ คุณสามารถสั่งให้เบราว์เซอร์ปฏิเสธคุกกี้ทั้งหมดหรือแจ้งเตือนเมื่อคุกกี้ถูกส่ง
+            </p>
+            <p>5. บริการจากบุคคลที่สาม</p>
+            <p>
+            เราอาจใช้บริการจากบุคคลที่สามเพื่อวัตถุประสงค์ต่าง ๆ เช่น การวิเคราะห์ การโฆษณา และการผสมผสานกับสื่อสังคม บริการจากบุคคลที่สามเหล่านี้มีนโยบายความเป็นส่วนตัวของตนเองที่กล่าวถึงวิธีการใช้ข้อมูลดังกล่าว
+            </p>
+            <p>6. ความมั่นคง</p>
+            <p>
+            ความมั่นคงของข้อมูลของคุณสำคัญสำหรับเรา แต่โปรดจำไว้ว่าไม่มีวิธีการส่งข้อมูลผ่านอินเทอร์เน็ตหรือการจัดเก็บในรูปแบบอิเล็กทรอนิกส์ที่ปลอดภัยอย่างแท้จริง ขณะที่เราพยายามใช้วิธีที่ยอมรับได้ทางการค้าเพื่อปกป้องข้อมูลของคุณ เราไม่สามารถรับประกันความมั่นคงที่เต็มที่ได้
+            </p>
+            <p>7. การเปลี่ยนแปลงนโยบายความเป็นส่วนตัวนี้</p>
+            <p>
+            เราขอสงวนสิทธิ์ในการอัปเดตหรือเปลี่ยนแปลงนโยบายความเป็นส่วนตัวของเราตลอดเวลา การเปลี่ยนแปลงเหล่านี้จะมีผลทันทีเมื่อโพสต์นโยบายความเป็นส่วนตัวที่อัปเดตบนเว็บไซต์
+            </p>
+            <p>8. ติดต่อเรา</p>
+            <p>
+            หากคุณมีคำถามหรือข้อกังวลใด ๆ เกี่ยวกับนโยบายความเป็นส่วนตัวนี้ โปรดติดต่อเราที่ Line หรือ Page Facebook ของทางเราได้
+            </p>
+        </div>
+        </div>
+    </div>
+        </div>
+    </div><!-- /.container-fluid -->
+</section>

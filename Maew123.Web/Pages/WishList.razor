@@ -1,0 +1,118 @@
+﻿@page "/WishList"
+@inherits RegisterBase
+@inject HttpClient Http
+@inject NavigationManager navigationManager
+@inject IAccountService _AccountService
+
+<section class="content">
+    <div class="container-fluid">
+        <div class="box-container">
+            <UserProfileLeftTab />
+
+            <div class="box box-75 pb-4">
+                <div class="Title">
+                    <img class="imgmenu" width="48" height="48" src="https://img.icons8.com/windows/48/star-of-bethlehem.png" alt="star-of-bethlehem" />WishList
+                </div>
+                @if (_AccountService.wishListItems == null || _AccountService.wishListItems.Count == 0)
+                {
+                    <div class="Content col-12">
+                        <img width="100" height="100" src="https://img.icons8.com/wired/100/star-of-bethlehem.png" alt="star-of-bethlehem" />
+                        <div class="wishtext">ยังไม่มีรายการสินค้าโปรด</div>
+                    </div>
+                }
+                else
+                {
+                    <div class="container">
+                        @if (_AccountService.wishListItems == null || _AccountService.wishListItems.Count < 1)
+                        {
+                            <p>No any wishlist found</p>
+                        }
+                        else
+                        {
+                            @foreach (var wishListItem in _AccountService.wishListItems)
+                            {
+                                <div class="WishContent">
+                                    <div class="media-img-wrapper d-flex mr-2">
+                                        <a href="product/@wishListItem.Product!.ProductId">
+                                            @if (!string.IsNullOrEmpty(wishListItem.Product!.ImgPath))
+                                            {
+                                                <img src="@($"https://localhost:7266/api/images/Products/{wishListItem.Product.ImgPath}")"
+                                                     class="imgsize" width="100" height="100">
+                                            }
+                                            else
+                                            {
+                                                <img src="/Picture/No_images.png" class="imgsize" width="100" height="100">
+                                            }
+                                        </a>
+                                        <div class="WishTitle">@wishListItem.Product.ProductName</div>
+                                    </div>
+                                   
+                                    <div class="rightwish">
+                                        <div class="pricebox">
+                                            <div class="WishTitle">@wishListItem.Product.Price</div>
+                                        </div>
+                                        <hr class="hr-vertical" />
+                                        <a class="viewproduct" href="product/@wishListItem.Product!.ProductId" style="background: #000030;color: white;float: right">ดูสินค้า</a>
+                                        <a @onclick="() => DeleteWish(wishListItem.Product.ProductId)">
+                                            <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="30" height="30" viewBox="0 0 64 64">
+                                                <path d="M 28 6 C 25.791 6 24 7.791 24 10 L 24 12 L 23.599609 12 L 10 14 L 10 17 L 54 17 L 54 14 L 40.400391 12 L 40 12 L 40 10 C 40 7.791 38.209 6 36 6 L 28 6 z M 28 10 L 36 10 L 36 12 L 28 12 L 28 10 z M 12 19 L 14.701172 52.322266 C 14.869172 54.399266 16.605453 56 18.689453 56 L 45.3125 56 C 47.3965 56 49.129828 54.401219 49.298828 52.324219 L 51.923828 20 L 12 19 z M 20 26 C 21.105 26 22 26.895 22 28 L 22 51 L 19 51 L 18 28 C 18 26.895 18.895 26 20 26 z M 32 26 C 33.657 26 35 27.343 35 29 L 35 51 L 29 51 L 29 29 C 29 27.343 30.343 26 32 26 z M 44 26 C 45.105 26 46 26.895 46 28 L 45 51 L 42 51 L 42 28 C 42 26.895 42.895 26 44 26 z"></path>
+                                            </svg>
+                                        </a>
+                                    </div>
+                                </div>
+                                @*                                         <div class="card-body">
+                    <h5 class="card-title"><a href="product/@wishListItem.Product.ProductId">@wishListItem.Product.ProductName</a></h5>
+                    <p class="card-text">@wishListItem.Product.Description</p>
+                    <button class="btn btn-danger" @onclick="() => DeleteWish(wishListItem.Product.ProductId)">
+                    <i class="fa fa-minus" aria-hidden="true"></i>
+                    </button>
+                    </div> *@
+                            }
+                        }
+
+                    </div>
+                }
+            </div>
+        </div>
+    </div><!-- /.container-fluid -->
+</section>
+
+@code {
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            await _AccountService.GetWishListItems();
+            _AccountService.userInfoChanged += StateHasChanged;
+        }
+        catch (Exception ex)
+        {
+
+            throw;
+        }
+
+
+    }
+
+    private async Task DeleteWish(int ProductId)
+    {
+        try
+        {
+            if (await _AccountService.RemoveWishlist(ProductId))
+            {
+                _AccountService.userInfoChanged += StateHasChanged;
+            }
+        }
+        catch (Exception ex)
+        {
+            
+            throw;
+        }
+        
+    }
+
+    public void Dispose()
+    {
+        _AccountService.userInfoChanged -= StateHasChanged;
+    }
+}

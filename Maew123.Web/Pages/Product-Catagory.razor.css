@@ -1,0 +1,140 @@
+﻿.box-container {
+    display: flex;
+}
+
+.box {
+    box-sizing: border-box;
+    padding-top: 20px;
+}
+
+.box-20 {
+    flex: 0 0 20%;
+}
+
+.box-80 {
+    flex: 0 0 80%;
+}
+
+@media (max-width: 1199px) {
+    .box-container {
+        flex-direction: column; /* Stack boxes vertically on smaller screens */
+    }
+
+    .box {
+        width: 100%; /* Take up full width on smaller screens */
+    }
+
+    .ArrangeBox {
+        display: flex;
+    }
+}
+
+
+
+
+
+
+.MenuContainer {
+    position: absolute;
+    top: 80px;
+    width: 100%;
+    height: 705px;
+    gap: 115px;
+    flex-shrink: 0;
+    /*    border: 1px solid #ccc;*/
+}
+
+.MenuHead {
+    padding-left: 5px;
+    color: #000;
+    font-family: Inter;
+    font-size: 24px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+}
+
+.MenuSubHead {
+    padding-bottom: 20px;
+    color: #000;
+    font-family: Inter;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+}
+
+.MenuTC {
+    width: 100%;
+    display: flex;
+    align-items: center; /* Center items vertically */
+}
+
+.MenuText {
+    width: 80%;
+    /*height: 52px;*/
+    color: #000;
+    font-family: Inter;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+    transition: color 0.5s ease;
+    /*border: 1px solid #ccc;*/ /** Just to Know the space if it lean or miss position*/
+}
+
+    .MenuText:hover {
+        color: #00f;
+    }
+
+.MenuTR {
+    padding-bottom: 20px;
+    width: 10%;
+    justify-content: end;
+}
+
+.MenuIcon {
+    color: black;
+    margin-top: -1px;
+    width: 11px;
+    height: 20px;
+    flex-shrink: 0;
+    stroke-width: 6.901px;
+    stroke: #292D32;
+    transition: color 0.25s ease;
+}
+.MenuIcon:hover {
+    color: #00f;
+}
+
+/*<-------------------right side---------------------->*/
+.ContentTitle {
+    padding-left: 30px;
+    padding-bottom: 30px;
+    flex-shrink: 0;
+    color: #000;
+    font-family: Inter;
+    font-size: 30px;
+    font-style: normal;
+    font-weight: 800;
+    line-height: normal;
+}
+
+.ContentText {
+    padding-bottom: 20px;
+    flex-shrink: 0;
+    color: #000;
+    font-family: Inter;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+}
+
+@media(max-width:768px) {
+    .ContentText {
+        font-size: 16px;
+    }
+
+    .
+}

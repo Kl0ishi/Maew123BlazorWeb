@@ -1,0 +1,280 @@
+﻿@page "/admin/ReportIndex"
+@using Maew123.Web.Utilities
+@attribute [Authorize(Roles = "Admin")]
+
+@inject NavigationManager navigationManager
+@inject IOrderService OrderService
+@inject IReportService ReportService
+@inject SweetAlertService Swal
+
+
+<div class="Centering">
+    <div class="ReportContainer">
+        <div style="font-size: 32px; font-weight:700;">รายงาน</div>
+        <div>
+            <button @onclick="DownloadYearlyReport">ดาวโหลดรายงานประจำปี</button>
+            <button @onclick="DownloadDailyReport">ดาวโหลดรายงานประจำวัน</button>
+            <button @onclick="DownloadWeeklyReport">ดาวโหลดรายงานประจำสัปดาห์</button>
+            <button @onclick="DownloadMonthlyReport">ดาวโหลดรายงานประจำเดือน</button>
+            <button @onclick="DownloadStockReport">ดาวโหลดรายงานสต็อกเหลือน้อย</button>
+        </div>
+
+        @if (Model == null || Model.Carts == null)
+        {
+            <p>No sales found.</p>
+        }
+        else
+        {
+            <div>
+                <label for="filterType">เลือกรูปแบบรายงาน</label>
+                <select id="filterType" @bind="selectedFilterType">
+                    <option value="salesOfAllYears">รายงานการสั่งซ้อทั้งหมด</option>
+                    <option value="salesOfYear">รายงานการสั่งซื้อประจำปี</option>
+                    <option value="salesOfWholeMonth">รายงานการสั่งซื้อประจำเดือน</option>
+                    <option value="salesOfWholeWeek">รายงานการสั่งซื้อประจำสัปดาห์</option>
+                </select>
+            </div>
+
+            @if (selectedFilterType == "salesOfAllYears")
+            {
+                <div>
+                    <button @onclick="GetSalesOfAllYears">สรุปยอด</button>
+                </div>
+            }
+
+            @if (selectedFilterType == "salesOfYear")
+            {
+                <div>
+                    <label for="year">ระบุปี:</label>
+                    <input type="number" id="year" @bind="selectedYear" />
+                    <button @onclick="GetSalesOfYear">สรุปยอด</button>
+                </div>
+            }
+
+            @if (selectedFilterType == "salesOfWholeMonth")
+            {
+                <div>
+                    <label for="year">ระบุปี:</label>
+                    <input type="number" id="year" @bind="selectedYear" />
+                    <label for="month">ระบุเดือน:</label>
+                    <input type="number" id="month" @bind="selectedMonth" min="1" max="12" />
+                    <button @onclick="GetSalesOfWholeMonth">สรุปยอด</button>
+                </div>
+            }
+
+            @if (selectedFilterType == "salesOfWholeWeek")
+            {
+                <div>
+                    <label for="year">ระบุปี:</label>
+                    <input type="number" id="year" @bind="selectedYear" />
+                    <label for="month">ระบุเดือน:</label>
+                    <input type="number" id="month" @bind="selectedMonth" min="1" max="12" />
+                    <label for="week">ระบุสัปดาห์:</label>
+                    <input type="number" id="week" @bind="selectedWeek" />
+                    <button @onclick="GetSalesOfWholeWeek">สรุปยอด</button>
+                </div>
+            }
+            <div style="font-size: 32px; font-weight:700;">ผลรายงาน</div>
+            <!-- Display sales result here -->
+@*             @if (salesResult != null)
+            {
+                <p>Total Sales: @salesResult.Count</p>
+                <ul>
+                    @foreach (var sale in salesResult)
+                    {
+                        <li>@sale.SaleCode - @sale.OrderDate.ToShortDateString()</li>
+                    }
+                </ul>
+            } *@
+
+            <div class="container">
+                <div class="row">
+                    <div class="col-sm-12 col-lg-6 offset-lg-3 my-5">
+                        <RadzenCard class="w-100 mb-4">
+                            <RadzenCheckBox @bind-Value="@showDataLabels" Name="dataLabels"></RadzenCheckBox>
+                            <RadzenLabel Text="Show Data Labels" Component="dataLabels" Style="margin-left: 8px; vertical-align: middle;" />
+                        </RadzenCard>
+                        <RadzenChart>
+                            <RadzenPieSeries Data="@pieChartData" Title="Total Sales" CategoryProperty="Category" ValueProperty="Value">
+                                <RadzenSeriesDataLabels Visible="@showDataLabels" />
+                            </RadzenPieSeries>
+                        </RadzenChart>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+
+
+
+
+@code {
+    private SaleFilterResultDto Model = new SaleFilterResultDto();
+
+    private string selectedFilterType = "salesOfYear";
+    private int selectedYear;
+    private int selectedMonth;
+    private int selectedWeek;
+    private List<CartsDto>? salesResult;
+    private List<PieChartData> pieChartData;
+
+    protected override async Task OnInitializedAsync()
+    {
+        DateTime currentDate = DateTime.Now;
+        int currentYear = currentDate.Year;
+        int currentMonth = currentDate.Month;
+        selectedYear = currentYear;
+        selectedMonth = currentMonth;
+
+        await FilterData();
+
+        var helper = new SaleFilterHelper { Model = Model };
+    }
+
+    private async Task FilterData()
+    {
+        Model.Carts = await OrderService.GetAllSaleForReport();
+    }
+
+    private void GetSalesOfAllYears()
+    {
+        var helper = new SaleFilterHelper { Model = Model };
+        salesResult = helper.GetSalesOfAllYears();
+        CalculateAllYearsSales();
+    }
+
+    private void GetSalesOfYear()
+    {
+        var helper = new SaleFilterHelper { Model = Model };
+        salesResult = helper.GetSalesOfYear(selectedYear);
+        CalculateYearlySales(selectedYear);
+    }
+
+    private void GetSalesOfWholeMonth()
+    {
+        var helper = new SaleFilterHelper { Model = Model };
+        salesResult = helper.GetSalesOfWholeMonth(selectedYear, selectedMonth);
+        CalculateMonthlySales(selectedYear, selectedMonth);
+    }
+
+    //อาจตัดส่วนอาทิตย์ออก เพราะเงื่อนไขแม่มยาก
+    private void GetSalesOfWholeWeek()
+    {
+        var helper = new SaleFilterHelper { Model = Model };
+        salesResult = helper.GetSalesOfWholeWeek(selectedYear, selectedMonth, selectedWeek);
+        CalculateWeeklySales(selectedYear, selectedMonth, selectedWeek);
+    }
+
+    private void CalculateAllYearsSales()
+    {
+        var yearlySales = salesResult.GroupBy(s => s.OrderDate.Year)
+                                     .Select(g => new PieChartData
+                                         {
+                                             Category = $"{g.Key}",
+                                             Value = g.Sum(s => s.SaleTotal)
+                                         }).ToList();
+
+        pieChartData = yearlySales;
+    }
+
+    private void CalculateYearlySales(int year)
+    {
+        var monthlySales = salesResult.Where(s => s.OrderDate.Year == year)
+                                      .GroupBy(s => s.OrderDate.Month)
+                                      .Select(g => new PieChartData
+                                          {
+                                              Category = $"{year}-{g.Key:D2}",
+                                              Value = g.Sum(s => s.SaleTotal)
+                                          }).ToList();
+
+        pieChartData = monthlySales;
+    }
+
+    private void CalculateMonthlySales(int year, int month)
+    {
+        var weeklySales = salesResult.Where(s => s.OrderDate.Year == year && s.OrderDate.Month == month)
+                                     .GroupBy(s => GetIsoWeek(s.OrderDate))
+                                     .Select(g => new PieChartData
+                                         {
+                                             Category = $"{year}-{month:D2}-Week {g.Key}",
+                                             Value = g.Sum(s => s.SaleTotal)
+                                         }).ToList();
+
+        pieChartData = weeklySales;
+    }
+
+    private void CalculateWeeklySales(int year, int month, int week)
+    {
+        if (week < 1 || week > 4)
+        {
+            week = 1;
+        }
+
+        // Calculate the start and end dates of the specified week within the given month and year
+        int daysInMonth = DateTime.DaysInMonth(year, month);
+        int daysInWeek = (int)Math.Ceiling((double)daysInMonth / 4); // Assuming 4 weeks in a month
+
+        // Calculate the start and end dates of the week
+        DateTime startDate = new DateTime(year, month, 1).AddDays((week - 1) * daysInWeek);
+        DateTime endDate = startDate.AddDays(daysInWeek - 1);
+
+        // Filter sales within the specified week
+        var weeklySales = salesResult.Where(s => s.OrderDate.Year == year && s.OrderDate.Month == month &&
+                                            s.OrderDate >= startDate && s.OrderDate <= endDate)
+                                    .GroupBy(s => s.OrderDate.Day)
+                                    .Select(g => new PieChartData
+                                        {
+                                            Category = $"{year}-{month:D2}-Week {week}-Day {g.Key}",
+                                            Value = g.Sum(s => s.SaleTotal)
+                                        }).ToList();
+
+        pieChartData = weeklySales;
+    }
+
+    private int GetIsoWeek(DateTime date)
+    {
+        var cal = System.Globalization.DateTimeFormatInfo.CurrentInfo.Calendar;
+        return cal.GetWeekOfYear(date, System.Globalization.CalendarWeekRule.FirstFourDayWeek, DayOfWeek.Monday);
+    }
+
+    public class PieChartData
+    {
+        public string Category { get; set; }
+        public decimal? Value { get; set; }
+    }
+
+    private async Task DownloadYearlyReport()
+    {
+        await ReportService.GetYearlyReportPdf();
+    }
+
+    private async Task DownloadDailyReport()
+    {
+        await ReportService.GetDailyReportPdf();
+    }
+
+    private async Task DownloadWeeklyReport()
+    {
+        await ReportService.GetWeeklyReportPdf();
+    }
+
+    private async Task DownloadMonthlyReport()
+    {
+        await ReportService.GetMonthlyReportPdf();
+    }
+
+    private async Task DownloadStockReport()
+    {
+        await ReportService.GetStockReportPdf();
+    }
+
+
+    bool showDataLabels = false;
+
+    void OnSeriesClick(SeriesClickEventArgs args)
+    {
+        Console.WriteLine(args);
+    }
+}

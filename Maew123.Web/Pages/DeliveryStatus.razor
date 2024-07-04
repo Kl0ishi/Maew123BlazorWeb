@@ -1,0 +1,50 @@
+﻿@page "/DeliveryStatus"
+@inherits RegisterBase
+@inject HttpClient Http
+@inject NavigationManager navigationManager
+@inject IOrderService _saleService
+
+<section class="content">
+    <div class="container-fluid">
+        <div class="box-container">
+            <UserProfileLeftTab />
+
+            <div class="box box-75 pb-4">
+                <div class="Title">
+                    <div class="tab">
+                        <button class="tablinks @(Tab == 1 ? "active" : "")" @onclick="() => Tab = 1">รอการชำระเงิน</button>
+                        <button class="tablinks @(Tab == 2 ? "active" : "")" @onclick="() => Tab = 2">รอตรวจสอบ</button>
+                        <button class="tablinks @(Tab == 3 ? "active" : "")" @onclick="() => Tab = 3">รอจัดส่ง</button>
+                        <button class="tablinks @(Tab == 4 ? "active" : "")" @onclick="() => Tab = 4">จัดส่งแล้ว</button>
+                        <button class="tablinks @(Tab == 5 ? "active" : "")" @onclick="() => Tab = 5">ทั้งหมด</button>
+                        <a type="button" class="NoteButton" @onclick="() => Tab = 7">แจ้งเตือน @annotatedCount</a>
+                    </div>
+
+                    <SaleDetails Tab="@Tab" />
+                </div>
+            </div>
+
+        </div>
+    </div><!-- /.container-fluid -->
+</section>
+
+@code {
+    protected int Tab = 0;
+    protected int annotatedCount = 0;
+    protected string? CountColor;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await Task.Run(() => Tab = 1);
+        annotatedCount = await _saleService.GetAnnotatedCount();
+        if (annotatedCount > 0)
+        {
+            CountColor = "color: red";
+        }
+        else
+        {
+            CountColor = "";
+        }
+    }
+
+}

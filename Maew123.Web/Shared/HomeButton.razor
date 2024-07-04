@@ -1,0 +1,13 @@
+﻿@inject NavigationManager NavigationManager
+
+<a href="" @onclick="GoToHome"
+        class="Logo">
+    Maew123
+</a>
+
+@code {
+    private void GoToHome()
+    {
+        NavigationManager.NavigateTo("");
+    }
+}

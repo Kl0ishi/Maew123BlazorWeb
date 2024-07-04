@@ -1,0 +1,246 @@
+﻿@page "/admin/PromotionIndex"
+@attribute [Authorize(Roles = "Admin,Employee")]
+@inherits PromotionBase
+@inject HttpClient Http
+@inject SweetAlertService Swal
+
+<section class="content">
+    <div class="container-fluid">
+        <div class="BoxInner">
+            <div class="card card-outline card-primary">
+                <div class="ContainerAll text-center py-3">
+
+                    <div class="box-centerside">
+                        <div class="pb-4">
+                            <h4>สร้างโปรโมชั่นสินค้า</h4>
+                        </div>
+                        <form id="myForm" @onsubmit:preventDefault @onsubmit="CreatePromotion" class="InnerBox justify-content-center">
+                            <div class="create-col">
+                                <div class="half">
+                                    <div class="InputCB">
+                                        <label for="PromotionID" class="text-left ml-2 mt-2 boxtext">ID โปรโมชั่น</label>
+                                        <input type="text" class="regboxdisable" id="PromotionID" name="PromotionID" placeholder="Auto" disabled />
+                                    </div>
+                                    <div class="InputCB">
+                                        <label for="PromotionName" class="text-left ml-2 mt-2 boxtext">ชื่อโปรโมชั่น</label>
+                                        <input type="text" class="regboxhalf" @bind="model.PromotionName" id="PromotionName" name="PromotionName" placeholder="PromotionName" required />
+                                    </div>
+                                </div>
+                                <div class="half">
+                                    <div class="InputCB">
+                                        <label for="PromotionType" class="text-left ml-2 mt-2 boxtext">ชนิดโปรโมชั่น</label>
+                                        <select class="form-control" @bind="@model.PromotionType" required>
+                                            @* <option value="">-- Select Condition --</option>
+                                            @foreach (var condition in PromotionTypeValues.promotionTypes)
+                                            {
+                                            <option value="@condition.PromotionType">@condition.PromotionType</option>
+                                            } *@
+                                            <option value="Fixed">ส่วนลด</option>
+                                        </select>
+                                    </div>
+                                    <div class="InputCB">
+                                        <label for="DiscountPer" class="text-left ml-2 mt-2 boxtext">ลดต่อจำนวน</label>
+                                        <input type="text" class="regboxhalf" @bind="model.DiscountPer" id="DiscountPer" name="DiscountPer" placeholder="DiscountPer" required />
+                                    </div>
+                                </div>
+                                <div class="half">
+                                    <div class="InputCB">
+                                        <label for="StartDate" class="text-left ml-2 mt-2 boxtext">วันที่เริ่ม</label>
+                                        <input type="date" class="regboxhalf" @bind="model.StartDate" id="StartDate" name="StartDate" placeholder="StartDate" />
+                                    </div>
+                                    <div class="InputCB">
+                                        <label for="EndDate" class="text-left ml-2 mt-2 boxtext">วันที่หมดอายุ</label>
+                                        <input type="date" class="regboxhalf" @bind="model.EndDate" id="EndDate" name="EndDate" required min="@DateTime.Now.ToString("yyyy-MM-dd")" />
+                                    </div>
+                                </div>
+                                <div class="ButtonPosition">
+                                    <div class="ItemPosition">
+                                        <input type="submit" value="ทำการสร้างโปรโมชั่นสินค้า" class="btn ButtonSubmit" style="background: #000030;color: white;float: right" />
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>ID โปรโมชั่น</th>
+                    <th>ชื่อโปรโมชั่น</th>
+                    <th>ชนิดของโปรโมชั่น</th>
+                    <th>ลดต่อชิ้น</th>
+                    <th>วันที่เริ่ม</th>
+                    <th>วันที่หมดอายุ</th>
+                    <th>อัพเดทโดย</th>
+                    <th>อัพเดทวันที่</th>
+                    <th>หมดอายุภายในวันที่</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+
+                @foreach (var item in _promotionService.PromotionsAdmin)
+                {
+                    <tr>
+                        <td>@item.PromotionId</td>
+                        <td>@item.PromotionName</td>
+                        <td>@item.PromotionType</td>
+                        <td>@item.DiscountPer</td>
+                        <td>@item.StartDate</td>
+                        <td>@item.EndDate</td>
+                        <td>@item.UpdateBy</td>
+                        <td>@item.UpdateDate</td>
+                        <td>@item.expiredInDay</td>
+                        <td>
+                            <button type="button" @onclick="@(() => SendPromotion(@item.PromotionId))" class="btn btn-warning" data-toggle="modal" data-target="#exampleModal">
+                                แก้ไข
+                            </button>
+                            <button type="button" class="btn btn-danger" @onclick="@(() => HandleDeleteButtonClick(@item.PromotionId))">
+                                ลบ
+                            </button>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+    </div><!-- /.container-fluid -->
+</section>
+
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">แก้ไขโปรโมชั่น</h5>
+                <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <EditForm id="myForm" class="form-signin justify-content-center" OnValidSubmit="@SubmitForm" Model="@model">
+                    <DataAnnotationsValidator />
+                    <div class="ModalBox">
+                        <div class="pr-2" style="width:25%">
+                            <label class="col-form-label">ID โปรโมชั่น:</label>
+                            <input type="text" class="form-control" style="color: rgb(0.0.0.0.2)" @bind="Model.PromotionId" disabled />
+                        </div>
+                        <div class="InnerModal">
+                            <label class="col-form-label">ชื่อโปรโมชั่น:</label>
+                            <input type="text" class="form-control" @bind="Model.PromotionName" />
+                        </div>
+                    </div>
+                    <div class="ModalBox">
+                        <div class="InnerModal pr-2">
+                            <label class="col-form-label">ชนิดโปรโมชั่น:</label>
+                            <select class="form-control" @bind="@model.PromotionType" required>
+                                @* <option value="">-- Select Condition --</option>
+                                @foreach (var condition in PromotionTypeValues.promotionTypes)
+                                {
+                                <option value="@condition.PromotionType">@condition.PromotionType</option>
+                                } *@
+                                <option value="Fixed">เพิ่มส่วนลด</option>
+                            </select>
+                        </div>
+                        <div class="InnerModal">
+                            <label class="col-form-label">ส่วนลด:</label>
+                            <input type="number" class="form-control" @bind="Model.DiscountPer" />
+                        </div>
+                    </div>
+                    <div class="ModalBox mb-3">
+                        <div class="InnerModal pr-2">
+                            <label class="col-form-label">วันที่เริ่ม:</label>
+                            <input type="date" class="form-control" @bind="Model.StartDate" />
+                        </div>
+                        <div class="InnerModal">
+                            <label class="col-form-label">วันที่หมดอายุ:</label>
+                            <input type="date" class="form-control" @bind="Model.EndDate" min="@DateTime.Now.ToString("yyyy-MM-dd")" />
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary">ทำการแก้ไข โปรโมชั่นสินค้า</button>
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">ปิด</button>
+                </EditForm>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    public PromotionDto Model = new PromotionDto();
+
+    public async Task SendPromotion(int Id)
+    {
+        var result = await _promotionService.GetPromotion(Id);
+        Model = result.Data!;
+    }
+
+    private async Task HandleDeleteButtonClick(int categoryId)
+    {
+        bool confirmed = await ShowDeleteConfirmation(categoryId);
+        if (confirmed)
+        {
+
+            await _promotionService.DeletePromotion(categoryId);
+
+            // Remove the category from the _catagoryService.Catagories collection
+            var categoryToRemove = _promotionService.PromotionsAdmin!.FirstOrDefault(promo => promo.PromotionId == categoryId);
+            if (categoryToRemove != null)
+            {
+                _promotionService.PromotionsAdmin!.Remove(categoryToRemove);
+            }
+        }
+    }
+
+
+    public async Task<bool> ShowDeleteConfirmation(int catagoryId)
+    {
+        var result = await Swal.FireAsync(new SweetAlertOptions
+            {
+                Title = "Are you sure?",
+                Text = "คุณต้องการจะลบจริงๆหรือไม่?",
+                Icon = SweetAlertIcon.Warning,
+                ShowCancelButton = true,
+                ConfirmButtonColor = "#d33",
+                ConfirmButtonText = "Yes, delete it!",
+                CancelButtonText = "No, keep it"
+            });
+
+        if (!string.IsNullOrEmpty(result.Value))
+        {
+            await Swal.FireAsync(
+                "Deleted",
+                $"Product with ID {catagoryId} has been deleted.",
+                SweetAlertIcon.Success
+            );
+            return true;
+        }
+        return false;
+    }
+
+    public async Task SubmitForm()
+    {
+        var response = await _promotionService.UpdatePromotion(model);
+        if (response.Success)
+        {
+            model = new PromotionDto();
+            await Swal.FireAsync(new SweetAlertOptions
+                {
+                    Icon = "success",
+                    Title = "เปลี่ยนรหัสผ่านสำเร็จแล้ว",
+                    ShowConfirmButton = false,
+                    Timer = 3000
+                }
+            );
+        }
+        else
+        {
+            await Swal.FireAsync(new SweetAlertOptions
+                {
+                    Icon = "error",
+                    Title = "รหัสเดิมไม่ถูกต้อง",
+                    ShowConfirmButton = false,
+                    Timer = 3000
+                });
+        }
+    }
+}

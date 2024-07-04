@@ -1,0 +1,28 @@
+﻿@inject ICartService CartService
+@inject ISyncLocalStorageService LocalStorage
+@implements IDisposable
+
+<a href="cart" class="nav-link CartMenu">
+    <i class="fas fa-shopping-cart" style="margin-right:5px"></i>
+    <span class="badge bg-dark" style="margin-left:5px">@GetCartItemsCount()</span>
+</a>
+
+@code {
+    private int GetCartItemsCount()
+    {
+        var cart = LocalStorage.GetItem<List<ItemQuantityDto>>("cart");
+        return cart != null ? cart.Count : 0; //ถ้าไม่null เอาจำนวนไป ถ้าnull เอา0
+    }
+
+    protected override void OnInitialized()
+    {
+        // subscribes the ShoppingCartChanged method to the OnShoppingCartChanged event
+        CartService.OnChange += StateHasChanged;//คำสั่ง rerender component
+    }
+
+    //interface to unsubscribe for ลดความจำ
+    public void Dispose()
+    {
+        CartService.OnChange -= StateHasChanged;
+    }
+}

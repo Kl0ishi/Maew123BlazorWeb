@@ -1,0 +1,155 @@
+﻿@page "/Payment/{id:int}"
+@inherits PaymentBase
+
+@if (_saleService.Sale == null || _saleService.Sale.Count == 0)
+{
+    <div class="container-fluid Centering">
+        <img width="100" height="100" src="https://img.icons8.com/wired/100/package.png" alt="package" />
+        <div class="wishtext">เกิดข้อผิดพลาด</div>
+    </div>
+}
+else if (_saleService.Sale != null || _saleService.Sale?.Count > 0)
+{
+    <div class="Centering">
+        <div class="box-centerside">
+            <div class="ContentInfo">
+                <div>
+                    <h1>แนบสลิปการชำระเงิน</h1>
+                    <div class="leftside">
+                        <div class="ContentSmaller mb-3">
+                            <div class="Centering">
+                                <img class="mr-4" style="width:150px; height:150px;" src="/picture/scbicon.png" />
+                            </div>
+                            <div class="Spacing my-2">
+                                <div class="imgtext mb-2" style="font-weight:700;color: #8F0089;">ธนาคาร ไทยพาณิชย์ จำกัด(มหาชน)</div>
+                                <div>
+                                    <div class="imgtext">ชื่อร้านขายสินค้า IT Maew123</div>
+                                    <div class="imgtext">สาขาพระโขนง</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ContentSmaller mb-3">
+                            <div class="Title">
+                                <div class="Centering">
+                                    <img class="imgmenu" width="48" height="48" src="https://img.icons8.com/material-rounded/48/cardboard-box.png" alt="cardboard-box" />
+                                </div>
+                                <div class="TitlePostion">
+                                    <div>โอนผ่าน : เลขบัญชี ไทยพาณิชย์ </div>
+                                    <div>1642643480 ศุภกร นิมิตวานิชกุล</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ContentSmaller">
+                            <div class="Centering">
+                                <div class="SaleTitle mr-2">รายการสินค้าที่สั่งซื้อทั้งหมด</div>
+                            </div>
+                            <div class="OverflowBox">
+                                @foreach (var item in model.CartDetails)
+                                {
+                                    sumSale += item.SumPrice;
+                                    sumDiscount += (item.Discount * item.Quantity);
+                                    totalPrice += item.TotalPrice;
+                                    totalVat += (item.VatPrice ?? 0);
+                                    totalPriceWithoutVat += (item.SumWithoutVat ?? 0);
+                                    <div class="Content col-12">
+                                        @item.ProductName
+                                        <div>
+                                            ราคา: @item.SumPrice - จำนวน: @item.Quantity
+                                        </div>
+                                        <div>ส่วนลด: @item.Discount</div>
+                                        <div>ราคารวม: @item.TotalPrice</div>
+                                        @* @item.PromotionName *@
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                        <div class="mt-4" style="color: #FE0000">* หมายเหตุ : รูปที่มีขนาด 150 x 150 นั้นเป็นแค่ตัวอย่างขนาดตัวอย่างเท่านั้น (รับไฟล์เฉพาะ jpg, jpeg, png)</div>
+                    </div>
+                </div>
+
+                <div class="rightside">
+                    <form id="myForm" class="Centering justify-content-center" @onsubmit="PaySlip" Model="@model">
+                        <div class="InputCB">
+                            <div class="">
+                                @if (loadedFiles == null || loadedFiles.Count == 0)
+                                {
+                                    <img src="https://placehold.jp/150*150.png" style="width:350px;height:350px;
+                                            border:1px solid green; border-radius:10px;padding:10px;" alt="ProductImage" id="PrevImg" />
+                                }
+                                else if (isLoading)
+                                {
+                                    <p>Uploading...</p>
+                                }
+                                else
+                                {
+                                    <ul>
+                                        @foreach (var file in loadedFiles)
+                                        {
+                                            <li>Name: @file.Name</li>
+                                            @* <li>Last modified: @file.LastModified.ToString()</li> ไม่ต้องใช้ก้ะได้มั้ง*@
+                                            <li>Size: @ConvertBytesToReadableString(file.Size)</li>
+                                            <li>Content type: @file.ContentType</li>
+                                            @* <li>Extension: @extensionname</li> ไม่ต้องใช้ก้ะได้มั้ง มันบอกในชื่ออยู่แล้ว*@
+                                            <li style="display:@isdisplayimage">
+                                                <img src="@base64data" style="width:350px;height:350px;
+                                                                    border:1px solid green; border-radius:10px;padding:10px;" alt="ProductImage" id="PrevImg" />
+                                            </li>
+                                        }
+                                    </ul>
+                                }
+                            </div>
+                            <div class="col-12">
+                                <div class="SpacingButton mt-3">
+                                    <div>
+                                        <label>
+                                            <InputFile OnChange="@LoadFiles" class="form-control" id="ChooseImg" multiple accept=".jpg,.jpeg,.png" />
+                                        </label>
+                                    </div>
+                                    <div class="ButtonPosition">
+                                        <button type="submit" class="btn ButtonSubmit" style="background: #000030;color: white;float: right; width:90px;">
+                                            ส่งสลิป
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                    <div>
+                        <div>ทั้งหมด: @(String.Format("{0:N2}", sumSale))</div>
+                        <div>ส่วนลด: @(String.Format("{0:N2}", sumDiscount))</div>
+                        <hr />
+                        <div><h3 class="fw-bold">ราคารวมสุทธิ: @(String.Format("{0:N2}", totalPrice))</h3></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@code {
+    [Parameter]
+    public int Id { get; set; }
+
+    protected override async Task OnParametersSetAsync()
+    {
+        try
+        {
+            await _saleService.GetPaymentRequest();
+            if (_saleService.Sale.Count != 0)
+            {
+                model = _saleService.Sale.FirstOrDefault(s => s.SaleId == Id)!;
+
+                if (model.StatusId != 1)
+                {
+                    navigationManager.NavigateTo("DeliveryStatus");
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+
+            throw;
+        }
+    }
+
+}

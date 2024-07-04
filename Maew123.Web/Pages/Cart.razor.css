@@ -1,0 +1,109 @@
+﻿﻿.box-25 {
+    flex: 0 0 25%;
+}
+
+.box-75 {
+    flex: 0 0 75%;
+}
+.image-wrapper{
+    margin: 0 10px 0 10px;
+}
+.ImgCart {
+    border: 1px solid rgba(0, 0, 0, 0.30);
+    width: 200px;
+    height: 200px;
+}
+.CartContainer {
+    display: flex;
+    padding: 20px 10px;
+    gap: 10px;
+    flex-shrink: 0;
+    border: 1px solid rgba(0, 0, 0, 0.30);
+    background: #FFF;
+    margin-right: 20px;
+}
+
+.input-quantity {
+    margin-top: auto;
+}
+
+.ItemInfo {
+}
+
+.ItemTitle {
+    font-size: 28px;
+}
+
+.CheckPosition {
+    display: flex;
+    width: 30px !important;
+    height: 30px !important;
+}
+
+.Centering {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+.PriceText1 {
+    display: flex;
+    align-items: center;
+    font-size: 28px;
+    color: #0075FF;
+    margin-right: 10px;
+}
+
+.PriceText2 {
+    display: flex;
+    align-items: center;
+    font-size: 22px;
+    color: black !important;
+    text-decoration: line-through;
+}
+/*<----------- right aside ----------->*/
+
+a {
+    color: black !important;
+}
+
+.SummeryContainer {
+    padding: 30px 25px;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    flex-shrink: 0;
+    border: 1px solid rgba(0, 0, 0, 0.30);
+    background: #FFF;
+}
+
+.PriceSpacing {
+    display: flex;
+    justify-content: space-between;
+}
+
+.CartTitle {
+    font-size: 28px;
+    font-weight: 700;
+}
+
+.CartText {
+    font-size: 20px;
+}
+
+.cart-product-price {
+    display: flex;
+    font-size: 20px;
+    font-weight: 700;
+    align-items: center;
+}
+
+.cart-button {
+    font-size: 20px;
+    font-weight: 700;
+    height: 70px;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}

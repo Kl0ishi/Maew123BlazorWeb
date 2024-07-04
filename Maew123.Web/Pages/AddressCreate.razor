@@ -1,0 +1,198 @@
+﻿@page "/AddressCreate"
+
+@inject NavigationManager navigationManager
+@inject SweetAlertService Swal
+@inject IAccountService AccountService
+
+<section class="content">
+    <div class="container-fluid">
+        <div class="box-container">
+            <UserProfileLeftTab />
+
+            <div class="box box-75 pb-4">
+                <div class="Title">
+                    <img width="48" height="48" src="https://img.icons8.com/material-rounded/48/place-marker.png" alt="place-marker" />ที่อยู่สำหรับการจัดส่งสินค้า
+                </div>
+                <div class="Content col-12">
+                    <div class="contenttitle">ข้อมูลการจัดส่ง</div>
+                    <form class="InnerBox" @onsubmit="SubmitForm" Model="@addressModel">
+                        <div class="address-col">
+                            <div class="InputCBLong">
+                                <div class="d-flex flex-column" style="width:100%">
+                                    <label for="HomeVariant" class="text-left ml-2 mt-2 boxtext">บ้านเลขที่</label>
+                                    <input type="text" @bind="addressModel.addressName" class="form-control" id="HomeVariant" name="HomeVariant" placeholder="บ้านเลขที่, ถนน:" required />
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="address-col">
+                            <div class="InputCB">
+                                <label for="Location1" class="text-left ml-2 mt-2 boxtext">ชื่อ</label>
+                                <input type="text" @bind="addressModel.FirstName" class="regbox1" id="Location1" name="Location1" required />
+                            </div>
+                            <div class="InputCB">
+                                <label for="Location2" class="text-left mt-2 boxtext">สกุล</label>
+                                <input type="text" @bind="addressModel.LastName" class="regbox" id="Location2" name="Location2" required />
+                            </div>
+                        </div>
+
+                        <div class="address-col">
+                            <div class="InputCB">
+                                <label for="Province" class="text-left mt-2 boxtext">จังหวัด</label>
+                                <select @onchange="OnProvinceChange" class="regbox1" id="Province" name="Province" required>
+                                    <option value="">Select Province</option>
+                                    @foreach (var province in provinces)
+                                    {
+                                        <option value="@province.Pcode">@province.Pname</option>
+                                    }
+                                </select>
+                            </div>
+                            <div class="InputCB">
+                                <label for="District" class="text-left ml-2 mt-2 boxtext">อำเภอ/เขต</label>
+                                <select @onchange="OnAmphoeChange" class="regbox" id="District" name="District" required disabled="@(!amphoesLoaded)">
+                                    <option value="">Select Amphoe</option>
+                                    @foreach (var amphoe in amphoes)
+                                    {
+                                        <option value="@amphoe.Acode">@amphoe.Aname</option>
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                        <div class="address-col">
+                            <div class="InputCB">
+                                <label for="SubDistrict" class="text-left mt-2 boxtext">ตำบล/แขวง</label>
+                                <select @bind="selectedTambol" class="regbox1" id="SubDistrict" name="SubDistrict" required disabled="@(!tambolsLoaded)">
+                                    <option value="">Select Tambol</option>
+                                    @foreach (var tambol in tambols)
+                                    {
+                                        <option value="@tambol.Tname">@tambol.Tname</option>
+                                    }
+                                </select>
+                            </div>
+                            <div class="InputCB">
+                                <label for="Zip" class="text-left ml-2 mt-2 boxtext">รหัสไปรษณีย์</label>
+                                <input type="text" @bind="addressModel.Zip" class="regbox" id="Zip" name="Zip" required />
+                            </div>
+                        </div>
+
+                        <div class="address-col">
+                            <div class="input-group mb-2">
+                                <div class="d-flex flex-column" style="width:100%">
+                                    <label for="HomeDetail" class="text-left ml-2 mt-2 boxtext">เบอร์ติดต่อผู้รับ</label>
+                                    <input type="text" @bind="addressModel.Phone" class="form-control" id="HomeDetail" name="HomeDetail" placeholder="ข้อมูลเพิ่มเติมการจัดส่ง (เช่น สถานที่ใกล้เคียง เบอร์ติดต่ออื่นๆ)" required />
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="ButtonPosition">
+                            <div class="InputCB align-items-center justify-content-center pt-4">
+                                <button type="submit" value="บันทึกที่อยู่" class="btn Save-button" style="background: #000030;color: white;float: right">บันทึกที่อยู่</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div><!-- /.container-fluid -->
+</section>
+
+@code {
+    private Maew123.Models.Models.Address addressModel = new Maew123.Models.Models.Address();
+
+    private List<Province> provinces = new List<Province>();
+    private List<Amphoe> amphoes = new List<Amphoe>();
+    private List<Tambol> tambols = new List<Tambol>();
+
+    private int selectedProvince;
+    private int selectedAmphoe;
+    private string? selectedTambol;
+    private bool amphoesLoaded = false;
+    private bool tambolsLoaded = false;
+
+    protected override async Task OnInitializedAsync()
+    {
+        provinces = await AccountService.GetProvinces();
+    }
+
+    private async Task OnProvinceChange(ChangeEventArgs e)
+    {
+        if (int.TryParse(e.Value.ToString(), out int selectedPcode))
+        {
+            selectedProvince = selectedPcode;
+            if (selectedProvince != 0)
+            {
+                var selectedProvinceData = provinces.FirstOrDefault(p => p.Pcode == selectedProvince);
+                if (selectedProvinceData != null)
+                {
+                    addressModel.Country = selectedProvinceData.Pname;
+                    amphoes = await AccountService.GetAmphoes(selectedProvince);
+                    amphoesLoaded = true;
+                }
+            }
+        }
+        else
+        {
+            amphoesLoaded = false;
+        }
+        selectedAmphoe = 0;
+        selectedTambol = null;
+        tambolsLoaded = false;
+    }
+
+    private async Task OnAmphoeChange(ChangeEventArgs e)
+    {
+        if (int.TryParse(e.Value.ToString(), out int selectedAcode))
+        {
+            selectedAmphoe = selectedAcode;
+            if (selectedAmphoe != 0)
+            {
+                var selectedAmphoeData = amphoes.FirstOrDefault(a => a.Acode == selectedAmphoe);
+                if (selectedAmphoeData != null)
+                {
+                    addressModel.City = selectedAmphoeData.Aname;
+                    tambols = await AccountService.GetTambols(selectedAmphoe);
+                    tambolsLoaded = true;
+                }
+            }
+        }
+        else
+        {
+            tambolsLoaded = false;
+        }
+        selectedTambol = null;
+    }
+
+    public async Task SubmitForm()
+    {
+        addressModel.State = selectedTambol;
+        if (await AccountService.SaveAddress(addressModel))
+        {
+            await Swal.FireAsync(new SweetAlertOptions
+                {
+                    Icon = "success",
+                    Title = "เพิ่มข้อมูลที่อยู่สำเร็จ",
+                    ShowConfirmButton = false,
+                    Timer = 3000
+                }
+            );
+            navigationManager.NavigateTo("Address");
+        }
+        else
+        {
+            await Swal.FireAsync(new SweetAlertOptions
+                {
+                    Icon = "error",
+                    Title = "เกิดข้อผิดพลาด",
+                    ShowConfirmButton = false,
+                    Timer = 3000
+                });
+        }
+    }
+
+}
+
+@* <div class="social-auth-links text-center d-flex justify-content-center">
+    <a href="#" class="btn Save-button mt-3" style="background: #000030;color: white;">
+        บันทึกที่อยู่
+    </a>
+</div> *@

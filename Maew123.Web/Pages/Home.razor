@@ -1,0 +1,51 @@
+﻿@page "/"
+@page "/{catagoryUrl}"
+
+@inject DialogService DialogService
+@inject IProductService ProductService
+@inject ICartService CartService
+
+@* @if (SearchText == null && CatagoryUrl == null) *@
+@if (CatagoryUrl == null)
+{
+    <FeaturedProducts />
+}
+else
+{
+    <ProductList />
+}
+
+
+@code {
+    [Parameter]
+    public string? CatagoryUrl { get; set; } = null;
+
+
+
+    //[Parameter]
+    //public int Page { get; set; } = 1;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await ProductService.GetProducts();
+        await ProductService.GetBestSellerProducts();
+    }
+
+    protected override async Task OnParametersSetAsync()
+    {
+        // if (SearchText != null)
+        // {
+        //     await ProductService.SearchProducts(SearchText);
+        // }
+        if (CatagoryUrl != null)
+        {
+            await ProductService.GetProducts(CatagoryUrl);
+        }
+    }
+
+    // void ButtonClicked()
+    // {
+    //     DialogService.Alert("Hi!");
+    // }
+
+}

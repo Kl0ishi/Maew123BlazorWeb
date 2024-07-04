@@ -1,0 +1,57 @@
+﻿@if (Addresses != null && Addresses.Any())
+{
+    <select @onchange="SelectedAddressChanged" class="form-control" value="@SelectedAddressId">
+        <option value="">-- Select Address --</option>
+        @foreach (var address in Addresses)
+        {
+            <option value="@address.Id">
+                @if (address.IsDefault ?? false)
+                {
+                    <span><b>(ค่าเริ่มต้น): </b></span>
+                }
+                @address.addressName, @address.Street, @address.City, @address.State, @address.Zip, @address.Country
+            </option>
+        }
+    </select>
+}
+else
+{
+    <span>คุณยังไม่ได้บันทึกข้อมูลที่อยู่. <a href="Address">คลิกที่นี่</a> เพื่อเพิ่มข้อมูลที่อยู่</span>
+}
+
+@code {
+
+    [Parameter] public List<Maew123.Models.Models.Address>? Addresses { get; set; }
+    [Parameter] public EventCallback<int> OnAddressSelected { get; set; }
+
+    private int SelectedAddressId { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+
+        var defaultAddress = Addresses?.FirstOrDefault(a => a.IsDefault ?? false);
+
+        if (defaultAddress != null)
+        {
+            SelectedAddressId = defaultAddress.Id;
+
+            await OnAddressSelected.InvokeAsync(SelectedAddressId);
+        }
+    }
+
+    private async Task SelectedAddressChanged(ChangeEventArgs e)
+    {
+        try
+        {
+            SelectedAddressId = Convert.ToInt32(e.Value);
+            await OnAddressSelected.InvokeAsync(SelectedAddressId);
+        }
+        catch (Exception)
+        {
+            await OnAddressSelected.InvokeAsync(0);
+        }
+        
+    }
+
+}
